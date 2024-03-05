@@ -10,7 +10,7 @@
 <script lang="ts" name="tianditu" setup>
 import { ref } from 'vue';
 
-import { MapAnnotation } from '@bcc/components';
+import { MapAnnotation } from '@bcc/ui';
 
 const active = ref('0');
 </script>
