@@ -1,25 +1,16 @@
 <template>
-  <div class="card h-full">
-    <div class="h-full" id="map"></div>
+  <div class="card h-full flex flex-col">
+    <el-radio-group v-model="active" class="p-2.5">
+      <el-radio-button label="地图标注" value="0" />
+    </el-radio-group>
+    <map-annotation class="flex-1" />
   </div>
 </template>
 
 <script lang="ts" name="tianditu" setup>
-import { onMounted, ref } from 'vue';
-import { T } from '@bcc/utils';
+import { ref } from 'vue';
 
-const map = ref();
+import { MapAnnotation } from '@bcc/components';
 
-onMounted(() => {
-  map.value = new T.Map('map');
-  map.value.centerAndZoom(new T.LngLat(116.40769, 39.89945), 12);
-});
+const active = ref('0');
 </script>
-
-<style lang="scss">
-#map.tdt-container {
-  .tdt-control-copyright {
-    display: none;
-  }
-}
-</style>
