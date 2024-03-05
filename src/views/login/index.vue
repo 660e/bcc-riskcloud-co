@@ -4,7 +4,7 @@
       <el-image :src="loginImage" fit="cover" class="w-96" />
       <login-form class="w-96" />
     </div>
-    <switch-dark class="absolute right-5 bottom-5" />
+    <switch-dark class="absolute right-3.5 bottom-2" />
   </div>
 </template>
 
