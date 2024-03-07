@@ -141,4 +141,7 @@
   .el-tabs__header.is-left {
     margin-right: 0;
   }
+  .el-tabs__nav-wrap::after {
+    height: 1px;
+  }
 }
