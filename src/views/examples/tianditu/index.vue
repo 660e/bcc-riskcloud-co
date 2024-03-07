@@ -1,13 +1,13 @@
 <script lang="ts" name="tianditu" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { MapAnnotation } from '@bcc/ui';
-import { TLngLat } from '@bcc/utils';
+import { TDT } from '@bcc/utils';
 
 import CloudMarkerCollection from './components/cloud-marker-collection.vue';
 
 interface Annotation {
   company: {
-    lnglat: TLngLat | null;
+    lnglat: TDT.LngLat | null;
     radius: number;
   };
 }
@@ -18,7 +18,7 @@ const activeChange = (value: number) => {
     case 0: // 地图标注
       annotation.company = {
         lnglat: [116.22858, 40.07734],
-        radius: 100
+        radius: 200
       };
       break;
     case 1: // 海量点位
