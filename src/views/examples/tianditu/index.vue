@@ -7,7 +7,8 @@ import CloudMarkerCollection from './components/cloud-marker-collection.vue';
 
 interface Annotation {
   company: {
-    lnglat?: TLngLat;
+    lnglat: TLngLat | null;
+    radius: number;
   };
 }
 
@@ -15,7 +16,10 @@ const active = ref(0);
 const activeChange = (value: number) => {
   switch (value) {
     case 0: // 地图标注
-      annotation.company.lnglat = [116.22858, 40.07734];
+      annotation.company = {
+        lnglat: [116.22858, 40.07734],
+        radius: 100
+      };
       break;
     case 1: // 海量点位
       break;
@@ -23,7 +27,10 @@ const activeChange = (value: number) => {
 };
 
 const annotation = reactive<Annotation>({
-  company: {}
+  company: {
+    lnglat: null,
+    radius: 0
+  }
 });
 
 onMounted(() => activeChange(0));
