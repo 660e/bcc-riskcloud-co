@@ -9,6 +9,7 @@ interface Annotation {
   company: {
     lnglat: TDT.LngLat | null;
     radius: number;
+    markers: TDT.Marker[];
   };
 }
 
@@ -18,7 +19,11 @@ const activeChange = (value: number) => {
     case 0: // 地图标注
       annotation.company = {
         lnglat: [116.22858, 40.07734],
-        radius: 200
+        radius: 200,
+        markers: [
+          { id: 1, label: 'Target-001', lnglat: [116.22685, 40.07829] },
+          { id: 2, label: 'Target-002', lnglat: [116.22733, 40.07677] }
+        ]
       };
       break;
     case 1: // 海量点位
@@ -29,7 +34,8 @@ const activeChange = (value: number) => {
 const annotation = reactive<Annotation>({
   company: {
     lnglat: null,
-    radius: 0
+    radius: 0,
+    markers: []
   }
 });
 
