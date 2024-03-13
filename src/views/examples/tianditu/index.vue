@@ -45,8 +45,10 @@ onMounted(() => activeChange(0));
 <template>
   <div class="card h-full flex flex-col">
     <el-radio-group v-model="active" @change="activeChange" class="p-2.5">
-      <el-radio-button :value="0" label="地图标注" />
+      <el-radio-button :value="0" label="周边敏感目标" />
       <el-radio-button :value="1" label="海量点位（5000+）" />
+      <el-radio-button :value="0" label="地图标注" />
+      <el-radio-button :value="0" label="风险一张图" />
     </el-radio-group>
     <el-divider class="m-0" />
 
