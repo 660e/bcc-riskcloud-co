@@ -1,5 +1,5 @@
 <script lang="ts" name="tianditu" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { CloudMarkerCollection, MapAnnotation, SensitiveTargets } from '@bcc/ui';
 import { TDT } from '@bcc/utils';
 
@@ -19,7 +19,7 @@ const company = ref<Company>({
   lnglat: null
 });
 
-const active = ref(0);
+const active = ref(2);
 const activeChange = (value: number) => {
   switch (value) {
     case 1: // 周边敏感目标
@@ -45,6 +45,8 @@ const activeChange = (value: number) => {
       break;
   }
 };
+
+onMounted(() => activeChange(2));
 </script>
 
 <template>
@@ -63,6 +65,6 @@ const activeChange = (value: number) => {
     <!-- 周边敏感目标 -->
     <sensitive-targets v-if="active === 1" :company="company" class="flex-1 h-0" />
     <!-- 地图标注 -->
-    <map-annotation v-if="active === 2" :company="company" class="flex-1" />
+    <map-annotation v-if="active === 2" :company="company" class="flex-1 h-0" />
   </div>
 </template>
