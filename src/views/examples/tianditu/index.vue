@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { CloudMarkerCollection, MapAnnotation, SensitiveTargets } from '@bcc/ui';
 import { TDT } from '@bcc/utils';
 
-interface Risk {
+interface RiskSource {
   id: number;
   label: string;
 }
@@ -12,7 +12,7 @@ interface Company {
   lnglat: TDT.LngLat | null;
   radius?: number;
   targets?: TDT.Marker[];
-  risks?: Risk[];
+  sources?: RiskSource[];
 }
 
 const company = ref<Company>({
@@ -35,7 +35,7 @@ const activeChange = (value: number) => {
     case 2:
       company.value = {
         lnglat: [116.22858, 40.07734],
-        risks: [
+        sources: [
           { id: 1, label: 'Risk-001' },
           { id: 2, label: 'Risk-002' },
           { id: 3, label: 'Risk-003' },
