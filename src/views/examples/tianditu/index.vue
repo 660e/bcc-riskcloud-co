@@ -1,6 +1,6 @@
 <script lang="ts" name="tianditu" setup>
 import { onMounted, ref } from 'vue';
-import { CloudMarkerCollection, MapAnnotation, SensitiveTargets } from '@bcc/ui';
+import { CloudMarkerCollection, MapAnnotation, OnePicture, SensitiveTargets } from '@bcc/ui';
 import { TDT } from '@bcc/utils';
 
 interface RiskSource {
@@ -18,8 +18,9 @@ interface Company {
 const company = ref<Company>({
   lnglat: null
 });
+const data = ref(0);
 
-const active = ref(2);
+const active = ref(4);
 const activeChange = (value: number) => {
   switch (value) {
     case 1: // 周边敏感目标
@@ -32,7 +33,7 @@ const activeChange = (value: number) => {
         ]
       };
       break;
-    case 2:
+    case 2: // 地图标注
       company.value = {
         lnglat: [116.22858, 40.07734],
         sources: [
@@ -43,10 +44,13 @@ const activeChange = (value: number) => {
         ]
       };
       break;
+    case 4:
+      data.value = 1;
+      break;
   }
 };
 
-onMounted(() => activeChange(2));
+onMounted(() => activeChange(4));
 </script>
 
 <template>
@@ -56,7 +60,7 @@ onMounted(() => activeChange(2));
       <el-radio-button :value="1" label="周边敏感目标" />
       <el-radio-button :value="2" label="地图标注" />
       <!-- <el-radio-button :value="3" label="图片标注" /> -->
-      <!-- <el-radio-button :value="4" label="风险一张图" /> -->
+      <el-radio-button :value="4" label="风险一张图" />
     </el-radio-group>
     <el-divider class="m-0" />
 
@@ -66,5 +70,8 @@ onMounted(() => activeChange(2));
     <sensitive-targets v-if="active === 1" :company="company" class="flex-1 h-0" />
     <!-- 地图标注 -->
     <map-annotation v-if="active === 2" :company="company" class="flex-1 h-0" />
+
+    <!-- 风险一张图 -->
+    <one-picture v-if="active === 4" :data="data" class="flex-1" />
   </div>
 </template>
