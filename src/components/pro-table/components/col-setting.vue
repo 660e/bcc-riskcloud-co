@@ -1,6 +1,6 @@
 <template>
   <!-- 列设置 -->
-  <el-drawer v-model="drawerVisible" title="列设置" size="400px">
+  <el-drawer v-model="drawerVisible" title="列设置" size="400px" :z-index="2100" append-to-body>
     <div class="p-5">
       <el-table
         :data="colSetting"
