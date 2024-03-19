@@ -1,10 +1,11 @@
 <template>
   <div class="flex flex-col h-full">
-    <pro-table :columns="columns" :request-api="getUserList" ref="tableRef">
+    <pro-table :columns="columns" :request-api="getUserList" ref="tableRef" row-key="userId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
         <!-- <el-button @click="importData">导入</el-button> -->
         <el-button @click="exportData">导出</el-button>
+        <el-button @click="remove">批量删除</el-button>
       </template>
       <template #operation="scope">
         <template v-if="scope.row.userId !== 1">
@@ -38,6 +39,7 @@ const createDialogRef = ref();
 const resetDialogRef = ref();
 
 const columns: ColumnProps[] = [
+  { type: 'selection', width: 0 },
   { prop: 'userId', label: '用户编号', width: 100 },
   { prop: 'userName', label: '用户名称', search: { el: 'input' } },
   { prop: 'nickName', label: '用户昵称' },
@@ -63,9 +65,11 @@ const exportData = async () => {
   saveAs(blob, `user_${new Date().getTime()}.xlsx`);
 };
 const remove = (row: any) => {
-  ElMessageBox.confirm(`是否删除“${row.userName}”？`, '系统提示', { type: 'warning' })
+  const name = row.userId ? `“${row.userName}”` : '';
+  const ids = row.userId ? [row.userId] : tableRef.value.selectedListIds;
+  ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteUser(row.userId);
+      const { msg } = await deleteUser(ids.join(','));
       tableRef.value.search();
       ElMessage.success(msg);
     })
