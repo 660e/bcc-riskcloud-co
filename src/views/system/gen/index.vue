@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-col h-full">
-    <pro-table :columns="columns" :request-api="getList" ref="tableRef">
+    <pro-table :columns="columns" :request-api="getList" ref="tableRef" row-key="tableId">
       <template #tableHeader>
         <el-button @click="importData" type="primary">导入</el-button>
+        <el-button @click="remove">批量删除</el-button>
       </template>
       <template #operation="scope">
         <el-button @click="preview(scope.row.tableId)" type="primary" link>预览</el-button>
@@ -38,6 +39,7 @@ const importDialogRef = ref();
 const previewDialogRef = ref();
 
 const columns: ColumnProps[] = [
+  { type: 'selection', width: 0 },
   { prop: 'tableName', label: '表名称', search: { el: 'input' } },
   { prop: 'tableComment', label: '表描述', search: { el: 'input' } },
   { prop: 'className', label: '实体' },
@@ -50,9 +52,11 @@ const importData = () => importDialogRef.value.open();
 const preview = (tableId: string) => previewDialogRef.value.open(tableId);
 const edit = (tableId: string) => $router.push({ name: 'gen-edit', params: { tableId } });
 const remove = (row: any) => {
-  ElMessageBox.confirm(`是否删除“${row.tableName}”？`, '系统提示', { type: 'warning' })
+  const name = row.tableId ? `“${row.tableName}”` : '';
+  const ids = row.tableId ? [row.tableId] : tableRef.value.selectedListIds;
+  ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteTable(row.tableId);
+      const { msg } = await deleteTable(ids.join(','));
       tableRef.value.search();
       ElMessage.success(msg);
     })
