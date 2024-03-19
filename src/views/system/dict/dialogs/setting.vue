@@ -1,10 +1,11 @@
 <template>
   <el-dialog v-model="visible" title="配置" width="1000" align-center draggable>
     <div class="p-2.5">
-      <pro-table :columns="columns" :request-api="requestApi" ref="tableRef">
+      <pro-table :columns="columns" :request-api="requestApi" ref="tableRef" row-key="dictCode">
         <template #tableHeader>
           <el-button @click="create()" type="primary">新增</el-button>
           <el-button @click="exportData">导出</el-button>
+          <el-button @click="remove">批量删除</el-button>
         </template>
         <template #operation="scope">
           <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
@@ -41,6 +42,7 @@ const tableRef = ref();
 const createDataDialogRef = ref();
 
 const columns: ColumnProps[] = [
+  { type: 'selection', width: 0 },
   { prop: 'dictCode', label: '字典编码' },
   { prop: 'dictLabel', label: '字典标签', search: { el: 'input' } },
   { prop: 'dictValue', label: '字典键值' },
@@ -74,9 +76,11 @@ const exportData = async () => {
   saveAs(blob, `dict_data_${new Date().getTime()}.xlsx`);
 };
 const remove = (row: any) => {
-  ElMessageBox.confirm(`是否删除“${row.dictLabel}”？`, '系统提示', { type: 'warning' })
+  const name = row.dictCode ? `“${row.dictLabel}”` : '';
+  const ids = row.dictCode ? [row.dictCode] : tableRef.value.selectedListIds;
+  ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteDictData(row.dictCode);
+      const { msg } = await deleteDictData(ids.join(','));
       tableRef.value.search();
       ElMessage.success(msg);
     })

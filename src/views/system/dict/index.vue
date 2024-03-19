@@ -1,10 +1,11 @@
 <template>
   <div class="flex flex-col h-full">
-    <pro-table :columns="columns" :request-api="getDictTypeList" ref="tableRef">
+    <pro-table :columns="columns" :request-api="getDictTypeList" ref="tableRef" row-key="dictId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
         <el-button @click="exportData">导出</el-button>
         <el-button @click="refreshCache">刷新缓存</el-button>
+        <el-button @click="remove">批量删除</el-button>
       </template>
       <template #operation="scope">
         <el-button @click="setting(scope.row)" type="primary" link>配置</el-button>
@@ -36,6 +37,7 @@ const createTypeDialogRef = ref();
 const settingDialogRef = ref();
 
 const columns: ColumnProps[] = [
+  { type: 'selection', width: 0 },
   { prop: 'dictId', label: '字典编号', width: 100 },
   { prop: 'dictName', label: '字典名称', search: { el: 'input' } },
   { prop: 'dictType', label: '字典类型', search: { el: 'input' } },
@@ -63,9 +65,11 @@ const refreshCache = async () => {
 };
 const setting = (row: any) => settingDialogRef.value.open(row);
 const remove = (row: any) => {
-  ElMessageBox.confirm(`是否删除“${row.dictName}”？`, '系统提示', { type: 'warning' })
+  const name = row.dictId ? `“${row.dictName}”` : '';
+  const ids = row.dictId ? [row.dictId] : tableRef.value.selectedListIds;
+  ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteDictType(row.dictId);
+      const { msg } = await deleteDictType(ids.join(','));
       tableRef.value.search();
       ElMessage.success(msg);
     })
