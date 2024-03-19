@@ -1,9 +1,10 @@
 <template>
   <div class="flex flex-col h-full">
-    <pro-table :columns="columns" :request-api="getRoleList" ref="tableRef">
+    <pro-table :columns="columns" :request-api="getRoleList" ref="tableRef" row-key="roleId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
         <el-button @click="exportData">导出</el-button>
+        <el-button @click="remove">批量删除</el-button>
       </template>
       <template #operation="scope">
         <template v-if="scope.row.roleId !== 1">
@@ -37,6 +38,7 @@ const createDialogRef = ref();
 const settingDialogRef = ref();
 
 const columns: ColumnProps[] = [
+  { type: 'selection', width: 0 },
   { prop: 'roleId', label: '角色编号', width: 100 },
   { prop: 'roleName', label: '角色名称', search: { el: 'input' } },
   { prop: 'roleKey', label: '权限字符', search: { el: 'input' } },
@@ -60,9 +62,11 @@ const exportData = async () => {
 };
 const setting = (row: any) => settingDialogRef.value.open(row);
 const remove = (row: any) => {
-  ElMessageBox.confirm(`是否删除“${row.roleName}”？`, '系统提示', { type: 'warning' })
+  const name = row.roleId ? `“${row.roleName}”` : '';
+  const ids = row.roleId ? [row.roleId] : tableRef.value.selectedListIds;
+  ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteRole(row.roleId);
+      const { msg } = await deleteRole(ids.join(','));
       tableRef.value.search();
       ElMessage.success(msg);
     })
