@@ -40,3 +40,8 @@ export function synchDb(tableName: string) {
 export function getTable(tableId: string) {
   return http.get(`/code/gen/${tableId}`);
 }
+
+// 生成代码
+export function batchGenCode(tables: string) {
+  return http.get('/code/gen/batchGenCode', { tables }, { responseType: 'blob' });
+}

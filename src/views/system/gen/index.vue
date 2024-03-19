@@ -4,13 +4,14 @@
       <template #tableHeader>
         <el-button @click="importData" type="primary">导入</el-button>
         <el-button @click="remove">批量删除</el-button>
+        <el-button @click="generate">批量生成代码</el-button>
       </template>
       <template #operation="scope">
         <el-button @click="preview(scope.row.tableId)" type="primary" link>预览</el-button>
         <el-button @click="edit(scope.row.tableId)" type="primary" link>编辑</el-button>
         <el-button @click="remove(scope.row)" type="primary" link>删除</el-button>
         <el-button @click="sync(scope.row.tableName)" type="primary" link>同步</el-button>
-        <!-- <el-button @click="generate(scope.row.tableName)" type="primary" link>生成代码</el-button> -->
+        <el-button @click="generate(scope.row)" type="primary" link>生成代码</el-button>
       </template>
     </pro-table>
 
@@ -26,7 +27,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getList, deleteTable, synchDb } from '@/api/modules/code';
+import { getList, deleteTable, synchDb, batchGenCode } from '@/api/modules/code';
+import { saveAs } from 'file-saver';
 
 import ProTable from '@/components/pro-table/index.vue';
 import ImportDialog from './dialogs/import.vue';
@@ -71,7 +73,9 @@ const sync = (tableName: string) => {
     })
     .catch(() => false);
 };
-// const generate = (tableName: string) => {
-//   console.log(tableName);
-// };
+const generate = async (row: any) => {
+  const names = row.tableId ? [row.tableName] : tableRef.value.selectedList.map((s: any) => s.tableName);
+  const blob: any = await batchGenCode(names.join(','));
+  saveAs(blob, `table_${new Date().getTime()}.zip`);
+};
 </script>
