@@ -18,7 +18,7 @@ interface Company {
 const company = ref<Company>({
   lnglat: null
 });
-const data = ref(0);
+const data = ref(true);
 
 const active = ref(4);
 const activeChange = (value: number) => {
@@ -45,7 +45,7 @@ const activeChange = (value: number) => {
       };
       break;
     case 4:
-      data.value = 1;
+      data.value = !data.value;
       break;
   }
 };
