@@ -4,7 +4,7 @@
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
         <el-button @click="exportData">导出</el-button>
-        <el-button @click="remove">批量删除</el-button>
+        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
       </template>
       <template #operation="scope">
         <template v-if="scope.row.roleId !== 1">
@@ -16,7 +16,7 @@
     </pro-table>
 
     <!-- 新增/编辑 -->
-    <create-dialog @confirm="tableRef.search()" ref="createDialogRef" />
+    <create-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createDialogRef" />
     <!-- 配置 -->
     <setting-dialog ref="settingDialogRef" />
   </div>
@@ -68,6 +68,7 @@ const remove = (row: any) => {
     .then(async () => {
       const { msg } = await deleteRole(ids.join(','));
       tableRef.value.search();
+      tableRef.value.clearSelection();
       ElMessage.success(msg);
     })
     .catch(() => false);

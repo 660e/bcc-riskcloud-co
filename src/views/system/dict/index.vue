@@ -5,7 +5,7 @@
         <el-button @click="create()" type="primary">新增</el-button>
         <el-button @click="exportData">导出</el-button>
         <el-button @click="refreshCache">刷新缓存</el-button>
-        <el-button @click="remove">批量删除</el-button>
+        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
       </template>
       <template #operation="scope">
         <el-button @click="setting(scope.row)" type="primary" link>配置</el-button>
@@ -15,7 +15,7 @@
     </pro-table>
 
     <!-- 新增/编辑 -->
-    <create-type-dialog @confirm="tableRef.search()" ref="createTypeDialogRef" />
+    <create-type-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createTypeDialogRef" />
     <!-- 配置 -->
     <setting-dialog ref="settingDialogRef" />
   </div>
@@ -71,6 +71,7 @@ const remove = (row: any) => {
     .then(async () => {
       const { msg } = await deleteDictType(ids.join(','));
       tableRef.value.search();
+      tableRef.value.clearSelection();
       ElMessage.success(msg);
     })
     .catch(() => false);

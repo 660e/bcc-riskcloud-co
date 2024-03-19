@@ -5,7 +5,7 @@
         <template #tableHeader>
           <el-button @click="create()" type="primary">新增</el-button>
           <el-button @click="exportData">导出</el-button>
-          <el-button @click="remove">批量删除</el-button>
+          <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
         </template>
         <template #operation="scope">
           <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
@@ -21,7 +21,7 @@
     </template>
 
     <!-- 新增/编辑 -->
-    <create-data-dialog @confirm="tableRef.search()" ref="createDataDialogRef" />
+    <create-data-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createDataDialogRef" />
   </el-dialog>
 </template>
 
@@ -82,6 +82,7 @@ const remove = (row: any) => {
     .then(async () => {
       const { msg } = await deleteDictData(ids.join(','));
       tableRef.value.search();
+      tableRef.value.clearSelection();
       ElMessage.success(msg);
     })
     .catch(() => false);
