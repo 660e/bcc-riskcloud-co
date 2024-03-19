@@ -3,8 +3,8 @@
     <pro-table :columns="columns" :request-api="getList" ref="tableRef" row-key="tableId">
       <template #tableHeader>
         <el-button @click="importData" type="primary">导入</el-button>
-        <el-button @click="remove">批量删除</el-button>
-        <el-button @click="generate">批量生成代码</el-button>
+        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
+        <el-button @click="generate" :disabled="!tableRef?.selectedListIds.length">批量生成代码</el-button>
       </template>
       <template #operation="scope">
         <el-button @click="preview(scope.row.tableId)" type="primary" link>预览</el-button>
@@ -16,7 +16,7 @@
     </pro-table>
 
     <!-- 导入 -->
-    <import-dialog @confirm="tableRef.search()" ref="importDialogRef" />
+    <import-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importDialogRef" />
     <!-- 预览 -->
     <preview-dialog ref="previewDialogRef" />
   </div>
@@ -60,6 +60,7 @@ const remove = (row: any) => {
     .then(async () => {
       const { msg } = await deleteTable(ids.join(','));
       tableRef.value.search();
+      tableRef.value.clearSelection();
       ElMessage.success(msg);
     })
     .catch(() => false);
