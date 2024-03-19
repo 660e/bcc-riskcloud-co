@@ -4,4 +4,8 @@
   </div>
 </template>
 
-<script lang="ts" name="home" setup></script>
+<script lang="ts" name="home" setup>
+import { $c } from '@bcc/utils';
+
+console.log($c.encrypt(Math.random()));
+</script>
