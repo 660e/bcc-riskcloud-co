@@ -1,30 +1,13 @@
 <script lang="ts" name="tianditu" setup>
 import { onMounted, ref } from 'vue';
 import { CloudMarkerCollection, MapAnnotation, OnePicture, SensitiveTargets } from '@bcc/ui';
-import { TDT } from '@bcc/utils';
 
-interface RiskSource {
-  id: number;
-  label: string;
-}
-
-interface Company {
-  lnglat: TDT.LngLat | null;
-  radius?: number;
-  targets?: TDT.Marker[];
-  sources?: RiskSource[];
-}
-
-const company = ref<Company>({
-  lnglat: null
-});
-const code = ref('');
-
+const data = ref();
 const active = ref(4);
 const activeChange = (value: number) => {
   switch (value) {
     case 1: // 周边敏感目标
-      company.value = {
+      data.value = {
         lnglat: [116.22858, 40.07734],
         radius: 200,
         targets: [
@@ -34,7 +17,7 @@ const activeChange = (value: number) => {
       };
       break;
     case 2: // 地图标注
-      company.value = {
+      data.value = {
         lnglat: [116.22858, 40.07734],
         sources: [
           { id: 1, label: 'Risk-001' },
@@ -45,8 +28,8 @@ const activeChange = (value: number) => {
       };
       break;
     case 4:
-      code.value = '110000'; // 北京
-      // code.value = '510100'; // 成都
+      data.value = '110000'; // 北京
+      // data.value = '510100'; // 成都
       break;
   }
 };
@@ -68,11 +51,11 @@ onMounted(() => activeChange(4));
     <!-- 海量点位 -->
     <cloud-marker-collection v-if="active === 0" class="flex-1" />
     <!-- 周边敏感目标 -->
-    <sensitive-targets v-if="active === 1" :company="company" class="flex-1 h-0" />
+    <sensitive-targets v-if="active === 1" :company="data" class="flex-1 h-0" />
     <!-- 地图标注 -->
-    <map-annotation v-if="active === 2" :company="company" class="flex-1 h-0" />
+    <map-annotation v-if="active === 2" :company="data" class="flex-1 h-0" />
 
     <!-- 风险一张图 -->
-    <one-picture v-if="active === 4" :code="code" class="flex-1" />
+    <one-picture v-if="active === 4" :code="data" class="flex-1" />
   </div>
 </template>
