@@ -18,7 +18,7 @@ interface Company {
 const company = ref<Company>({
   lnglat: null
 });
-const city = ref('');
+const code = ref('');
 
 const active = ref(4);
 const activeChange = (value: number) => {
@@ -45,7 +45,8 @@ const activeChange = (value: number) => {
       };
       break;
     case 4:
-      city.value = '北京';
+      code.value = '110000'; // 北京
+      // code.value = '510100'; // 成都
       break;
   }
 };
@@ -72,6 +73,6 @@ onMounted(() => activeChange(4));
     <map-annotation v-if="active === 2" :company="company" class="flex-1 h-0" />
 
     <!-- 风险一张图 -->
-    <one-picture v-if="active === 4" :city="city" class="flex-1" />
+    <one-picture v-if="active === 4" :code="code" class="flex-1" />
   </div>
 </template>
