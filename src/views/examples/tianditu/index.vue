@@ -28,7 +28,7 @@ const activeChange = (value: number) => {
       };
       break;
     case 4: // 风险一张图
-      data.value = 510100;
+      data.value = 100000;
       break;
   }
 };
