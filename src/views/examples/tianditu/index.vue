@@ -27,9 +27,8 @@ const activeChange = (value: number) => {
         ]
       };
       break;
-    case 4:
-      data.value = '110000'; // 北京
-      // data.value = '510100'; // 成都
+    case 4: // 风险一张图
+      data.value = 510100;
       break;
   }
 };
