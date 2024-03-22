@@ -1,6 +1,6 @@
 <script lang="ts" name="tianditu" setup>
 import { onMounted, ref } from 'vue';
-import { CloudMarkerCollection, MapAnnotation, OnePicture, PlanAnnotation, SensitiveTargets } from '@bcc/ui';
+import { CloudMarkerCollection, MapMarker, OnePicture, PlanMarker, SensitiveTargets } from '@bcc/ui';
 
 const data = ref();
 const active = ref(3);
@@ -53,9 +53,9 @@ onMounted(() => activeChange(active.value));
     <!-- 周边敏感目标 -->
     <sensitive-targets v-if="active === 1" :company="data" class="flex-1 h-0" />
     <!-- 地图标注 -->
-    <map-annotation v-if="active === 2" :company="data" class="flex-1 h-0" />
+    <map-marker v-if="active === 2" :company="data" class="flex-1 h-0" />
     <!-- 平面图标注 -->
-    <plan-annotation v-if="active === 3" class="flex-1 h-0" />
+    <plan-marker v-if="active === 3" class="flex-1 h-0" />
     <!-- 风险一张图 -->
     <one-picture v-if="active === 4" :code="data" class="flex-1" />
   </div>
