@@ -17,6 +17,7 @@ const activeChange = (value: number) => {
       };
       break;
     case 2: // 地图标注
+    case 3: // 平面图标注
       data.value = {
         lnglat: [116.22875, 40.07758],
         sources: [
@@ -55,7 +56,7 @@ onMounted(() => activeChange(active.value));
     <!-- 地图标注 -->
     <map-marker v-if="active === 2" :company="data" class="flex-1 h-0" />
     <!-- 平面图标注 -->
-    <plan-marker v-if="active === 3" class="flex-1 h-0" />
+    <plan-marker v-if="active === 3" :company="data" class="flex-1 h-0" />
     <!-- 风险一张图 -->
     <one-picture v-if="active === 4" :code="data" class="flex-1" />
   </div>
