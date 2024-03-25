@@ -8,7 +8,7 @@ const activeChange = (value: number) => {
   switch (value) {
     case 1: // 周边敏感目标
       data.value = {
-        lnglat: [116.22875, 40.07758],
+        lnglat: [116.22874, 40.07758],
         radius: 200,
         targets: [
           { id: 1, label: 'Target-001', lnglat: [116.22685, 40.07829] },
@@ -19,7 +19,7 @@ const activeChange = (value: number) => {
     case 2: // 地图标注
     case 3: // 平面图标注
       data.value = {
-        lnglat: [116.22875, 40.07758],
+        lnglat: [116.22874, 40.07758],
         sources: [
           { id: 1, label: 'Risk-001' },
           { id: 2, label: 'Risk-002' },
