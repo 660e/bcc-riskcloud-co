@@ -16,7 +16,7 @@
     </pro-table>
 
     <!-- 导入 -->
-    <import-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importDialogRef" />
+    <import-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="importDialogRef" />
     <!-- 预览 -->
     <preview-dialog ref="previewDialogRef" />
   </div>
@@ -59,7 +59,7 @@ const remove = (row: any) => {
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await deleteTable(ids.join(','));
-      tableRef.value.search();
+      tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
     })
@@ -69,7 +69,7 @@ const sync = (tableName: string) => {
   ElMessageBox.confirm(`是否同步“${tableName}”？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await synchDb(tableName);
-      tableRef.value.search();
+      tableRef.value.search(tableRef.value.pageable?.pageNum);
       ElMessage.success(msg);
     })
     .catch(() => false);

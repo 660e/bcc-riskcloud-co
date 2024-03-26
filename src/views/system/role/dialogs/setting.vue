@@ -18,7 +18,7 @@
     </template>
 
     <!-- 授权 -->
-    <accredit-dialog @confirm="tableRef.search()" ref="accreditDialogRef" />
+    <accredit-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum)" ref="accreditDialogRef" />
   </el-dialog>
 </template>
 
@@ -66,7 +66,7 @@ const remove = (row: any) => {
   ElMessageBox.confirm(`是否取消“${row.userName}”授权？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await authUserCancel({ roleId: roleId.value, userId: row.userId });
-      tableRef.value.search();
+      tableRef.value.search(tableRef.value.pageable?.pageNum);
       ElMessage.success(msg);
     })
     .catch(() => false);

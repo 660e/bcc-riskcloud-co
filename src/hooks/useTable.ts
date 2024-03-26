@@ -103,8 +103,8 @@ export const useTable = (
    * @description 表格数据查询
    * @return void
    * */
-  const search = () => {
-    state.pageable.pageNum = 1;
+  const search = (pageNum: number = 1) => {
+    state.pageable.pageNum = pageNum;
     updatedTotalParam();
     getTableList();
   };

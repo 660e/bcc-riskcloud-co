@@ -17,7 +17,7 @@
     </pro-table>
 
     <!-- 新增/编辑 -->
-    <create-dialog @confirm="tableRef.search()" ref="createDialogRef" />
+    <create-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum)" ref="createDialogRef" />
   </div>
 </template>
 
@@ -65,7 +65,7 @@ const remove = (row: any) => {
   ElMessageBox.confirm(`是否删除“${row.menuName}”？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await deleteMenu(row.menuId);
-      tableRef.value.search();
+      tableRef.value.search(tableRef.value.pageable?.pageNum);
       ElMessage.success(msg);
     })
     .catch(() => false);

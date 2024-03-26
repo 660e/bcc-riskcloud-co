@@ -19,7 +19,7 @@
     </pro-table>
 
     <!-- 新增/编辑 -->
-    <create-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createDialogRef" />
+    <create-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="createDialogRef" />
     <!-- 配置 -->
     <setting-dialog ref="settingDialogRef" />
   </div>
@@ -70,7 +70,7 @@ const remove = (row: any) => {
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await deleteRole(ids.join(','));
-      tableRef.value.search();
+      tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
     })
