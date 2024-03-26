@@ -3,9 +3,12 @@
     <pro-table :columns="columns" :request-api="getDictTypeList" ref="tableRef" row-key="dictId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
-        <el-button @click="exportData">导出</el-button>
-        <el-button @click="refreshCache">刷新缓存</el-button>
+        <el-button @click="exportData()">导出</el-button>
+        <el-button @click="exportData(tableRef?.selectedListIds)" :disabled="!tableRef?.selectedListIds.length">
+          批量导出
+        </el-button>
         <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
+        <el-button @click="refreshCache">刷新缓存</el-button>
       </template>
       <template #operation="scope">
         <el-button @click="setting(scope.row)" type="primary" link>配置</el-button>
@@ -55,8 +58,8 @@ const columns: ColumnProps[] = [
 ];
 
 const create = (row: any = {}) => createTypeDialogRef.value.open(row);
-const exportData = async () => {
-  const blob: any = await exportDictTypeList(tableRef.value.searchParam);
+const exportData = async (ids: any = []) => {
+  const blob: any = await exportDictTypeList({ ...tableRef.value.searchParam, ids });
   saveAs(blob, `dict_type_${new Date().getTime()}.xlsx`);
 };
 const refreshCache = async () => {
