@@ -21,10 +21,10 @@ const activeChange = (value: number) => {
       data.value = {
         lnglat: [116.22874, 40.07758],
         sources: [
-          { id: 1, label: 'Risk-001' },
-          { id: 2, label: 'Risk-002' },
-          { id: 3, label: 'Risk-003' },
-          { id: 4, label: 'Risk-004' }
+          { id: 1, label: 'Risk-001', type: 'primary' },
+          { id: 2, label: 'Risk-002', type: 'success' },
+          { id: 3, label: 'Risk-003', type: 'warning' },
+          { id: 4, label: 'Risk-004', type: 'danger' }
         ]
       };
       break;
