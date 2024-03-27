@@ -3,16 +3,13 @@
     <pro-table :columns="columns" :request-api="getRoleList" ref="tableRef" row-key="roleId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
-        <el-button @click="exportData()">导出</el-button>
-        <el-button @click="exportData(tableRef?.selectedListIds)" :disabled="!tableRef?.selectedListIds.length">
-          批量导出
-        </el-button>
-        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
+        <el-button @click="exportData">导出</el-button>
+        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
       </template>
       <template #operation="scope">
         <template v-if="scope.row.roleId !== 1">
           <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
-          <el-button @click="remove(scope.row)" type="primary" link>删除</el-button>
+          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
           <el-button @click="setting(scope.row)" type="primary" link>分配用户</el-button>
         </template>
       </template>
@@ -59,8 +56,8 @@ const columns: ColumnProps[] = [
 ];
 
 const create = (row: any = {}) => createDialogRef.value.open(row);
-const exportData = async (ids: any = []) => {
-  const blob: any = await exportRoleList({ ...tableRef.value.searchParam, ids });
+const exportData = async () => {
+  const blob: any = await exportRoleList({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
   saveAs(blob, `role_${new Date().getTime()}.xlsx`);
 };
 const setting = (row: any) => settingDialogRef.value.open(row);

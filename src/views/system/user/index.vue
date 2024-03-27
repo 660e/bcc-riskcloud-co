@@ -4,16 +4,13 @@
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
         <!-- <el-button @click="importData">导入</el-button> -->
-        <el-button @click="exportData()">导出</el-button>
-        <el-button @click="exportData(tableRef?.selectedListIds)" :disabled="!tableRef?.selectedListIds.length">
-          批量导出
-        </el-button>
-        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
+        <el-button @click="exportData">导出</el-button>
+        <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
       </template>
       <template #operation="scope">
         <template v-if="scope.row.userId !== 1">
           <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
-          <el-button @click="remove(scope.row)" type="primary" link>删除</el-button>
+          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
           <el-button @click="reset(scope.row)" type="primary" link>重置密码</el-button>
         </template>
       </template>
@@ -63,8 +60,8 @@ const create = (row: any = {}) => createDialogRef.value.open(row);
 // const importData = () => {
 //   console.log('import');
 // };
-const exportData = async (ids: any = []) => {
-  const blob: any = await exportUserList({ ...tableRef.value.searchParam, ids });
+const exportData = async () => {
+  const blob: any = await exportUserList({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
   saveAs(blob, `user_${new Date().getTime()}.xlsx`);
 };
 const remove = (row: any) => {

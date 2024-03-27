@@ -5,11 +5,11 @@
         <template #tableHeader>
           <el-button @click="create()" type="primary">新增</el-button>
           <el-button @click="exportData">导出</el-button>
-          <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length">批量删除</el-button>
+          <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
         </template>
         <template #operation="scope">
           <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
-          <el-button @click="remove(scope.row)" type="primary" link>删除</el-button>
+          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
         </template>
       </pro-table>
     </div>
@@ -46,19 +46,18 @@ const createDataDialogRef = ref();
 
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
-  { prop: 'dictCode', label: '字典编码' },
+  { prop: 'dictCode', label: '字典编码', width: 100 },
   { prop: 'dictLabel', label: '字典标签', search: { el: 'input' } },
-  { prop: 'dictValue', label: '字典键值' },
-  { prop: 'dictSort', label: '显示顺序' },
+  { prop: 'dictValue', label: '字典键值', width: 100 },
+  { prop: 'dictSort', label: '显示顺序', width: 100 },
   {
     prop: 'status',
     label: '状态',
     enum: () => getDictDataType('enable_disable'),
     search: { el: 'select' },
-    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    width: 100
   },
-  { prop: 'remark', label: '备注' },
-  { prop: 'createTime', label: '创建时间', width: 180 },
   { prop: 'operation', label: '操作', width: 120 }
 ];
 
@@ -75,7 +74,11 @@ const requestApi = async (params: any) => {
 };
 const create = (row: any = {}) => createDataDialogRef.value.open(row, dictType.value);
 const exportData = async () => {
-  const blob: any = await exportDictDataList({ ...tableRef.value.searchParam, dictType: dictType.value });
+  const blob: any = await exportDictDataList({
+    ...tableRef.value.searchParam,
+    dictType: dictType.value,
+    ids: tableRef.value.selectedListIds
+  });
   saveAs(blob, `dict_data_${new Date().getTime()}.xlsx`);
 };
 const remove = (row: any) => {
