@@ -91,6 +91,16 @@ export function getInfo() {
   return http.get('/system/user/getInfo');
 }
 
+// 导入用户列表 - 模板
+export function importTemplate() {
+  return http.download('/system/user/importTemplate');
+}
+
+// 导入用户列表
+export function importUserData(updateSupport: boolean, params: any = {}) {
+  return http.post(`/system/user/importData?updateSupport=${updateSupport}`, fd(params));
+}
+
 // 导出用户列表
 export function exportUserList(params: any = {}) {
   return http.download('/system/user/export', fd(params));

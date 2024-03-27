@@ -3,7 +3,7 @@
     <pro-table :columns="columns" :request-api="getUserList" ref="tableRef" row-key="userId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
-        <!-- <el-button @click="importData">导入</el-button> -->
+        <el-button @click="importData">导入</el-button>
         <el-button @click="exportData">导出</el-button>
         <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
       </template>
@@ -18,6 +18,8 @@
 
     <!-- 新增/编辑 -->
     <create-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="createDialogRef" />
+    <!-- 导入 -->
+    <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
     <!-- 重置密码 -->
     <reset-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="resetDialogRef" />
   </div>
@@ -26,16 +28,18 @@
 <script lang="ts" name="user-manage" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getUserList, deleteUser, exportUserList, getDictDataType } from '@/api/modules/system';
+import { getUserList, deleteUser, exportUserList, getDictDataType, importTemplate, importUserData } from '@/api/modules/system';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 
+import { ImportTemplateDialog } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 import CreateDialog from './dialogs/create.vue';
 import ResetDialog from './dialogs/reset.vue';
 
 const tableRef = ref();
 const createDialogRef = ref();
+const importTemplateDialogRef = ref();
 const resetDialogRef = ref();
 
 const columns: ColumnProps[] = [
@@ -57,9 +61,13 @@ const columns: ColumnProps[] = [
 ];
 
 const create = (row: any = {}) => createDialogRef.value.open(row);
-// const importData = () => {
-//   console.log('import');
-// };
+const importData = () => {
+  importTemplateDialogRef.value.open({
+    templateApi: importTemplate,
+    templateName: '用户列表模板.xlsx',
+    importApi: importUserData
+  });
+};
 const exportData = async () => {
   const blob: any = await exportUserList({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
   saveAs(blob, `user_${new Date().getTime()}.xlsx`);
