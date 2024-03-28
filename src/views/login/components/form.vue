@@ -38,8 +38,8 @@ const $keepAliveStore = useKeepAliveStore();
 
 const formsRef = ref<FormInstance>();
 const forms = reactive({
-  username: 'admin',
-  password: 'admin123',
+  username: 'co_admin',
+  password: '123456',
   code: '9999',
   uuid: ''
 });
