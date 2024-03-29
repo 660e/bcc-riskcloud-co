@@ -1,12 +1,21 @@
 <script lang="ts" setup>
-import { $c } from '@bcc/utils';
+import { onMounted, reactive } from 'vue';
+import { riskStatistics } from '@/api/modules/home';
+import { RiskStatisticsType } from '@/api/interface/home';
 
-console.log($c.encrypt(Math.random()));
+const statistics = reactive<{ risk: RiskStatisticsType[] }>({
+  risk: []
+});
+
+onMounted(async () => {
+  const { data } = await riskStatistics(1);
+
+  statistics.risk = data;
+});
 </script>
 
 <template>
   <div class="card h-full flex justify-center items-center">
-    <div></div>
-    <div>/src/views{{ $route.path }}/index.vue</div>
+    <pre>{{ statistics.risk }}</pre>
   </div>
 </template>
