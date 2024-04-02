@@ -33,3 +33,13 @@ export interface ResPage<T> {
   pageSize: number;
   total: number;
 }
+
+// 系统类型
+export namespace System {
+  export interface Dict {
+    dictLabel: string;
+    dictValue: string;
+    default: boolean;
+    status: string;
+  }
+}

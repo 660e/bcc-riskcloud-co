@@ -1,6 +1,6 @@
 import http from '@/api';
 import qs from 'qs';
-import { ResPage } from '@/api/interface/index';
+import { ResPage, System } from '@/api/interface/index';
 import { fd } from '@bcc/utils';
 
 /**
@@ -201,7 +201,7 @@ export function editDictData(params: any) {
 
 // 获取字典数据内容
 export function getDictDataType(dictType: string) {
-  return http.get(`/system/dict/data/type/${dictType}`);
+  return http.get<System.Dict[]>(`/system/dict/data/type/${dictType}`);
 }
 
 // 获取字典数据列表
