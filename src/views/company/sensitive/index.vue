@@ -3,15 +3,18 @@ import { onMounted, reactive } from 'vue';
 import { getDictDataType } from '@/api/modules/system';
 import { System } from '@/api/interface';
 import { SensitiveTargets } from '@bcc/ui';
+import { TDT } from '@bcc/utils';
 
 const config = reactive<{
   company: any;
   options: {
     [key: string]: System.Dict[];
   };
+  targets: TDT.Marker[];
 }>({
   company: {},
-  options: {}
+  options: {},
+  targets: []
 });
 
 onMounted(async () => {
@@ -23,7 +26,15 @@ onMounted(async () => {
       { id: 2, label: 'Target-002', lnglat: [116.22733, 40.07677] }
     ]
   };
-  config.options.range = (await getDictDataType('sensitive_target_range')).data;
+  config.options = {
+    range: (await getDictDataType('sensitive_target_range')).data
+  };
+  config.targets = [
+    { id: 1, label: 'Target-001', lnglat: [116.22685, 40.07829] },
+    { id: 2, label: 'Target-002', lnglat: [116.22733, 40.07677] },
+    { id: 3, label: 'Target-003', lnglat: [116.22988, 40.07792] },
+    { id: 4, label: 'Target-004', lnglat: [116.22924, 40.07646] }
+  ];
 });
 </script>
 
