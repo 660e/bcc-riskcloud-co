@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { SensitiveTargets } from '@bcc/ui';
 
-const company = ref();
+const config = reactive({
+  company: {}
+});
 
 onMounted(() => {
-  company.value = {
+  config.company = {
     lnglat: [116.22874, 40.07758],
     radius: 200,
     targets: [
@@ -17,5 +19,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <sensitive-targets :company="company" class="card h-full" />
+  <sensitive-targets :config="config" class="card h-full" />
 </template>
