@@ -4,6 +4,7 @@ import { FormInstance, FormRules } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import { getDictDataType } from '@/api/modules/system';
 import { System } from '@/api/interface';
+import { LabelTooltip } from '@bcc/components';
 
 const formsRef = ref<FormInstance>();
 const forms = ref({
@@ -66,12 +67,10 @@ onMounted(async () => {
           </el-form-item>
           <el-form-item class="col-span-2">
             <template #label>
-              <div class="flex items-center space-x-1">
-                <span>确认上下级关系</span>
-                <el-tooltip content="如果上级公司参加北京市风险评估工作，则输入信息建立关联，否则该项信息不填" placement="top">
-                  <el-icon><QuestionFilled /></el-icon>
-                </el-tooltip>
-              </div>
+              <label-tooltip
+                label="确认上下级关系"
+                content="如果上级公司参加北京市风险评估工作，则输入信息建立关联，否则该项信息不填"
+              />
             </template>
             <el-input v-model="ui.keyword">
               <template #prepend>
@@ -96,12 +95,7 @@ onMounted(async () => {
           </el-form-item>
           <el-form-item prop="standardization" class="col-span-2">
             <template #label>
-              <div class="flex items-center space-x-1">
-                <span>安全生产标准化得分</span>
-                <el-tooltip content="未开展安全生产标准化工作，得分请填写0" placement="top">
-                  <el-icon><QuestionFilled /></el-icon>
-                </el-tooltip>
-              </div>
+              <label-tooltip label="安全生产标准化得分" content="未开展安全生产标准化工作，得分请填写0" />
             </template>
             <el-input v-model="forms.standardization" />
           </el-form-item>
