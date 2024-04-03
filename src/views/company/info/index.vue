@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" name="company-info" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';

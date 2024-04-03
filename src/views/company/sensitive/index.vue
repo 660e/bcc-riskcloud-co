@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" name="company-sensitive" setup>
 import { onMounted, ref } from 'vue';
 import { MapClass, TDT } from '@bcc/utils';
 import { getDictDataType } from '@/api/modules/system';

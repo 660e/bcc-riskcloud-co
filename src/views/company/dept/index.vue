@@ -1,7 +1,7 @@
-<script lang="ts" name="company-staff" setup>
+<script lang="ts" name="company-dept" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getStaffList, deleteStaff } from '@/api/modules/company';
+import { getDeptList, deleteDept } from '@/api/modules/company';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
@@ -10,18 +10,18 @@ const tableRef = ref();
 const createDialogRef = ref();
 
 const columns: ColumnProps[] = [
-  { prop: 'staffId', label: '人员编号', width: 100 },
-  { prop: 'staffName', label: '人员名称', search: { el: 'input' } },
+  { prop: 'deptId', label: '部门编号', width: 100 },
+  { prop: 'deptName', label: '部门名称', search: { el: 'input' } },
   { prop: 'operation', label: '操作', width: 180 }
 ];
 
 const create = (row: any = {}) => createDialogRef.value.open(row);
 const remove = (row: any) => {
-  const name = row.userId ? `“${row.staffName}”` : '';
+  const name = row.userId ? `“${row.deptName}”` : '';
   const ids = row.userId ? [row.userId] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteStaff(ids.join(','));
+      const { msg } = await deleteDept(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
@@ -32,7 +32,7 @@ const remove = (row: any) => {
 
 <template>
   <div class="flex flex-col h-full">
-    <pro-table :columns="columns" :request-api="getStaffList" ref="tableRef" row-key="staffId">
+    <pro-table :columns="columns" :request-api="getDeptList" ref="tableRef" row-key="deptId">
       <template #tableHeader>
         <el-button @click="create()" type="primary">新增</el-button>
       </template>
