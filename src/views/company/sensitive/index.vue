@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { MapClass, TDT } from '@bcc/utils';
 import { getDictDataType } from '@/api/modules/system';
 import { System } from '@/api/interface';
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import CreateDialog from './dialogs/create.vue';
 
 // 地图实例
 let M: any;
@@ -11,21 +12,36 @@ let M: any;
 let rangeCircle: any;
 // 敏感目标范围缓存
 let rangeCache: number;
+// 当前正在拖拽的自定义敏感目标
+let draggingTarget: any;
 
+// “添加敏感目标”弹窗
+const createDialogRef = ref();
 // 地图工具类
 const MapUtils: MapClass = new MapClass();
 // 敏感目标范围
-const rangeRadius = ref(0);
-// 选项
-const options = reactive<{ [key: string]: System.Dict[] }>({
-  range: [] // 敏感目标范围
-});
+const range = ref(0);
+// 敏感目标范围选项
+const rangeOptions = ref<System.Dict[]>();
 // 公司基本信息
 const companyInformation = ref();
 // 敏感目标列表
-const targets = ref();
+const targets = ref<TDT.Marker[]>([]);
 // 已标注敏感目标列表
-const checkedTargets = ref([]);
+const checkedTargets = ref<TDT.Marker[]>([]);
+// 右键菜单
+const contextMenu: TDT.MenuItem[] = [
+  {
+    text: '添加敏感目标',
+    callback: (lnglat: any) => {
+      if (MapUtils.PointInCircle([lnglat.lng, lnglat.lat], companyInformation.value.lnglat, range.value)) {
+        createDialogRef.value.open(lnglat);
+      } else {
+        ElMessage.warning('请在圆形范围内添加敏感目标');
+      }
+    }
+  }
+];
 
 onMounted(async () => {
   companyInformation.value = {
@@ -43,20 +59,50 @@ onMounted(async () => {
     { id: 4, label: 'Target-004', lnglat: [116.22924, 40.07646] }
   ];
 
-  rangeRadius.value = companyInformation.value.radius;
-  rangeCache = rangeRadius.value;
+  range.value = companyInformation.value.radius;
+  rangeCache = range.value;
   rangeCircle = MapUtils.Circle(companyInformation.value.lnglat, rangeCache, { weight: 1 });
   checkedTargets.value = companyInformation.value.targets;
 
   M = MapUtils.Init('map', companyInformation.value.lnglat);
+  M.addContextMenu(MapUtils.ContextMenu(contextMenu, 150));
   M.addOverLay(MapUtils.Marker(companyInformation.value.lnglat));
   M.addOverLay(rangeCircle);
 
   setRangeRadius(rangeCache);
   checkedTargetsChange(checkedTargets.value);
 
-  options.range = (await getDictDataType('sensitive_target_range')).data;
+  rangeOptions.value = (await getDictDataType('sensitive_target_range')).data;
 });
+
+// 添加自定义敏感目标
+const createTarget = (forms: any) => {
+  const target: TDT.Marker = {
+    id: new Date().getTime(),
+    label: forms.label,
+    lnglat: forms.lnglat,
+    icon: 'warning',
+    drag: true
+  };
+  const marker = MapUtils.Marker(target.lnglat, target.icon, target);
+
+  M.addOverLay(marker);
+  addDragEvent(marker);
+
+  targets.value.push(target);
+  checkedTargets.value.push(target);
+};
+
+// 添加拖拽事件监听
+const addDragEvent = (marker: any) => {
+  marker.enableDragging();
+  marker.addEventListener('dragstart', ({ target }) => {
+    draggingTarget = targets.value.find(t => t.id === target.options.title.id);
+  });
+  marker.addEventListener('dragend', ({ lnglat }) => {
+    draggingTarget.lnglat = [lnglat.lng, lnglat.lat];
+  });
+};
 
 // 设置敏感目标范围
 const setRangeRadius = (radius: number) => {
@@ -65,7 +111,7 @@ const setRangeRadius = (radius: number) => {
 };
 
 // 敏感目标范围改变时
-const rangeRadiusChange = (radius: number) => {
+const rangeChange = (radius: number) => {
   ElMessageBox.confirm('调整风险范围将清空已标注的敏感目标', '系统提示', { type: 'warning' })
     .then(() => {
       checkAllTargetsChange(false);
@@ -73,7 +119,7 @@ const rangeRadiusChange = (radius: number) => {
       rangeCache = radius;
     })
     .catch(() => {
-      rangeRadius.value = rangeCache;
+      range.value = rangeCache;
     });
 };
 
@@ -99,7 +145,7 @@ const checkedTargetsChange = (checked: TDT.Marker[]) => {
     diff1.forEach((target: TDT.Marker) => {
       const marker = MapUtils.Marker(target.lnglat, target.icon || 'danger', target);
       M.addOverLay(marker);
-      // if (target.drag) addDragEvent(marker);
+      if (target.drag) addDragEvent(marker);
     });
   } else if (diff1.length < diff2.length) {
     diff2.forEach((overlay: any) => M.removeOverLay(overlay));
@@ -111,7 +157,7 @@ const checkedTargetsChange = (checked: TDT.Marker[]) => {
 
 // 保存
 const save = () => {
-  console.log('save');
+  console.log(checkedTargets.value);
 };
 </script>
 
@@ -121,11 +167,13 @@ const save = () => {
       <div class="flex-1 flex flex-col">
         <div class="flex-1 overflow-y-auto">
           <el-checkbox-group v-model="checkedTargets" @change="checkedTargetsChange" class="pt-2.5">
-            <el-checkbox v-for="e in targets" :key="e.id" :value="e" class="px-2.5 m-0 font-normal flex">
+            <el-checkbox v-for="e in targets" :key="e.id" :value="e" class="px-2.5 m-0 font-normal flex _targets">
               <span>{{ e.label }}</span>
+              <span v-if="companyInformation.lnglat">
+                {{ MapUtils.PointToPointDistance(companyInformation.lnglat, e.lnglat) }}米
+              </span>
             </el-checkbox>
           </el-checkbox-group>
-          <div style="height: 2000px"></div>
         </div>
         <div class="p-2.5 flex">
           <el-checkbox v-model="checkAllTargets" :indeterminate="isIndeterminate" @change="checkAllTargetsChange" label="全选" />
@@ -135,9 +183,20 @@ const save = () => {
       <el-divider direction="vertical" class="m-0 h-full" />
     </div>
     <div class="flex-1" id="map">
-      <el-radio-group v-model="rangeRadius" @change="rangeRadiusChange" class="absolute top-2.5 left-2.5" style="z-index: 1000">
-        <el-radio-button v-for="e in options.range" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+      <el-radio-group v-model="range" @change="rangeChange" class="absolute top-2.5 left-2.5 z-[1000]">
+        <el-radio-button v-for="e in rangeOptions" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
       </el-radio-group>
     </div>
+
+    <!-- “添加敏感目标”弹窗 -->
+    <create-dialog @confirm="createTarget" ref="createDialogRef" />
   </div>
 </template>
+
+<style lang="scss" scoped>
+._targets :deep(.el-checkbox__label) {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+</style>
