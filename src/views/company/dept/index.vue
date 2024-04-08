@@ -17,8 +17,8 @@ const columns: ColumnProps[] = [
 
 const create = (row: any = {}) => createDialogRef.value.open(row);
 const remove = (row: any) => {
-  const name = row.userId ? `“${row.deptName}”` : '';
-  const ids = row.userId ? [row.userId] : tableRef.value.selectedListIds;
+  const name = row.deptId ? `“${row.deptName}”` : '';
+  const ids = row.deptId ? [row.deptId] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await deleteDept(ids.join(','));

@@ -1,17 +1,18 @@
 import http from '@/api';
 
-// 获取单位基本信息
+// 获取基本信息
 export function getCompanyInfo() {
   return http.get<any>('/mock/co/company/info');
 }
 
-// 获取单位部门列表
-export function getDeptList(params: any) {
-  return http.get('/mock/co/company/dept', params);
-}
-
+// 删除部门
 export function deleteDept(id: string) {
   return http.delete(`/mock/co/company/dept/${id}`);
+}
+
+// 获取部门列表
+export function getDeptList(params: any) {
+  return http.get('/mock/co/company/dept', params);
 }
 
 export function getPostList() {
