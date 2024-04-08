@@ -2,14 +2,15 @@
 import { type Component, ref } from 'vue';
 
 import StepsComponent from './components/steps.vue';
-import Step1 from './components/step-1/index.vue';
-import Step2 from './components/step-2/index.vue';
-import Step3 from './components/step-3/index.vue';
-import Step4 from './components/step-4/index.vue';
-import Step5 from './components/step-5/index.vue';
-import Step6 from './components/step-6/index.vue';
 
-const active = ref(1);
+import Step1 from './views/step-1/index.vue';
+import Step2 from './views/step-2/index.vue';
+import Step3 from './views/step-3/index.vue';
+import Step4 from './views/step-4/index.vue';
+import Step5 from './views/step-5/index.vue';
+import Step6 from './views/step-6/index.vue';
+
+const active = ref(2);
 const StepComponent: Component[] = [Step1, Step2, Step3, Step4, Step5, Step6];
 
 const prev = () => {
