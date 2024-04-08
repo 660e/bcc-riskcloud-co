@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import { getDictDataType } from '@/api/modules/system';
+import { getCompanyInfo } from '@/api/modules/company';
 import { System } from '@/api/interface';
 import { LabelTooltip } from '@bcc/components';
 
@@ -35,6 +36,8 @@ const forms = ref({
 });
 const rules: FormRules = {
   parentName: [{ required: true, message: '请填写', trigger: 'blur' }],
+  county: [{ required: true, message: '请填写', trigger: 'blur' }],
+  officeName: [{ required: true, message: '请填写', trigger: 'blur' }],
   standardization: [{ required: true, message: '请填写', trigger: 'blur' }],
 
   placeName: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -83,16 +86,18 @@ onMounted(async () => {
   options.companyCodeType = (await getDictDataType('company_code_type')).data;
   options.yesNo = (await getDictDataType('yes_no')).data;
   options.companyIdentity = (await getDictDataType('company_identity')).data;
+
+  forms.value = (await getCompanyInfo()).data;
 });
 </script>
 
 <template>
   <div class="card h-full flex flex-col">
-    <el-form :model="forms" :rules="rules" label-width="170px" ref="formsRef" class="flex-1 overflow-y-auto px-5 pt-5 flex">
-      <!-- 单位类型 -->
-      <div class="flex-1">
+    <div class="flex-1 overflow-y-auto px-5 pt-5 flex justify-center">
+      <el-form :model="forms" :rules="rules" label-width="170px" ref="formsRef" class="w-3/4">
+        <!-- 单位类型 -->
         <div class="c-subtitle-1">单位类型</div>
-        <div class="p-5">
+        <div class="py-5">
           <div class="grid grid-cols-2">
             <el-form-item label="直属关系" prop="isCity">
               <el-radio-group v-model="forms.isCity">
@@ -131,7 +136,9 @@ onMounted(async () => {
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="实际地址" prop="county">TODO</el-form-item>
+          <el-form-item label="实际地址" prop="county">
+            <el-input v-model="forms.county" />
+          </el-form-item>
           <el-form-item label="行业领域">
             <div class="flex flex-wrap">
               <el-tag v-for="e in ui.secondClass" :key="e" class="my-1 mr-2" closable>{{ e }}</el-tag>
@@ -148,12 +155,10 @@ onMounted(async () => {
             <el-input v-model="forms.standardization" />
           </el-form-item>
         </div>
-      </div>
 
-      <!-- 单位基本信息 -->
-      <div class="flex-1">
+        <!-- 单位基本信息 -->
         <div class="c-subtitle-1">单位基本信息</div>
-        <div class="p-5">
+        <div class="py-5">
           <el-form-item label="单位名称" prop="placeName">
             <el-input v-model="forms.placeName" />
           </el-form-item>
@@ -214,23 +219,25 @@ onMounted(async () => {
                 <template #append>万元</template>
               </el-input>
             </el-form-item>
+            <el-form-item label="是否位于综合楼宇" prop="sfssc">
+              <el-radio-group v-model="forms.sfssc">
+                <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
+            </el-form-item>
             <el-form-item label="成立日期" prop="chengliriqi">
-              <el-date-picker v-model="forms.chengliriqi" type="date" />
+              <el-date-picker v-model="forms.chengliriqi" type="date" style="width: 100%" />
+            </el-form-item>
+            <el-form-item label="身份" prop="zRole">
+              <el-radio-group v-model="forms.zRole">
+                <el-radio v-for="e in options.companyIdentity" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
             </el-form-item>
           </div>
-          <el-form-item label="是否位于综合楼宇" prop="sfssc">
-            <el-radio-group v-model="forms.sfssc">
-              <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="身份" prop="zRole">
-            <el-radio-group v-model="forms.zRole">
-              <el-radio v-for="e in options.companyIdentity" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
-            </el-radio-group>
-          </el-form-item>
         </div>
-      </div>
-    </el-form>
+      </el-form>
+    </div>
+
+    <el-divider class="m-0" />
     <div class="flex justify-center py-2.5">
       <el-button @click="save" type="primary">保存</el-button>
     </div>

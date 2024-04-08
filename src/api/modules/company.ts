@@ -1,5 +1,10 @@
 import http from '@/api';
 
+// 获取单位基本信息
+export function getCompanyInfo() {
+  return http.get<any>('/mock/co/company/info');
+}
+
 export function getDeptList() {
   return http.get('/mock/co/company/dept');
 }
