@@ -5,8 +5,9 @@ export function getCompanyInfo() {
   return http.get<any>('/mock/co/company/info');
 }
 
-export function getDeptList() {
-  return http.get('/mock/co/company/dept');
+// 获取单位部门列表
+export function getDeptList(params: any) {
+  return http.get('/mock/co/company/dept', params);
 }
 
 export function deleteDept(id: string) {
