@@ -42,7 +42,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="card p-2.5">
+    <div class="card p-2.5 flex-1">
       <div class="c-subtitle-1">应急信息</div>
     </div>
     <div class="card p-2.5 flex-1">

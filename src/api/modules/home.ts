@@ -6,5 +6,5 @@ import { RiskStatisticsType } from '../interface/home';
  * @param id 单位id
  */
 export function riskStatistics(id: number) {
-  return http.get<RiskStatisticsType[]>('/mock/co/home/riskStatistics', { id });
+  return http.get<RiskStatisticsType[]>('/mock/co/home/risk-statistics', { id });
 }
