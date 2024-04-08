@@ -13,7 +13,7 @@ defineEmits(['next', 'prev']);
         <div class="pl-1">上一步</div>
       </el-button>
     </div>
-    <div class="flex-1 flex justify-center">
+    <div class="flex-1 flex justify-center items-center space-x-4">
       <div
         v-for="(e, i) in ['风险源辨识评估', '风险源标注', '应急资源调查', '应急能力评估', '生成评估信息', '签字确认']"
         :key="i"
