@@ -15,18 +15,22 @@ export function getDeptList(params: any) {
   return http.get('/mock/co/company/dept', params);
 }
 
-export function getPostList() {
-  return http.get('/mock/co/company/post');
-}
-
+// 删除岗位
 export function deletePost(id: string) {
   return http.delete(`/mock/co/company/post/${id}`);
 }
 
-export function getStaffList() {
-  return http.get('/mock/co/company/staff');
+// 获取岗位列表
+export function getPostList(params: any) {
+  return http.get('/mock/co/company/post', params);
 }
 
+// 删除人员
 export function deleteStaff(id: string) {
   return http.delete(`/mock/co/company/staff/${id}`);
+}
+
+// 获取人员列表
+export function getStaffList(params: any) {
+  return http.get('/mock/co/company/staff', params);
 }
