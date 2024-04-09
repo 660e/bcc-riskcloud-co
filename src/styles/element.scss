@@ -143,4 +143,10 @@
   .el-tabs__nav-wrap::after {
     height: 1px;
   }
+  &.no-tab-pane {
+    border: 0;
+    .el-tabs__content {
+      display: none;
+    }
+  }
 }

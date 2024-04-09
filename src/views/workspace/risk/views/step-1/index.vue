@@ -49,8 +49,8 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <div>
-    <el-tabs v-model="active" type="border-card" class="workspace__risk__step-1__tabs">
+  <div class="card workspace__risk__step-1">
+    <el-tabs v-model="active" type="border-card" class="no-tab-pane">
       <el-tab-pane
         v-for="(industry, index) in industries"
         :key="index"
@@ -73,5 +73,13 @@ const remove = (row: any) => {
 </template>
 
 <style lang="scss" scoped>
-@import './index.scss';
+.workspace__risk__step-1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  :deep(.table-main) {
+    border: 0;
+    box-shadow: none;
+  }
+}
 </style>
