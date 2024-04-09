@@ -5,7 +5,9 @@ import { getDictDataType } from '@/api/modules/system';
 import { deleteDept, getCompanyIndustry } from '@/api/modules/company';
 import { getRiskByIndustryId } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
+import { saveAs } from 'file-saver';
 
+import { ImportTemplateDialog } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
@@ -48,6 +50,20 @@ onMounted(async () => {
 const createDialogRef = ref();
 const create = (row: any = {}) => createDialogRef.value.open(row);
 
+const importTemplateDialogRef = ref();
+const importData = () => {
+  importTemplateDialogRef.value.open({
+    templateApi: getDictDataType,
+    templateName: '用户列表模板.xlsx',
+    importApi: getDictDataType
+  });
+};
+
+const exportData = async () => {
+  const blob: any = await getDictDataType({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
+  saveAs(blob, `user_${new Date().getTime()}.xlsx`);
+};
+
 const remove = (row: any) => {
   const name = row.id ? `“${row.sourceName}”` : '';
   const ids = row.id ? [row.id] : tableRef.value.selectedListIds;
@@ -66,7 +82,7 @@ const remove = (row: any) => {
   <div class="card flex-1 flex flex-col">
     <el-tabs
       v-model="industryId"
-      @tab-change="tableRef.search(tableRef.pageable?.pageNum)"
+      @tab-change="tableRef.search() && tableRef.clearSelection()"
       type="border-card"
       class="no-tab-pane"
     >
@@ -81,7 +97,8 @@ const remove = (row: any) => {
       <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
         <template #tableHeader>
           <el-button @click="create" type="primary">新增</el-button>
-          <el-button @click="create">导入</el-button>
+          <el-button @click="importData">导入</el-button>
+          <el-button @click="exportData">导出</el-button>
         </template>
         <template #operation="scope">
           <el-button @click="create(scope.row)" type="primary" link>评估</el-button>
@@ -90,5 +107,8 @@ const remove = (row: any) => {
         </template>
       </pro-table>
     </div>
+
+    <!-- 导入 -->
+    <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
   </div>
 </template>
