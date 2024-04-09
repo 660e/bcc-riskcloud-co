@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Delete, FullScreen } from '@element-plus/icons-vue';
 import { getDeptList, deleteDept } from '@/api/modules/company';
 import { ColumnProps } from '@/components/pro-table/interface';
 
@@ -40,23 +39,13 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <div class="h-full p-5 flex flex-col">
-    <div class="flex justify-between">
-      <el-radio-group v-model="active">
-        <el-radio-button
-          v-for="(industry, index) in industries"
-          :key="index"
-          :label="`${industry.label}(${industry.done}/${industry.total})`"
-          :value="index"
-        />
-      </el-radio-group>
-      <div>
-        <el-button :icon="FullScreen" @click="create" circle />
-        <el-button :icon="Delete" @click="create" circle />
-      </div>
-    </div>
-
-    <div class="flex-1 flex flex-col pro-table">
+  <el-tabs v-model="active" type="border-card" class="workspace__risk__step-1__tabs">
+    <el-tab-pane
+      v-for="(industry, index) in industries"
+      :key="index"
+      :label="`${industry.label}(${industry.done}/${industry.total})`"
+      :name="index"
+    >
       <pro-table :columns="columns" :request-api="getDeptList" ref="tableRef" row-key="deptId">
         <template #tableHeader>
           <el-button @click="create" type="primary">新增</el-button>
@@ -68,14 +57,10 @@ const remove = (row: any) => {
           <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
         </template>
       </pro-table>
-    </div>
-  </div>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <style lang="scss" scoped>
-.pro-table :deep(.table-main) {
-  padding: 10px 0 0;
-  border: 0;
-  box-shadow: none;
-}
+@import './index.scss';
 </style>
