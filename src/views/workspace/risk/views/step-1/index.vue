@@ -1,22 +1,36 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { getDictDataType } from '@/api/modules/system';
 import { deleteDept, getCompanyIndustry } from '@/api/modules/company';
 import { getRiskByIndustryId } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
 
-const active = ref(0);
-const industries = ref();
 const industryId = ref('');
+const industries = ref();
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
   { prop: 'sourceName', label: '风险源' },
   { prop: 'deptId', label: '风险类型' },
-  { prop: 'levelName', label: '风险等级', width: 100 },
-  { prop: 'statusFlag', label: '状态', width: 100 },
+  {
+    prop: 'levelName',
+    label: '风险等级',
+    enum: () => getDictDataType('risk_level_name'),
+    search: { el: 'select' },
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    width: 100
+  },
+  {
+    prop: 'statusFlag',
+    label: '状态',
+    enum: () => getDictDataType('assess_status'),
+    search: { el: 'select' },
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    width: 100
+  },
   { prop: 'operation', label: '操作', width: 180 }
 ];
 const requestApi = (params: any) => {
@@ -49,37 +63,32 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <div class="card workspace__risk__step-1">
-    <el-tabs v-model="active" type="border-card" class="no-tab-pane">
+  <div class="card flex-1 flex flex-col">
+    <el-tabs
+      v-model="industryId"
+      @tab-change="tableRef.search(tableRef.pageable?.pageNum)"
+      type="border-card"
+      class="no-tab-pane"
+    >
       <el-tab-pane
-        v-for="(industry, index) in industries"
-        :key="index"
+        v-for="industry in industries"
+        :key="industry.id"
         :label="`${industry.label}(${industry.done}/${industry.total})`"
-        :name="index"
+        :name="industry.id"
       />
     </el-tabs>
-    <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
-      <template #tableHeader>
-        <el-button @click="create" type="primary">新增</el-button>
-        <el-button @click="create">导入</el-button>
-      </template>
-      <template #operation="scope">
-        <el-button @click="create(scope.row)" type="primary" link>评估</el-button>
-        <el-button @click="create(scope.row)" type="primary" link>复制</el-button>
-        <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
-      </template>
-    </pro-table>
+    <div class="pro-table--no-card">
+      <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
+        <template #tableHeader>
+          <el-button @click="create" type="primary">新增</el-button>
+          <el-button @click="create">导入</el-button>
+        </template>
+        <template #operation="scope">
+          <el-button @click="create(scope.row)" type="primary" link>评估</el-button>
+          <el-button @click="create(scope.row)" type="primary" link>复制</el-button>
+          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+        </template>
+      </pro-table>
+    </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.workspace__risk__step-1 {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  :deep(.table-main) {
-    border: 0;
-    box-shadow: none;
-  }
-}
-</style>
