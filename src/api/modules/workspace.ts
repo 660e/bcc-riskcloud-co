@@ -4,3 +4,8 @@ import http from '@/api';
 export function getRiskByIndustryId(params: any) {
   return http.get<any>('/mock/co/workspace/risk', params);
 }
+
+// 获取风险更新记录列表
+export function getWorkspaceLog() {
+  return http.get('/mock/co/workspace/log');
+}

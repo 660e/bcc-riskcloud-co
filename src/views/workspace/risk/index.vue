@@ -10,7 +10,7 @@ import Step4 from './views/step-4/index.vue';
 import Step5 from './views/step-5/index.vue';
 import Step6 from './views/step-6/index.vue';
 
-const active = ref(6);
+const active = ref(1);
 const StepComponent: Component[] = [Step1, Step2, Step3, Step4, Step5, Step6];
 
 const prev = () => {
