@@ -34,3 +34,8 @@ export function deleteStaff(id: string) {
 export function getStaffList(params: any) {
   return http.get('/mock/co/company/staff', params);
 }
+
+// 获取公司所属行业领域列表
+export function getCompanyIndustry() {
+  return http.get<any>('/mock/co/company/industry');
+}

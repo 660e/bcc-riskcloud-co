@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getDeptList, deleteDept } from '@/api/modules/company';
+import { getDeptList, deleteDept, getCompanyIndustry } from '@/api/modules/company';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
@@ -36,6 +36,10 @@ const remove = (row: any) => {
     })
     .catch(() => false);
 };
+
+onMounted(async () => {
+  industries.value = (await getCompanyIndustry()).data;
+});
 </script>
 
 <template>
