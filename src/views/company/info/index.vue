@@ -1,7 +1,6 @@
 <script lang="ts" name="company-info" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
-// import { Search } from '@element-plus/icons-vue';
 import { getDictDataType } from '@/api/modules/system';
 import { getCompanyInfo, getCompanyListById } from '@/api/modules/company';
 import { System } from '@/api/interface';
@@ -19,18 +18,21 @@ onMounted(async () => {
 });
 
 const formsRef = ref<FormInstance>();
-const forms = ref({
+const forms = ref<any>({
+  // 单位类型
   isCity: '0',
   roleId: '16',
   parentName: '',
-
-  //
-  //
-  //
-
   county: '',
+  secondClass: [],
   officeName: '',
   standardization: 100,
+
+  // 单位基本信息
+
+  //
+  //
+  //
 
   placeName: '',
   creditCode: '',
@@ -51,15 +53,17 @@ const forms = ref({
   zRole: '1'
 });
 const rules: FormRules = {
+  // 单位类型
   parentName: [{ required: true, message: '请填写', trigger: 'blur' }],
-
-  //
-  //
-  //
-
   county: [{ required: true, message: '请填写', trigger: 'blur' }],
   officeName: [{ required: true, message: '请填写', trigger: 'blur' }],
   standardization: [{ required: true, message: '请填写', trigger: 'blur' }],
+
+  // 单位基本信息
+
+  //
+  //
+  //
 
   placeName: [{ required: true, message: '请填写', trigger: 'blur' }],
   renzongshu: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -159,23 +163,12 @@ const save = () => {
               <el-button @click="connect">关联</el-button>
             </div>
           </el-form-item>
-        </div>
-
-        <!-- 
-
-            <el-input v-model="ui.keyword">
-              
-              <template #append>
-                <el-button :icon="Search" />
-              </template>
-            </el-input>
-          </el-form-item>
           <el-form-item label="实际地址" prop="county">
             <el-input v-model="forms.county" />
           </el-form-item>
           <el-form-item label="行业领域">
             <div class="flex flex-wrap">
-              <el-tag v-for="e in ui.secondClass" :key="e" class="my-1 mr-2" closable>{{ e }}</el-tag>
+              <el-tag v-for="e in forms.secondClass" :key="e.value" class="my-1 mr-2" closable>{{ e.label }}</el-tag>
               <el-button class="my-1" size="small">添加行业领域</el-button>
             </div>
           </el-form-item>
@@ -188,7 +181,7 @@ const save = () => {
             </template>
             <el-input v-model="forms.standardization" />
           </el-form-item>
-        </div> -->
+        </div>
 
         <!-- 单位基本信息 -->
         <!-- <div class="c-subtitle-1">单位基本信息</div>
