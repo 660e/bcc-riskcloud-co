@@ -5,6 +5,7 @@ import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
 import DetailDialog from './dialogs/detail.vue';
+import StatisticDialog from './dialogs/statistic.vue';
 
 const columns: ColumnProps[] = [
   {
@@ -32,16 +33,19 @@ const columns: ColumnProps[] = [
 const detailDialogRef = ref();
 const detail = (row: any) => detailDialogRef.value.open(row);
 
-const statistic = (row: any) => console.log(row);
+const statisticDialogRef = ref();
+const statistic = (row: any) => statisticDialogRef.value.open(row);
 </script>
 
 <template>
   <pro-table :columns="columns" :request-api="getWorkspaceLog">
     <template #operation="scope">
-      <el-button @click="statistic(scope.row)" type="primary" link>查看</el-button>
+      <el-button @click="statistic(scope.row)" type="primary" link>统计</el-button>
     </template>
   </pro-table>
 
   <!-- 详情 -->
   <detail-dialog ref="detailDialogRef" />
+  <!-- 统计 -->
+  <statistic-dialog ref="statisticDialogRef" />
 </template>
