@@ -25,16 +25,11 @@ const forms = ref<any>({
   roleId: '16',
   parentName: '',
   county: '',
-  secondClass: [],
   officeName: '',
   standardization: 100,
+  secondClass: [],
 
   // 单位基本信息
-
-  //
-  //
-  //
-
   placeName: '',
   creditCode: '',
   otherCode: '',
@@ -61,11 +56,6 @@ const rules: FormRules = {
   standardization: [{ required: true, message: '请填写', trigger: 'blur' }],
 
   // 单位基本信息
-
-  //
-  //
-  //
-
   placeName: [{ required: true, message: '请填写', trigger: 'blur' }],
   renzongshu: [{ required: true, message: '请填写', trigger: 'blur' }],
   dishang: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -80,17 +70,11 @@ const rules: FormRules = {
   registeredcapital: [{ required: true, message: '请填写', trigger: 'blur' }],
   chengliriqi: [{ required: true, message: '请选择', trigger: 'change' }]
 };
-// const ui = ref({
-//
-//   keyword: '',
-//   secondClass: Array.from({ length: 15 }, (_, i) => i + 1),
-//   codeType: '0',
-//   code: ''
-// });
-
 const ui = reactive({
   keywordType: '1',
-  keyword: ''
+  keyword: '',
+  codeType: '0',
+  code: ''
 });
 
 const options = reactive<{ [key: string]: System.Dict[] }>({
@@ -125,11 +109,11 @@ const save = () => {
 
 <template>
   <div class="card h-full flex flex-col">
-    <div class="flex-1 overflow-y-auto px-5 pt-5 flex justify-center">
-      <el-form :model="forms" :rules="rules" label-width="170px" ref="formsRef" class="w-3/4">
+    <div class="flex-1 overflow-y-auto pt-5 flex justify-center">
+      <el-form :model="forms" :rules="rules" label-width="180px" ref="formsRef" class="w-4/5 space-y-5">
         <!-- 单位类型 -->
         <div class="c-subtitle-1">单位类型</div>
-        <div class="py-5">
+        <div>
           <div class="grid grid-cols-2">
             <el-form-item label="直属关系" prop="isCity">
               <el-radio-group v-model="forms.isCity">
@@ -141,11 +125,23 @@ const save = () => {
                 <el-radio v-for="e in options.companyRoleId" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
               </el-radio-group>
             </el-form-item>
+            <el-form-item label="上级单位名称" prop="parentName">
+              <el-input v-model="forms.parentName" />
+            </el-form-item>
+            <el-form-item label="实际地址" prop="county">
+              <el-input v-model="forms.county" />
+            </el-form-item>
+            <el-form-item label="行业管理部门" prop="officeName">
+              <el-input v-model="forms.officeName" />
+            </el-form-item>
+            <el-form-item prop="standardization">
+              <template #label>
+                <label-tooltip label="安全生产标准化得分" content="未开展安全生产标准化工作，得分请填写0" />
+              </template>
+              <el-input v-model="forms.standardization" />
+            </el-form-item>
           </div>
-          <el-form-item label="上级单位名称" prop="parentName">
-            <el-input v-model="forms.parentName" />
-          </el-form-item>
-          <el-form-item>
+          <el-form-item class="hidden">
             <template #label>
               <label-tooltip
                 label="确认上下级关系"
@@ -167,42 +163,35 @@ const save = () => {
               <el-button @click="connect">关联</el-button>
             </div>
           </el-form-item>
-          <el-form-item label="实际地址" prop="county">
-            <el-input v-model="forms.county" />
-          </el-form-item>
           <el-form-item label="行业领域">
             <div class="flex flex-wrap">
               <el-tag v-for="e in forms.secondClass" :key="e.value" class="my-1 mr-2" closable>{{ e.label }}</el-tag>
               <el-button @click="setIndustry" class="my-1" size="small">选择行业领域</el-button>
             </div>
           </el-form-item>
-          <el-form-item label="行业管理部门" prop="officeName">
-            <el-input v-model="forms.officeName" />
-          </el-form-item>
-          <el-form-item prop="standardization">
-            <template #label>
-              <label-tooltip label="安全生产标准化得分" content="未开展安全生产标准化工作，得分请填写0" />
-            </template>
-            <el-input v-model="forms.standardization" />
-          </el-form-item>
         </div>
 
         <!-- 单位基本信息 -->
-        <!-- <div class="c-subtitle-1">单位基本信息</div>
-        <div class="py-5">
-          <el-form-item label="单位名称" prop="placeName">
-            <el-input v-model="forms.placeName" />
-          </el-form-item>
-          <el-form-item label="单位代码">
-            <el-input v-model="ui.code">
-              <template #prepend>
-                <el-select v-model="ui.codeType" class="w-40">
-                  <el-option v-for="e in options.companyCodeType" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
-                </el-select>
-              </template>
-            </el-input>
-          </el-form-item>
+        <div class="c-subtitle-1">单位基本信息</div>
+        <div>
           <div class="grid grid-cols-2">
+            <el-form-item label="单位名称" prop="placeName">
+              <el-input v-model="forms.placeName" />
+            </el-form-item>
+            <el-form-item label="单位代码">
+              <el-input v-model="ui.code">
+                <template #prepend>
+                  <el-select v-model="ui.codeType" class="w-40">
+                    <el-option
+                      v-for="e in options.companyCodeType"
+                      :key="e.dictValue"
+                      :label="e.dictLabel"
+                      :value="e.dictValue"
+                    />
+                  </el-select>
+                </template>
+              </el-input>
+            </el-form-item>
             <el-form-item label="从业人数" prop="renzongshu">
               <el-input v-model="forms.renzongshu">
                 <template #append>人</template>
@@ -250,13 +239,13 @@ const save = () => {
                 <template #append>万元</template>
               </el-input>
             </el-form-item>
+            <el-form-item label="成立日期" prop="chengliriqi">
+              <el-date-picker v-model="forms.chengliriqi" type="date" style="width: 100%" />
+            </el-form-item>
             <el-form-item label="是否位于综合楼宇" prop="sfssc">
               <el-radio-group v-model="forms.sfssc">
                 <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
               </el-radio-group>
-            </el-form-item>
-            <el-form-item label="成立日期" prop="chengliriqi">
-              <el-date-picker v-model="forms.chengliriqi" type="date" style="width: 100%" />
             </el-form-item>
             <el-form-item label="身份" prop="zRole">
               <el-radio-group v-model="forms.zRole">
@@ -264,7 +253,7 @@ const save = () => {
               </el-radio-group>
             </el-form-item>
           </div>
-        </div> -->
+        </div>
       </el-form>
     </div>
 
