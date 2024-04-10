@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, reactive } from 'vue';
 import { riskStatistics } from '@/api/modules/home';
-import { RiskStatisticsType } from '@/api/interface/home';
+import { LabelTooltip } from '@bcc/components';
 
-const statistics = reactive<{ risk: RiskStatisticsType[] }>({
+const statistics = reactive<any>({
   risk: []
 });
 
@@ -21,8 +21,7 @@ const riskStatisticsClass = (level: number) => {
 };
 
 onMounted(async () => {
-  const { data } = await riskStatistics(1);
-  statistics.risk = data;
+  statistics.risk = (await riskStatistics()).data;
 });
 </script>
 
@@ -46,7 +45,10 @@ onMounted(async () => {
       <div class="c-subtitle-1">应急信息</div>
     </div>
     <div class="card p-2.5 flex-1">
-      <div class="c-subtitle-1">工作流程</div>
+      <div class="c-subtitle-1">
+        <span>工作流程</span>
+        <label-tooltip content="请涉及危险化学品的企业进行单位诊断分级" />
+      </div>
     </div>
   </div>
 </template>
