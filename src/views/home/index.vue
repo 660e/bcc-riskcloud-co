@@ -3,6 +3,10 @@ import { onMounted, reactive } from 'vue';
 import { riskStatistics } from '@/api/modules/home';
 import { LabelTooltip } from '@bcc/components';
 
+onMounted(async () => {
+  statistics.risk = (await riskStatistics()).data;
+});
+
 const statistics = reactive<any>({
   risk: []
 });
@@ -19,10 +23,6 @@ const riskStatisticsClass = (level: number) => {
       return ['text-sky-700', 'bg-sky-50'];
   }
 };
-
-onMounted(async () => {
-  statistics.risk = (await riskStatistics()).data;
-});
 </script>
 
 <template>

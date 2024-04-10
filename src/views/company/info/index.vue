@@ -1,17 +1,33 @@
 <script lang="ts" name="company-info" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
-import { Search } from '@element-plus/icons-vue';
+// import { Search } from '@element-plus/icons-vue';
 import { getDictDataType } from '@/api/modules/system';
-import { getCompanyInfo } from '@/api/modules/company';
+import { getCompanyInfo, getCompanyListById } from '@/api/modules/company';
 import { System } from '@/api/interface';
 import { LabelTooltip } from '@bcc/components';
+
+onMounted(async () => {
+  options.companyIsCity = (await getDictDataType('company_is_city')).data;
+  options.companyRoleId = (await getDictDataType('company_role_id')).data;
+  options.searchCompanyKeywordType = (await getDictDataType('search_company_keyword_type')).data;
+  options.companyCodeType = (await getDictDataType('company_code_type')).data;
+  options.yesNo = (await getDictDataType('yes_no')).data;
+  options.companyIdentity = (await getDictDataType('company_identity')).data;
+
+  forms.value = (await getCompanyInfo()).data;
+});
 
 const formsRef = ref<FormInstance>();
 const forms = ref({
   isCity: '0',
   roleId: '16',
   parentName: '',
+
+  //
+  //
+  //
+
   county: '',
   officeName: '',
   standardization: 100,
@@ -36,6 +52,11 @@ const forms = ref({
 });
 const rules: FormRules = {
   parentName: [{ required: true, message: '请填写', trigger: 'blur' }],
+
+  //
+  //
+  //
+
   county: [{ required: true, message: '请填写', trigger: 'blur' }],
   officeName: [{ required: true, message: '请填写', trigger: 'blur' }],
   standardization: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -54,13 +75,36 @@ const rules: FormRules = {
   registeredcapital: [{ required: true, message: '请填写', trigger: 'blur' }],
   chengliriqi: [{ required: true, message: '请选择', trigger: 'change' }]
 };
-const ui = ref({
+// const ui = ref({
+//
+//   keyword: '',
+//   secondClass: Array.from({ length: 15 }, (_, i) => i + 1),
+//   codeType: '0',
+//   code: ''
+// });
+
+const ui = reactive({
   keywordType: '1',
-  keyword: '',
-  secondClass: Array.from({ length: 15 }, (_, i) => i + 1),
-  codeType: '0',
-  code: ''
+  keyword: ''
 });
+
+const options = reactive<{ [key: string]: System.Dict[] }>({
+  isCity: [],
+  roleId: [],
+  keywordsType: [],
+  companyCodeType: [],
+  yesNo: [],
+  companyIdentity: [],
+
+  parentName: []
+});
+
+const remoteMethod = async (query: string) => {
+  options.parentName = query ? (await getCompanyListById(query, ui.keywordType)).data : [];
+};
+const connect = () => {
+  console.log(ui.keyword);
+};
 
 const save = () => {
   formsRef.value?.validate(valid => {
@@ -69,26 +113,6 @@ const save = () => {
     }
   });
 };
-
-const options = reactive<{ [key: string]: System.Dict[] }>({
-  isCity: [],
-  roleId: [],
-  keywordsType: [],
-  companyCodeType: [],
-  yesNo: [],
-  companyIdentity: []
-});
-
-onMounted(async () => {
-  options.companyIsCity = (await getDictDataType('company_is_city')).data;
-  options.companyRoleId = (await getDictDataType('company_role_id')).data;
-  options.searchCompanyKeywordType = (await getDictDataType('search_company_keyword_type')).data;
-  options.companyCodeType = (await getDictDataType('company_code_type')).data;
-  options.yesNo = (await getDictDataType('yes_no')).data;
-  options.companyIdentity = (await getDictDataType('company_identity')).data;
-
-  forms.value = (await getCompanyInfo()).data;
-});
 </script>
 
 <template>
@@ -117,20 +141,30 @@ onMounted(async () => {
             <template #label>
               <label-tooltip
                 label="确认上下级关系"
-                content="如果上级公司参加北京市风险评估工作，则输入信息建立关联，否则该项信息不填"
+                content="如果上级公司参加北京市风险评估工作，则输入上级公司企业代码或企业名称建立关联，否则该项信息不填"
               />
             </template>
+            <div class="w-full flex space-x-2.5">
+              <el-select v-model="ui.keywordType" class="w-32">
+                <el-option
+                  v-for="e in options.searchCompanyKeywordType"
+                  :key="e.dictValue"
+                  :label="e.dictLabel"
+                  :value="e.dictValue"
+                />
+              </el-select>
+              <el-select v-model="ui.keyword" :remote-method="remoteMethod" filterable remote>
+                <el-option v-for="e in options.parentName" :key="e.value" :label="e.label" :value="e.value" />
+              </el-select>
+              <el-button @click="connect">关联</el-button>
+            </div>
+          </el-form-item>
+        </div>
+
+        <!-- 
+
             <el-input v-model="ui.keyword">
-              <template #prepend>
-                <el-select v-model="ui.keywordType" class="w-28">
-                  <el-option
-                    v-for="e in options.searchCompanyKeywordType"
-                    :key="e.dictValue"
-                    :label="e.dictLabel"
-                    :value="e.dictValue"
-                  />
-                </el-select>
-              </template>
+              
               <template #append>
                 <el-button :icon="Search" />
               </template>
@@ -154,10 +188,10 @@ onMounted(async () => {
             </template>
             <el-input v-model="forms.standardization" />
           </el-form-item>
-        </div>
+        </div> -->
 
         <!-- 单位基本信息 -->
-        <div class="c-subtitle-1">单位基本信息</div>
+        <!-- <div class="c-subtitle-1">单位基本信息</div>
         <div class="py-5">
           <el-form-item label="单位名称" prop="placeName">
             <el-input v-model="forms.placeName" />
@@ -233,7 +267,7 @@ onMounted(async () => {
               </el-radio-group>
             </el-form-item>
           </div>
-        </div>
+        </div> -->
       </el-form>
     </div>
 

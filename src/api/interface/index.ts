@@ -41,5 +41,7 @@ export namespace System {
     dictValue: string;
     default: boolean;
     status: string;
+    label: string;
+    value: string;
   }
 }

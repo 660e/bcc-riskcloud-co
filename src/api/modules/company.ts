@@ -5,6 +5,11 @@ export function getCompanyInfo() {
   return http.get<any>('/mock/co/company/info');
 }
 
+// 通过企业代码或企业名称模糊查找公司列表
+export function getCompanyListById(q: string, t: string) {
+  return http.get<any>('/mock/co/company/list', { q, t });
+}
+
 // 删除部门
 export function deleteDept(id: string) {
   return http.delete(`/mock/co/company/dept/${id}`);
