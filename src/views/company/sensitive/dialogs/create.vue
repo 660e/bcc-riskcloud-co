@@ -46,7 +46,7 @@ defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" @closed="closed" title="添加敏感目标" width="500" align-center draggable>
+  <el-dialog v-model="visible" @closed="closed" title="添加敏感目标" width="500">
     <el-form :model="forms" :rules="rules" label-width="130" ref="formsRef" class="px-5 pt-5">
       <el-form-item label="地理经纬度" prop="lnglat">
         <div>{{ forms.lnglat.join(', ') }}</div>

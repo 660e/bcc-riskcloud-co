@@ -5,6 +5,7 @@ import { getDictDataType } from '@/api/modules/system';
 import { getCompanyInfo, getCompanyListById } from '@/api/modules/company';
 import { System } from '@/api/interface';
 import { LabelTooltip } from '@bcc/components';
+import IndustrySelectDialog from './dialogs/industry-select.vue';
 
 onMounted(async () => {
   options.companyIsCity = (await getDictDataType('company_is_city')).data;
@@ -110,6 +111,9 @@ const connect = () => {
   console.log(ui.keyword);
 };
 
+const industrySelectDialogRef = ref();
+const setIndustry = () => industrySelectDialogRef.value.open(forms.value.secondClass);
+
 const save = () => {
   formsRef.value?.validate(valid => {
     if (valid) {
@@ -169,7 +173,7 @@ const save = () => {
           <el-form-item label="行业领域">
             <div class="flex flex-wrap">
               <el-tag v-for="e in forms.secondClass" :key="e.value" class="my-1 mr-2" closable>{{ e.label }}</el-tag>
-              <el-button class="my-1" size="small">添加行业领域</el-button>
+              <el-button @click="setIndustry" class="my-1" size="small">选择行业领域</el-button>
             </div>
           </el-form-item>
           <el-form-item label="行业管理部门" prop="officeName">
@@ -268,5 +272,8 @@ const save = () => {
     <div class="flex justify-center py-2.5">
       <el-button @click="save" type="primary">保存</el-button>
     </div>
+
+    <!-- 选择行业领域 -->
+    <industry-select-dialog ref="industrySelectDialogRef" />
   </div>
 </template>
