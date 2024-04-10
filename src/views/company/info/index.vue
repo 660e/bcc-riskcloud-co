@@ -26,7 +26,7 @@ const forms = ref<any>({
   parentName: '',
   county: '',
   officeName: '',
-  standardization: 100,
+  standardization: 0,
   secondClass: [],
 
   // 单位基本信息
