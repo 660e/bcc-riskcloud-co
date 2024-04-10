@@ -1,13 +1,21 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue';
 import { getWorkspaceLog } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
+import DetailDialog from './dialogs/detail.vue';
 
-const tableRef = ref();
 const columns: ColumnProps[] = [
-  { prop: 'level1', label: '低' },
+  {
+    prop: 'level1',
+    label: '低',
+    render: scope => (
+      <el-button onClick={() => detail(scope.row)} type='primary' link>
+        {scope.row.level1}
+      </el-button>
+    )
+  },
   { prop: 'level2', label: '一般' },
   { prop: 'level3', label: '较大' },
   { prop: 'level4', label: '重大' },
@@ -21,13 +29,19 @@ const columns: ColumnProps[] = [
   { prop: 'operation', label: '操作', width: 100 }
 ];
 
-const view = (row: any) => console.log(row);
+const detailDialogRef = ref();
+const detail = (row: any) => detailDialogRef.value.open(row);
+
+const statistic = (row: any) => console.log(row);
 </script>
 
 <template>
-  <pro-table :columns="columns" :request-api="getWorkspaceLog" ref="tableRef" row-key="id" :tool-button="false">
+  <pro-table :columns="columns" :request-api="getWorkspaceLog">
     <template #operation="scope">
-      <el-button @click="view(scope.row)" type="primary" link>查看</el-button>
+      <el-button @click="statistic(scope.row)" type="primary" link>查看</el-button>
     </template>
   </pro-table>
+
+  <!-- 详情 -->
+  <detail-dialog ref="detailDialogRef" />
 </template>
