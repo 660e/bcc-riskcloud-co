@@ -9,3 +9,8 @@ export function getRiskByIndustryId(params: any) {
 export function getWorkspaceLog() {
   return http.get('/mock/co/workspace/log');
 }
+
+// 获取线上核查结果列表
+export function getWorkspaceOnline() {
+  return http.get('/mock/co/workspace/online');
+}
