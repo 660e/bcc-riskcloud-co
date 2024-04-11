@@ -4,8 +4,10 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { getSubordinateAccount } from '@/api/modules/subordinate';
 import { deleteItem } from '@/api/modules/company';
 import { ColumnProps } from '@/components/pro-table/interface';
-import CreateDialog from './dialogs/create.vue';
+
 import ProTable from '@/components/pro-table/index.vue';
+import CreateDialog from './dialogs/create.vue';
+import BindDialog from './dialogs/bind.vue';
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
@@ -19,6 +21,9 @@ const columns: ColumnProps[] = [
 
 const createDialogRef = ref();
 const create = (row: any = {}) => createDialogRef.value.open(row);
+
+const bindDialogRef = ref();
+const bind = () => bindDialogRef.value.open();
 
 const handle = (row: any, cmd: 'write-off' | 'revert' | 'unbind') => {
   let fn: any;
@@ -55,7 +60,7 @@ const handle = (row: any, cmd: 'write-off' | 'revert' | 'unbind') => {
         <el-button @click="create()" type="primary">新增</el-button>
         <el-button @click="handle({}, 'write-off')" :disabled="!tableRef?.selectedListIds.length">核销</el-button>
         <el-button @click="handle({}, 'revert')" :disabled="!tableRef?.selectedListIds.length">恢复</el-button>
-        <el-button>关联下属公司</el-button>
+        <el-button @click="bind">关联下属公司</el-button>
         <el-button @click="handle({}, 'unbind')" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>
           解除上下级关系
         </el-button>
@@ -70,5 +75,7 @@ const handle = (row: any, cmd: 'write-off' | 'revert' | 'unbind') => {
 
     <!-- 新增/编辑 -->
     <create-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="createDialogRef" />
+    <!-- 关联下属公司 -->
+    <bind-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="bindDialogRef" />
   </div>
 </template>
