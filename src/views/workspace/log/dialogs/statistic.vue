@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { RiskStatistics } from '@bcc/ui';
 
 const visible = ref(false);
 
@@ -13,6 +14,7 @@ defineExpose({ open });
 
 <template>
   <el-dialog v-model="visible" title="历史风险统计" width="1200">
+    <risk-statistics />
     <template #footer>
       <div class="flex justify-end">
         <el-button @click="visible = false">关闭</el-button>
