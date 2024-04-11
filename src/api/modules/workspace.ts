@@ -10,6 +10,11 @@ export function getWorkspaceStatistics() {
   return http.get('/mock/co/workspace/statistics');
 }
 
+// 获取线上核查结果
+export function getWorkspaceOnline() {
+  return http.get('/mock/co/workspace/online');
+}
+
 //
 //
 //
@@ -17,9 +22,4 @@ export function getWorkspaceStatistics() {
 // 根据行业领域获取风险源列表
 export function getRiskByIndustryId(params: any) {
   return http.get<any>('/mock/co/workspace/risk', params);
-}
-
-// 获取线上核查结果列表
-export function getWorkspaceOnline() {
-  return http.get('/mock/co/workspace/online');
 }
