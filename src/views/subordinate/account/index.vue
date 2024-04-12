@@ -42,7 +42,7 @@ const handle = (row: any, cmd: 'write-off' | 'revert' | 'unbind') => {
 
   const name = row.id ? `“${row.placeName}”` : '';
   const ids = row.id ? [row.id] : tableRef.value.selectedListIds;
-  ElMessageBox.confirm(`是否解除${name}？`, '系统提示', { type: 'warning' })
+  ElMessageBox.confirm(`是否处理${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await fn(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);

@@ -54,8 +54,6 @@ const statistic = (row: any) => statisticDialogRef.value.open(row);
 
 const checkDialogRef = ref();
 const check = (row: any) => checkDialogRef.value.open(row);
-
-const confirm = (params: any) => handle(params.row, params.cmd);
 </script>
 
 <template>
@@ -74,5 +72,5 @@ const confirm = (params: any) => handle(params.row, params.cmd);
   <!-- 统计 -->
   <statistic-dialog ref="statisticDialogRef" />
   <!-- 审核 -->
-  <check-dialog @confirm="confirm" ref="checkDialogRef" />
+  <check-dialog @confirm="tableRef.search(tableRef.pageable?.pageNum) && tableRef.clearSelection()" ref="checkDialogRef" />
 </template>

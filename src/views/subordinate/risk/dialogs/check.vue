@@ -1,17 +1,36 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { deleteItem } from '@/api/modules/company';
 
 const $emit = defineEmits(['confirm']);
 
 const visible = ref(false);
-const item = ref();
+const id = ref();
 const open = async (row: any) => {
-  item.value = row;
+  id.value = row.id;
   visible.value = true;
 };
-const confirm = (params: any) => {
-  $emit('confirm', params);
-  visible.value = false;
+const confirm = (cmd: 'approve' | 'reject') => {
+  let fn: any;
+
+  switch (cmd) {
+    case 'approve':
+      fn = deleteItem;
+      break;
+    case 'reject':
+      fn = deleteItem;
+      break;
+  }
+
+  ElMessageBox.confirm('是否处理？', '系统提示', { type: 'warning' })
+    .then(async () => {
+      const { msg } = await fn(id.value);
+      ElMessage.success(msg);
+      $emit('confirm');
+      visible.value = false;
+    })
+    .catch(() => false);
 };
 
 defineExpose({ open });
@@ -24,8 +43,8 @@ defineExpose({ open });
     <template #footer>
       <div class="flex justify-end">
         <el-button @click="visible = false">取消</el-button>
-        <el-button @click="confirm({ row: item, cmd: 'approve' })">驳回</el-button>
-        <el-button @click="confirm({ row: item, cmd: 'reject' })" type="primary">通过</el-button>
+        <el-button @click="confirm('approve')">驳回</el-button>
+        <el-button @click="confirm('reject')" type="primary">通过</el-button>
       </div>
     </template>
   </el-dialog>
