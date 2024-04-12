@@ -1,42 +1,54 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { getSubordinateAccount } from '@/api/modules/subordinate';
+import { getDictDataType } from '@/api/modules/system';
+import { getInformationRisk } from '@/api/modules/information';
 import { ColumnProps } from '@/components/pro-table/interface';
-
+import { saveAs } from 'file-saver';
+import { RiskDetailsDialog } from '@bcc/ui';
 import ProTable from '@/components/pro-table/index.vue';
+import HistoryComponent from './components/history.vue';
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
-  { prop: 'placeName', label: '单位名称', search: { el: 'input' } },
-  { prop: 'countyName', label: '行政区划', search: { el: 'input' } },
-  { prop: 'secondName', label: '行业领域' },
-  { prop: 'officeName', label: '行业管理部门' },
-  { prop: 'isSmallName', label: '企业规模' },
-  { prop: 'oot', label: '数据来源' },
-  { prop: 'statusName', label: '账号审核状态' },
-  { prop: 'checkStatusName', label: '核查状态' },
-  { prop: 'checkOfficeName', label: '核查机构' },
-  { prop: 'checkPersonnelName', label: '核查人' },
-  { prop: 'checkTime', label: '核查时间' },
-  { prop: 'allSource', label: '总得分' },
-  { prop: 'operation', label: '操作', width: 200 }
+  { type: 'selection', width: 0 },
+  { prop: 'location', label: '场所位置' },
+  { prop: 'riskName', label: '风险源' },
+  { prop: 'typeName', label: '风险类型', search: { el: 'input' } },
+  { prop: 'levelName', label: '风险等级', search: { el: 'input' } },
+  { prop: 'count', label: '数量' },
+  { prop: 'statusFlag', label: '状态' },
+  { prop: 'operation', label: '操作', width: 100 }
 ];
 
-const view = (row: any) => console.log(row);
+const exportData = async () => {
+  const blob: any = await getDictDataType({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
+  saveAs(blob, `${new Date().getTime()}.xlsx`);
+};
+
+const current = ref();
+const confirm = (row: any) => {
+  current.value = row;
+  tableRef.value.search();
+};
+
+const riskDetailsDialogRef = ref();
+const view = (row: any) => riskDetailsDialogRef.value.open(row);
 </script>
 
 <template>
   <div class="h-full flex flex-col">
-    <pro-table :columns="columns" :request-api="getSubordinateAccount" ref="tableRef" row-key="id">
+    <pro-table :columns="columns" :request-api="getInformationRisk" ref="tableRef" row-key="id">
       <template #tableHeader>
-        <el-button type="primary">新增</el-button>
-        <el-button>核销</el-button>
-        <el-button>关联下属公司</el-button>
+        <el-button @click="exportData" class="mr-2.5">导出</el-button>
+        <history-component @confirm="confirm" />
+        <span v-if="current" class="pl-2.5">{{ current.date }}</span>
       </template>
       <template #operation="scope">
-        <el-button @click="view(scope.row)" type="primary" link>修改</el-button>
-        <el-button @click="view(scope.row)" type="primary" link>解除上下级关系</el-button>
+        <el-button @click="view(scope.row)" type="primary" link>查看</el-button>
       </template>
     </pro-table>
+
+    <!-- 风险源详情 -->
+    <risk-details-dialog ref="riskDetailsDialogRef" />
   </div>
 </template>
