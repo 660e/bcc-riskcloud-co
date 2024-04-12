@@ -1,4 +1,4 @@
-<script lang="tsx" setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { getWorkspaceLog } from '@/api/modules/workspace';

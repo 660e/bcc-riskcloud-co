@@ -39,9 +39,11 @@ const view = (row: any) => riskDetailsDialogRef.value.open(row);
   <div class="h-full flex flex-col">
     <pro-table :columns="columns" :request-api="getInformationRisk" ref="tableRef" row-key="id">
       <template #tableHeader>
-        <el-button @click="exportData" class="mr-2.5">导出</el-button>
-        <history-component @confirm="confirm" />
-        <span v-if="current" class="pl-2.5">{{ current.date }}</span>
+        <div class="flex items-center space-x-2.5">
+          <el-button @click="exportData">导出</el-button>
+          <history-component @confirm="confirm" />
+          <span v-if="current">{{ current.date }}</span>
+        </div>
       </template>
       <template #operation="scope">
         <el-button @click="view(scope.row)" type="primary" link>查看</el-button>
