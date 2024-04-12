@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { getDictDataType } from '@/api/modules/system';
-import { deleteDept, getCompanyIndustry } from '@/api/modules/company';
+import { deleteItem, getCompanyIndustry } from '@/api/modules/company';
 import { getRiskByIndustryId } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
@@ -69,7 +69,7 @@ const remove = (row: any) => {
   const ids = row.id ? [row.id] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteDept(ids.join(','));
+      const { msg } = await deleteItem(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
