@@ -3,12 +3,11 @@ import { onMounted, reactive } from 'vue';
 import { riskStatistics } from '@/api/modules/home';
 import { LabelTooltip } from '@bcc/components';
 
-onMounted(async () => {
-  statistics.risk = (await riskStatistics()).data;
-});
-
 const statistics = reactive<any>({
   risk: []
+});
+onMounted(async () => {
+  statistics.risk = (await riskStatistics()).data;
 });
 
 const riskStatisticsClass = (level: number) => {
