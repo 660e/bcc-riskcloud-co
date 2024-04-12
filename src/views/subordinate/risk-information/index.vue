@@ -43,9 +43,9 @@ const active = ref(0);
     </div>
 
     <el-tabs v-model="active" type="border-card" class="card">
-      <el-tab-pane :name="0" label="风险源列表" class="h-full">引用“信息汇总-风险源列表”页面</el-tab-pane>
-      <el-tab-pane :name="1" label="应急资源列表" class="h-full">引用“信息汇总-应急资源列表”页面</el-tab-pane>
-      <el-tab-pane :name="2" label="评估报告管理" class="h-full">引用“信息汇总-评估报告管理”页面</el-tab-pane>
+      <el-tab-pane :name="0" label="风险源列表" class="h-full"></el-tab-pane>
+      <el-tab-pane :name="1" label="应急资源列表" class="h-full"></el-tab-pane>
+      <el-tab-pane :name="2" label="评估报告管理" class="h-full"></el-tab-pane>
     </el-tabs>
   </div>
 </template>
