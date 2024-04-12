@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { getSubordinateAccount } from '@/api/modules/subordinate';
+import { getWorkspaceOnline } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
+import DetailDialog from './dialogs/detail.vue';
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
@@ -19,24 +20,22 @@ const columns: ColumnProps[] = [
   { prop: 'checkPersonnelName', label: '核查人' },
   { prop: 'checkTime', label: '核查时间' },
   { prop: 'allSource', label: '总得分' },
-  { prop: 'operation', label: '操作', width: 200 }
+  { prop: 'operation', label: '操作', width: 100 }
 ];
 
-const view = (row: any) => console.log(row);
+const detailDialogRef = ref();
+const detail = (row: any) => detailDialogRef.value.open(row);
 </script>
 
 <template>
   <div class="h-full flex flex-col">
-    <pro-table :columns="columns" :request-api="getSubordinateAccount" ref="tableRef" row-key="id">
-      <template #tableHeader>
-        <el-button type="primary">新增</el-button>
-        <el-button>核销</el-button>
-        <el-button>关联下属公司</el-button>
-      </template>
+    <pro-table :columns="columns" :request-api="getWorkspaceOnline" ref="tableRef" row-key="id">
       <template #operation="scope">
-        <el-button @click="view(scope.row)" type="primary" link>修改</el-button>
-        <el-button @click="view(scope.row)" type="primary" link>解除上下级关系</el-button>
+        <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
       </template>
     </pro-table>
+
+    <!-- 详情 -->
+    <detail-dialog ref="detailDialogRef" />
   </div>
 </template>
