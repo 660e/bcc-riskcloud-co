@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+import { Search } from '@element-plus/icons-vue';
 import { getRisks } from '@/api/modules/workspace';
 
 const visible = ref(false);
+const keyword = ref('');
 const risks = ref();
 const checkList = ref([]);
 
@@ -17,14 +19,14 @@ const confirm = () => {
   console.log(checkList.value);
 };
 
-open();
-
 defineExpose({ open });
 </script>
 
 <template>
   <el-dialog v-model="visible" @close="close" title="风险源" width="70vw" align-center>
-    <div>搜索</div>
+    <div class="p-2.5 flex justify-center">
+      <el-input v-model="keyword" :prefix-icon="Search" placeholder="搜索风险源" class="_filter w-1/3" clearable />
+    </div>
     <el-divider class="m-0" />
     <el-tabs tab-position="left" type="border-card" class="_risks">
       <el-tab-pane v-for="industry in risks" :key="industry.id" :label="industry.name" class="pb-5">
@@ -50,6 +52,9 @@ defineExpose({ open });
 </template>
 
 <style lang="scss" scoped>
+._filter :deep(.el-input__wrapper) {
+  border-radius: 9999px;
+}
 ._risks {
   border: 0;
   height: 70vh;
