@@ -23,11 +23,13 @@ defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" @close="close" title="风险源" width="80vw" align-center>
+  <el-dialog v-model="visible" @close="close" title="风险源" width="70vw" align-center>
+    <div>搜索</div>
+    <el-divider class="m-0" />
     <el-tabs tab-position="left" type="border-card" class="_risks">
       <el-tab-pane v-for="industry in risks" :key="industry.id" :label="industry.name" class="pb-5">
         <template v-for="level in industry.children" :key="level.id">
-          <div class="bg-blue-400 pl-2.5 text-white flex items-center" style="height: 38px">{{ level.name }}</div>
+          <div class="bg-blue-400 pl-2.5 h-8 text-white flex items-center">{{ level.name }}</div>
           <el-collapse>
             <el-collapse-item v-for="group in level.children" :key="group.id" :title="group.name" class="px-2.5">
               <el-checkbox-group v-model="checkList">
@@ -50,7 +52,7 @@ defineExpose({ open });
 <style lang="scss" scoped>
 ._risks {
   border: 0;
-  height: 80vh;
+  height: 70vh;
   :deep(.el-tabs__header) {
     border-bottom: 0;
   }
