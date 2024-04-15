@@ -15,11 +15,12 @@ export function getWorkspaceOnline() {
   return http.get('/mock/co/workspace/online');
 }
 
-//
-//
-//
-
 // 根据行业领域获取风险源列表
 export function getRiskByIndustryId(params: any) {
-  return http.get<any>('/mock/co/workspace/risk', params);
+  return http.get<any>('/mock/co/workspace/risks/list', params);
+}
+
+// 根据行业领域获取风险源
+export function getRisks() {
+  return http.get<any>('/mock/co/workspace/risks');
 }

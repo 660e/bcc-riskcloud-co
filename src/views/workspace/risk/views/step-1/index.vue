@@ -7,6 +7,7 @@ import { getRiskByIndustryId } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog } from '@bcc/components';
+import RisksDialog from '../../dialogs/risks.vue';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
@@ -47,8 +48,8 @@ onMounted(async () => {
   }
 });
 
-const createDialogRef = ref();
-const create = (row: any = {}) => createDialogRef.value.open(row);
+const risksDialogRef = ref();
+const risks = () => risksDialogRef.value.open();
 
 const importTemplateDialogRef = ref();
 const importData = () => {
@@ -107,19 +108,21 @@ const remove = (row: any) => {
     <div class="pro-table--no-card">
       <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
         <template #tableHeader>
-          <el-button @click="create" type="primary">新增</el-button>
+          <el-button @click="risks" type="primary">新增</el-button>
           <el-button @click="importData">导入</el-button>
           <el-button @click="exportData">导出</el-button>
           <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
         </template>
         <template #operation="scope">
-          <el-button @click="create(scope.row)" type="primary" link>评估</el-button>
+          <el-button @click="copy(scope.row)" type="primary" link>评估</el-button>
           <el-button @click="copy(scope.row)" type="primary" link>复制</el-button>
           <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
         </template>
       </pro-table>
     </div>
 
+    <!-- 新增 -->
+    <risks-dialog ref="risksDialogRef" />
     <!-- 导入 -->
     <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
   </div>
