@@ -16,11 +16,15 @@ const close = () => {
 const formsRef = ref<FormInstance>();
 const forms = ref({
   riskName: '',
-  count: 1
+  count: 1,
+  location: '',
+  riskType: []
 });
 const rules: FormRules = {
   riskName: [{ required: true, message: '请填写', trigger: 'blur' }],
-  count: [{ required: true, message: '请填写', trigger: 'blur' }]
+  count: [{ required: true, message: '请填写', trigger: 'blur' }],
+  location: [{ required: true, message: '请填写', trigger: 'blur' }],
+  riskType: [{ required: true, message: '请选择', trigger: 'change' }]
 };
 const confirm = () => {
   formsRef.value?.validate(valid => {
