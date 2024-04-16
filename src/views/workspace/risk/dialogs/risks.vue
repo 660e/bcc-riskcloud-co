@@ -2,11 +2,12 @@
 import { ref } from 'vue';
 import { Search } from '@element-plus/icons-vue';
 import { getRisks } from '@/api/modules/workspace';
+import { flattenTree } from '@bcc/utils';
 
 const visible = ref(false);
 const keyword = ref('');
 const risks = ref();
-const checkList = ref([]);
+const checkList = ref<any[]>([]);
 
 const open = async () => {
   visible.value = true;
@@ -19,23 +20,55 @@ const confirm = () => {
   console.log(checkList.value);
 };
 
+const counter = (data: any) => {
+  return flattenTree(data.children).filter((e: any) => e.checked).length;
+};
+
 defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" @close="close" title="风险源" width="70vw" align-center>
+  <el-dialog v-model="visible" @close="close" title="风险源" width="80vw" align-center>
     <div class="p-2.5 flex justify-center">
       <el-input v-model="keyword" :prefix-icon="Search" placeholder="搜索风险源" class="_filter w-1/3" clearable />
     </div>
     <el-divider class="m-0" />
     <el-tabs tab-position="left" type="border-card" class="_risks">
-      <el-tab-pane v-for="industry in risks" :key="industry.id" :label="industry.name" class="pb-5">
+      <el-tab-pane v-for="industry in risks" :key="industry.id" class="pb-5">
+        <template #label>
+          <div class="text-sm flex items-center justify-between w-40 overflow-hidden">
+            <span>{{ industry.name }}</span>
+            <span
+              v-if="counter(industry)"
+              class="bg-blue-400 text-white px-2 rounded text-xs flex justify-center items-center self-stretch"
+            >
+              {{ counter(industry) }}
+            </span>
+          </div>
+        </template>
         <template v-for="level in industry.children" :key="level.id">
           <div class="bg-blue-400 pl-2.5 h-8 text-white flex items-center">{{ level.name }}</div>
           <el-collapse>
-            <el-collapse-item v-for="group in level.children" :key="group.id" :title="group.name" class="px-2.5">
+            <el-collapse-item v-for="group in level.children" :key="group.id" class="px-2.5">
+              <template #title>
+                <div class="flex-1 pr-5 text-sm flex items-center justify-between">
+                  <span>{{ group.name }}</span>
+                  <span
+                    v-if="counter(group)"
+                    class="bg-blue-400 text-white px-2 rounded text-xs flex justify-center items-center self-stretch"
+                  >
+                    {{ counter(group) }}
+                  </span>
+                </div>
+              </template>
               <el-checkbox-group v-model="checkList">
-                <el-checkbox v-for="risk in group.children" :key="risk.id" :label="risk.name" :value="risk.id" />
+                <el-checkbox
+                  v-for="risk in group.children"
+                  :key="risk.id"
+                  :label="risk.name"
+                  :value="risk.id"
+                  @change="(value: boolean) => (risk.checked = value)"
+                />
               </el-checkbox-group>
             </el-collapse-item>
           </el-collapse>
