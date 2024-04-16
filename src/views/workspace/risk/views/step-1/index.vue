@@ -8,6 +8,7 @@ import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog } from '@bcc/components';
 import RisksDialog from '../../dialogs/risks.vue';
+import AssessDialog from '../../dialogs/assess.vue';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
@@ -65,6 +66,9 @@ const exportData = async () => {
   saveAs(blob, `${new Date().getTime()}.xlsx`);
 };
 
+const assessDialogRef = ref();
+const assess = (row: any) => assessDialogRef.value.open(row);
+
 const copy = (row: any) => {
   ElMessageBox.confirm(`是否复制${row.sourceName}？`, '系统提示', { type: 'warning' })
     .then(async () => {
@@ -114,7 +118,7 @@ const remove = (row: any) => {
           <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
         </template>
         <template #operation="scope">
-          <el-button @click="copy(scope.row)" type="primary" link>评估</el-button>
+          <el-button @click="assess(scope.row)" type="primary" link>评估</el-button>
           <el-button @click="copy(scope.row)" type="primary" link>复制</el-button>
           <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
         </template>
@@ -125,5 +129,7 @@ const remove = (row: any) => {
     <risks-dialog ref="risksDialogRef" />
     <!-- 导入 -->
     <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
+    <!-- 评估 -->
+    <assess-dialog ref="assessDialogRef" />
   </div>
 </template>
