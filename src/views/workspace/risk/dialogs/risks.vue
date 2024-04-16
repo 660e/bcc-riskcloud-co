@@ -49,7 +49,12 @@ defineExpose({ open });
         <template v-for="level in industry.children" :key="level.id">
           <div class="bg-blue-400 pl-2.5 h-8 text-white flex items-center">{{ level.name }}</div>
           <el-collapse>
-            <el-collapse-item v-for="group in level.children" :key="group.id" class="px-2.5">
+            <el-collapse-item
+              v-for="group in level.children"
+              v-show="group.children.some((e: any) => e.name.includes(keyword))"
+              :key="group.id"
+              class="px-2.5"
+            >
               <template #title>
                 <div class="flex-1 pr-5 text-sm flex items-center justify-between">
                   <span>{{ group.name }}</span>
@@ -64,6 +69,7 @@ defineExpose({ open });
               <el-checkbox-group v-model="checkList">
                 <el-checkbox
                   v-for="risk in group.children"
+                  v-show="risk.name.includes(keyword)"
                   :key="risk.id"
                   :label="risk.name"
                   :value="risk.id"
