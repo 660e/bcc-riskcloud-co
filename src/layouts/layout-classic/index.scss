@@ -17,12 +17,10 @@
       white-space: nowrap;
       .logo {
         flex-shrink: 0;
-        width: 210px;
-        margin-right: calc(20px + 1px);
         .logo-img {
           width: 28px;
           object-fit: contain;
-          margin-right: 6px;
+          margin: 0 10px 0 20px;
         }
         .logo-text {
           font-size: 21.5px;

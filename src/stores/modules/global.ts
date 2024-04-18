@@ -12,7 +12,7 @@ export const useGlobalStore = defineStore({
     // element 组件大小
     assemblySize: 'default',
     // 当前系统语言
-    language: null,
+    language: 'zh',
     // 当前页面是否全屏
     maximize: false,
     // 主题颜色
@@ -32,11 +32,11 @@ export const useGlobalStore = defineStore({
     // 菜单手风琴
     accordion: true,
     // 面包屑导航
-    breadcrumb: true,
+    breadcrumb: false,
     // 面包屑导航图标
     breadcrumbIcon: false,
     // 标签页
-    tabs: true,
+    tabs: false,
     // 标签页图标
     tabsIcon: false,
     // 页脚
