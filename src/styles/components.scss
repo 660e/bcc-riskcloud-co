@@ -8,4 +8,7 @@
       @apply block h-5 w-1 bg-sky-500 mr-1;
     }
   }
+  .c-form-item-label {
+    color: var(--el-text-color-regular);
+  }
 }

@@ -29,3 +29,8 @@ export function getRisks() {
 export function getMajors() {
   return http.get<any>('/mock/co/workspace/risk/majors');
 }
+
+// 获取可能性、严重性分析列表
+export function getAnalysis() {
+  return http.get<any>('/mock/co/workspace/risk/analysis');
+}
