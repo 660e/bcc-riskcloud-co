@@ -109,8 +109,8 @@ const save = () => {
 
 <template>
   <div class="card h-full flex flex-col">
-    <div class="flex-1 overflow-y-auto pt-5 flex justify-center">
-      <el-form :model="forms" :rules="rules" label-width="180px" ref="formsRef" class="w-4/5 space-y-5">
+    <div class="flex-1 overflow-y-auto pt-5">
+      <el-form :model="forms" :rules="rules" label-width="180px" ref="formsRef" class="w-4/5 mx-auto space-y-5">
         <!-- 单位类型 -->
         <div class="c-subtitle-1">单位类型</div>
         <div>

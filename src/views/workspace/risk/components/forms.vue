@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { FormRules } from 'element-plus';
+import { FormInstance, FormRules, FormValidateCallback } from 'element-plus';
 import { System } from '@/api/interface';
 import { getDictDataType } from '@/api/modules/system';
+import { LabelTooltip } from '@bcc/components';
 
+const formsRef = ref<FormInstance>();
 const forms = ref({
   riskName: '',
   count: 1,
@@ -13,7 +15,11 @@ const forms = ref({
   hazardousgasType: '0',
   hazardousGasName: '',
   peripheralInfluence: '0',
-  riskDesc: ''
+  riskDesc: '',
+
+  comEngineering: '',
+  comManagement: '',
+  comUrl: ''
 });
 const rules: FormRules = {
   riskName: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -22,7 +28,11 @@ const rules: FormRules = {
   riskType: [{ required: true, message: '请选择', trigger: 'change' }],
   otherComment: [{ required: true, message: '请填写', trigger: 'blur' }],
   hazardousGasName: [{ required: true, message: '请填写', trigger: 'blur' }],
-  riskDesc: [{ required: true, message: '请填写', trigger: 'blur' }]
+  riskDesc: [{ required: true, message: '请填写', trigger: 'blur' }],
+
+  comEngineering: [{ required: true, message: '请填写', trigger: 'blur' }],
+  comManagement: [{ required: true, message: '请填写', trigger: 'blur' }],
+  comUrl: [{ required: true, message: '请填写', trigger: 'blur' }]
 };
 
 const options = reactive<{ [key: string]: System.Dict[] }>({});
@@ -30,10 +40,16 @@ onMounted(async () => {
   options.riskType = (await getDictDataType('risk_damage')).data;
   options.yesNo = (await getDictDataType('yes_no')).data;
 });
+
+const validate = (callback: FormValidateCallback) => {
+  formsRef.value?.validate(callback);
+};
+
+defineExpose({ forms, validate });
 </script>
 
 <template>
-  <el-form :model="forms" :rules="rules" label-width="160" class="w-4/5 space-y-5">
+  <el-form :model="forms" :rules="rules" label-width="160" ref="formsRef" class="w-4/5 mx-auto space-y-5">
     <div class="c-subtitle-1">基本信息</div>
     <div>
       <div class="grid grid-cols-2">
@@ -78,5 +94,36 @@ onMounted(async () => {
     </div>
 
     <slot />
+
+    <div class="c-subtitle-1">管控措施</div>
+    <div>
+      <el-form-item prop="comEngineering">
+        <template #label>
+          <label-tooltip
+            label="工程技术措施"
+            content="工程系统是指从技术层面、技防方面降低风险的措施。包括消除或降低或隔离安全风险的各种硬件设施改造、技术手段与工程措施等。"
+          />
+        </template>
+        <el-input v-model="forms.comEngineering" :rows="5" type="textarea" />
+      </el-form-item>
+      <el-form-item prop="comManagement">
+        <template #label>
+          <label-tooltip
+            label="管理措施"
+            content="管理措施是指从规章制度、管理层面、人员行为降低风险的措施。包括消除或降低或隔离安全风险的各种硬件设施改造、技术手段与工程措施等。"
+          />
+        </template>
+        <el-input v-model="forms.comManagement" :rows="5" type="textarea" />
+      </el-form-item>
+      <el-form-item prop="comUrl">
+        <template #label>
+          <label-tooltip
+            label="应急准备"
+            content="针对不可控风险（确实难以消除、难以控制或防不胜防的风险）而采取的特殊风险控制措施，包括应急预案、演练、队伍、物资、资金、技术等各个方面的准备工作。"
+          />
+        </template>
+        <el-input v-model="forms.comUrl" :rows="5" type="textarea" />
+      </el-form-item>
+    </div>
   </el-form>
 </template>
