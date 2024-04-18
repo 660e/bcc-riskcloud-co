@@ -1,15 +1,18 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { getMajors, getAnalysis } from '@/api/modules/workspace';
+import { getMajors, getPossibility, getSeverity } from '@/api/modules/workspace';
 
 const major = ref();
 const checks = ref();
+
 const majors = ref();
-const analyses = ref();
+const possibilities = ref();
+const severities = ref();
 
 onMounted(async () => {
   majors.value = (await getMajors()).data;
-  analyses.value = (await getAnalysis()).data;
+  possibilities.value = (await getPossibility()).data;
+  severities.value = (await getSeverity()).data;
 });
 </script>
 
@@ -30,21 +33,21 @@ onMounted(async () => {
       </el-checkbox-group>
     </div>
   </el-form-item>
-  <el-form-item v-for="analysis in analyses" :key="analysis.label">
+  <el-form-item v-for="possibility in possibilities" :key="possibility.label">
     <div>
-      <div class="c-form-item-label">{{ analysis.label }}</div>
-      <el-radio-group v-model="analysis.value" class="block">
-        <el-radio v-for="e in analysis.children" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
+      <div class="c-form-item-label">{{ possibility.label }}</div>
+      <el-radio-group v-model="possibility.value" class="block">
+        <el-radio v-for="e in possibility.children" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
       </el-radio-group>
     </div>
   </el-form-item>
 
   <div class="c-subtitle-1">严重性分析</div>
-  <el-form-item v-for="analysis in analyses" :key="analysis.label">
+  <el-form-item v-for="severity in severities" :key="severity.label">
     <div>
-      <div class="c-form-item-label">{{ analysis.label }}</div>
-      <el-radio-group v-model="analysis.value" class="block">
-        <el-radio v-for="e in analysis.children" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
+      <div class="c-form-item-label">{{ severity.label }}</div>
+      <el-radio-group v-model="severity.value" class="block">
+        <el-radio v-for="e in severity.children" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
       </el-radio-group>
     </div>
   </el-form-item>

@@ -30,7 +30,12 @@ export function getMajors() {
   return http.get<any>('/mock/co/workspace/risk/majors');
 }
 
-// 获取可能性、严重性分析列表
-export function getAnalysis() {
-  return http.get<any>('/mock/co/workspace/risk/analysis');
+// 获取可能性分析列表
+export function getPossibility() {
+  return http.get<any>('/mock/co/workspace/risk/possibility');
+}
+
+// 获取严重性分析列表
+export function getSeverity() {
+  return http.get<any>('/mock/co/workspace/risk/severity');
 }
