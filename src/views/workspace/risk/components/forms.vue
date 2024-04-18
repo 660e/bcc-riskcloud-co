@@ -33,9 +33,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <el-form :model="forms" :rules="rules" label-width="160">
+  <el-form :model="forms" :rules="rules" label-width="160" class="w-4/5 space-y-5">
+    <div class="c-subtitle-1">基本信息</div>
     <div>
-      <div class="c-subtitle-1">基本信息</div>
       <div class="grid grid-cols-2">
         <el-form-item label="风险源名称" prop="riskName">
           <el-input v-model="forms.riskName" />

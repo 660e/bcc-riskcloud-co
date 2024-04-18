@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { getDictDataType } from '@/api/modules/system';
 import { deleteItem, getCompanyIndustry } from '@/api/modules/company';
@@ -8,7 +9,6 @@ import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog } from '@bcc/components';
 import RisksDialog from '../../dialogs/risks.vue';
-import AssessDialog from '../../dialogs/assess.vue';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
@@ -66,8 +66,8 @@ const exportData = async () => {
   saveAs(blob, `${new Date().getTime()}.xlsx`);
 };
 
-const assessDialogRef = ref();
-const assess = (row: any) => assessDialogRef.value.open(row);
+const $router = useRouter();
+const assess = (row: any) => $router.push({ name: 'risk-assess', params: { id: row.id } });
 
 const copy = (row: any) => {
   ElMessageBox.confirm(`是否复制${row.sourceName}？`, '系统提示', { type: 'warning' })
@@ -129,7 +129,5 @@ const remove = (row: any) => {
     <risks-dialog ref="risksDialogRef" />
     <!-- 导入 -->
     <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
-    <!-- 评估 -->
-    <assess-dialog ref="assessDialogRef" />
   </div>
 </template>

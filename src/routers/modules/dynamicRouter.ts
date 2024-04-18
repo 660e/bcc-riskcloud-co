@@ -35,48 +35,18 @@ export const initDynamicRouter = async () => {
     $authStore.flatMenuListGet.push(
       ...[
         {
-          path: '/system/gen/:tableId',
-          name: 'gen-edit',
-          component: '/system/gen/pages/edit',
+          path: '/workspace/risk/:id',
+          name: 'risk-assess',
+          component: '/workspace/risk/views/assess',
           meta: {
-            activeMenu: '/system/gen',
+            activeMenu: '/workspace/risk',
             icon: 'Menu',
             isAffix: false,
             isFull: false,
             isHide: true,
             isKeepAlive: false,
             isLink: '',
-            title: '详情页'
-          }
-        },
-        {
-          path: '/examples/pro-table/detail/:id',
-          name: 'pro-table-detail',
-          component: '/examples/pro-table/detail',
-          meta: {
-            activeMenu: '/examples/pro-table',
-            icon: 'Menu',
-            isAffix: false,
-            isFull: false,
-            isHide: true,
-            isKeepAlive: false,
-            isLink: '',
-            title: '详情页'
-          }
-        },
-        {
-          path: '/examples/tabs/detail/:id',
-          name: 'tabs-detail',
-          component: '/examples/tabs/detail',
-          meta: {
-            activeMenu: '/examples/tabs',
-            icon: 'Menu',
-            isAffix: false,
-            isFull: false,
-            isHide: true,
-            isKeepAlive: false,
-            isLink: '',
-            title: '详情页'
+            title: '评估'
           }
         }
       ]
