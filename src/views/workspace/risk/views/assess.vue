@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import FormsComponent from '../components/forms.vue';
+import AnalysisComponent from '../components/analysis.vue';
 
 const formsComponentRef = ref();
 const save = () => {
@@ -16,7 +17,7 @@ const save = () => {
   <div class="card h-full flex flex-col">
     <div class="flex-1 overflow-y-auto pt-5">
       <forms-component ref="formsComponentRef">
-        <div>Lorem ipsum dolor sit amet.</div>
+        <analysis-component />
       </forms-component>
     </div>
 

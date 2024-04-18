@@ -24,3 +24,8 @@ export function getRiskByIndustryId(params: any) {
 export function getRisks() {
   return http.get<any>('/mock/co/workspace/risks');
 }
+
+// 获取重大风险源列表
+export function getMajors() {
+  return http.get<any>('/mock/co/workspace/risk/majors');
+}
