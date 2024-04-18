@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
-import basicInfo from '../components/basic-info.vue';
+
+import FormsComponent from '../components/forms.vue';
 
 const visible = ref(true);
 const open = async (row: any) => {
@@ -9,29 +9,18 @@ const open = async (row: any) => {
   console.log(row);
 };
 
-const close = () => {
-  formsRef.value?.resetFields();
-};
-
-const formsRef = ref<FormInstance>();
-const forms = ref({
-  riskName: '',
-  count: 1,
-  location: '',
-  riskType: []
-});
-const rules: FormRules = {
-  riskName: [{ required: true, message: '请填写', trigger: 'blur' }],
-  count: [{ required: true, message: '请填写', trigger: 'blur' }],
-  location: [{ required: true, message: '请填写', trigger: 'blur' }],
-  riskType: [{ required: true, message: '请选择', trigger: 'change' }]
-};
+const formsComponentRef = ref();
 const confirm = () => {
-  formsRef.value?.validate(valid => {
-    if (valid) {
-      console.log(forms.value);
-    }
-  });
+  console.log(formsComponentRef.value);
+  // formsRef.value?.validate(valid => {
+  //   if (valid) {
+  //     console.log(forms.value);
+  //   }
+  // });
+};
+const close = () => {
+  console.log('close');
+  // formsRef.value?.resetFields();
 };
 
 defineExpose({ open });
@@ -39,9 +28,7 @@ defineExpose({ open });
 
 <template>
   <el-dialog v-model="visible" @close="close" title="评估" width="60vw">
-    <el-form :model="forms" :rules="rules" label-width="120" ref="formsRef" class="p-5">
-      <basic-info :forms="forms" />
-    </el-form>
+    <forms-component ref="formsComponentRef" />
 
     <template #footer>
       <div class="flex justify-end">
