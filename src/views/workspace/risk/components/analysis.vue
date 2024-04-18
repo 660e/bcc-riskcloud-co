@@ -17,7 +17,7 @@ onMounted(async () => {
   <div class="c-subtitle-1">判断为重大风险源的条件</div>
   <el-form-item>
     <el-radio-group v-model="major" class="block">
-      <el-radio v-for="e in majors" :key="e.value" :label="e.label" :value="e.value" class="flex" />
+      <el-radio v-for="e in majors" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
     </el-radio-group>
   </el-form-item>
 
@@ -26,7 +26,7 @@ onMounted(async () => {
     <div>
       <div class="c-form-item-label">发生可能性等级直接判定为很可能（5级）的情形</div>
       <el-checkbox-group v-model="checks" class="block">
-        <el-checkbox v-for="e in majors" :key="e.value" :label="e.label" :value="e.value" class="flex" />
+        <el-checkbox v-for="e in majors" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
       </el-checkbox-group>
     </div>
   </el-form-item>
@@ -34,10 +34,35 @@ onMounted(async () => {
     <div>
       <div class="c-form-item-label">{{ analysis.label }}</div>
       <el-radio-group v-model="analysis.value" class="block">
-        <el-radio v-for="e in analysis.children" :key="e.value" :label="e.label" :value="e.value" class="flex" />
+        <el-radio v-for="e in analysis.children" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
       </el-radio-group>
     </div>
   </el-form-item>
 
   <div class="c-subtitle-1">严重性分析</div>
+  <el-form-item v-for="analysis in analyses" :key="analysis.label">
+    <div>
+      <div class="c-form-item-label">{{ analysis.label }}</div>
+      <el-radio-group v-model="analysis.value" class="block">
+        <el-radio v-for="e in analysis.children" :key="e.value" :label="e.label" :value="e.value" class="_radio-checkbox" />
+      </el-radio-group>
+    </div>
+  </el-form-item>
 </template>
+
+<style lang="scss" scoped>
+._radio-checkbox {
+  height: auto;
+  display: flex;
+  :deep(.el-radio__input),
+  :deep(.el-checkbox__input) {
+    padding-top: 8px;
+    align-self: flex-start;
+  }
+  :deep(.el-radio__label),
+  :deep(.el-checkbox__label) {
+    text-wrap: wrap;
+    line-height: 32px;
+  }
+}
+</style>
