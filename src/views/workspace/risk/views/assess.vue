@@ -3,9 +3,9 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
 
+import { RiskGradeMatrix } from '@bcc/components';
 import AssessForms from '../components/assess-forms.vue';
 import AssessAnalysis from '../components/assess-analysis.vue';
-import RiskGradeMatrix from '../components/risk-grade-matrix.vue';
 
 const disableCalc = ref(true);
 const analysisResult = ref();
@@ -47,7 +47,7 @@ const back = () => {
       <el-tooltip :disabled="!disableCalc" content="请完整填写“可能性分析”和“严重性分析”表单" placement="top">
         <el-button :disabled="disableCalc" @click="calc" type="primary">计算风险等级</el-button>
       </el-tooltip>
-      <el-popover>
+      <el-popover width="600" placement="top">
         <risk-grade-matrix />
         <template #reference>
           <el-button type="success">风险等级</el-button>
