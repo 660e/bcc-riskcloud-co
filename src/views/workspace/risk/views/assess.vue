@@ -14,7 +14,11 @@ const analyse = (result: any) => {
   grade.value = [-1, -1];
   analysisResult.value = result;
 
-  if (result.major) {
+  if (
+    result.major || // 重大风险源
+    (result.checks.length && result.severities.every((e: any) => e.value)) || // 可能性分析为5 & 严重性分析完成
+    (result.possibilities.every((e: any) => e.value) && result.severities.every((e: any) => e.value)) // 可能性分析完成 & 严重性分析完成
+  ) {
     canCalc.value = true;
   }
 };
@@ -30,6 +34,7 @@ const save = () => {
   formsComponentRef.value.validate((valid: boolean) => {
     if (valid) {
       console.log(formsComponentRef.value.forms);
+      $router.push({ name: '/workspace/risk' });
     }
   });
 };
@@ -44,7 +49,7 @@ const back = () => {
 
 <template>
   <div class="card h-full flex flex-col">
-    <div class="flex-1 overflow-y-auto pt-5">
+    <div class="flex-1 overflow-y-auto py-5">
       <assess-forms ref="formsComponentRef">
         <assess-analysis @analyse="analyse" />
       </assess-forms>
