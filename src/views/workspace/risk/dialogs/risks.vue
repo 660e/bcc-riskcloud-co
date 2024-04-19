@@ -51,7 +51,7 @@ defineExpose({ open });
           <el-collapse>
             <el-collapse-item
               v-for="group in level.children"
-              v-show="group.children.some((e: any) => e.name.includes(keyword))"
+              v-show="group.children.some((place: any) => place.children.some((risk: any) => risk.name.includes(keyword)))"
               :key="group.id"
               class="px-2.5"
             >
@@ -66,16 +66,23 @@ defineExpose({ open });
                   </span>
                 </div>
               </template>
-              <el-checkbox-group v-model="checkList">
-                <el-checkbox
-                  v-for="risk in group.children"
-                  v-show="risk.name.includes(keyword)"
-                  :key="risk.id"
-                  :label="risk.name"
-                  :value="risk.id"
-                  @change="(value: boolean) => (risk.checked = value)"
-                />
-              </el-checkbox-group>
+              <div
+                v-for="place in group.children"
+                v-show="place.children.some((risk: any) => risk.name.includes(keyword))"
+                :key="place.id"
+              >
+                <div>{{ place.name }}</div>
+                <el-checkbox-group v-model="checkList">
+                  <el-checkbox
+                    v-for="risk in place.children"
+                    v-show="risk.name.includes(keyword)"
+                    :key="risk.id"
+                    :label="risk.name"
+                    :value="risk.id"
+                    @change="(value: boolean) => (risk.checked = value)"
+                  />
+                </el-checkbox-group>
+              </div>
             </el-collapse-item>
           </el-collapse>
         </template>
