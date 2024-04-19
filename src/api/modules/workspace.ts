@@ -39,3 +39,8 @@ export function getPossibility() {
 export function getSeverity() {
   return http.get<any>('/mock/co/workspace/risk/severity');
 }
+
+// 计算风险等级
+export function calcRiskGrade() {
+  return http.get<number[]>('/mock/co/workspace/calc-risk-grade');
+}
