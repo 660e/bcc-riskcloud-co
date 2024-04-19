@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
 
-import FormsComponent from '../components/forms.vue';
-import AnalysisComponent from '../components/analysis.vue';
+import AssessForms from '../components/assess-forms.vue';
+import AssessAnalysis from '../components/assess-analysis.vue';
+import RiskGradeMatrix from '../components/risk-grade-matrix.vue';
 
+const disableCalc = ref(true);
 const analysisResult = ref();
-const analyse = (result: any) => (analysisResult.value = result);
-const canCalc = computed(() => {
-  return true;
-});
+const analyse = (result: any) => {
+  analysisResult.value = result;
+};
 const calc = () => {
   console.log('calc');
 };
@@ -35,19 +36,28 @@ const back = () => {
 <template>
   <div class="card h-full flex flex-col">
     <div class="flex-1 overflow-y-auto pt-5">
-      <forms-component ref="formsComponentRef">
-        <analysis-component @analyse="analyse" />
-      </forms-component>
+      <assess-forms ref="formsComponentRef">
+        <assess-analysis @analyse="analyse" />
+      </assess-forms>
     </div>
 
     <el-divider class="m-0" />
+
     <div class="flex justify-center py-2.5">
-      <el-tooltip :disabled="canCalc" content="请完整填写“可能性分析”和“严重性分析”表单" placement="top">
-        <el-button :disabled="!canCalc" @click="calc" type="primary">计算风险等级</el-button>
+      <el-tooltip :disabled="!disableCalc" content="请完整填写“可能性分析”和“严重性分析”表单" placement="top">
+        <el-button :disabled="disableCalc" @click="calc" type="primary">计算风险等级</el-button>
       </el-tooltip>
+      <el-popover>
+        <risk-grade-matrix />
+        <template #reference>
+          <el-button type="success">风险等级</el-button>
+        </template>
+      </el-popover>
+
       <el-tooltip content="请先计算风险等级" placement="top">
         <el-button @click="save">保存</el-button>
       </el-tooltip>
+
       <el-button @click="back">返回</el-button>
     </div>
   </div>
