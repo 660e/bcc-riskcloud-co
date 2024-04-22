@@ -44,3 +44,8 @@ export function getSeverity() {
 export function calcRiskGrade() {
   return http.get<number[]>('/mock/co/workspace/calc-risk-grade');
 }
+
+// 获取标注用风险源列表
+export function getRiskMarkers() {
+  return http.get('/mock/co/workspace/risk/markers');
+}
