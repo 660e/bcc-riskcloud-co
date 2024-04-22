@@ -1,4 +1,5 @@
 import http from '@/api';
+import { WorkspaceRiskSource } from '../interface';
 
 // 获取风险更新记录
 export function getWorkspaceLog() {
@@ -47,5 +48,5 @@ export function calcRiskGrade() {
 
 // 获取标注用风险源列表
 export function getRiskMarkers() {
-  return http.get('/mock/co/workspace/risk/markers');
+  return http.get<WorkspaceRiskSource[]>('/mock/co/workspace/risk/markers');
 }

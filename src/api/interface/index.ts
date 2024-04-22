@@ -1,3 +1,5 @@
+export * from './workspace';
+
 export namespace Login {
   export interface Form {
     username: string;
