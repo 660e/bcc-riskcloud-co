@@ -194,6 +194,7 @@ const save = () => {
 </template>
 
 <style lang="scss" scoped>
+@import '@bcc/utils/styles/tianditu.scss';
 ._targets :deep(.el-checkbox__label) {
   flex: 1;
   display: flex;

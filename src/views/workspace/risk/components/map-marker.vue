@@ -138,3 +138,8 @@ defineExpose({ init });
     </div>
   </el-tab-pane>
 </template>
+
+<style lang="scss" scoped>
+@import '@bcc/utils/styles/tianditu.scss';
+@import '@bcc/utils/styles/transition.scss';
+</style>
