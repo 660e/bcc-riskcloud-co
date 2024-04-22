@@ -71,8 +71,8 @@ defineExpose({ open });
                 v-show="place.children.some((risk: any) => risk.name.includes(keyword))"
                 :key="place.id"
               >
-                <div>{{ place.name }}</div>
-                <el-checkbox-group v-model="checkList">
+                <div class="h-8 leading-8 text-sm">{{ place.name }}</div>
+                <el-checkbox-group v-model="checkList" class="pl-2.5">
                   <el-checkbox
                     v-for="risk in place.children"
                     v-show="risk.name.includes(keyword)"
