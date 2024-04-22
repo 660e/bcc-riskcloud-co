@@ -1,5 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div>plan-marker</div>
+  <el-tab-pane v-bind="$attrs">
+    <div>plan-marker</div>
+  </el-tab-pane>
 </template>

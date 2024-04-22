@@ -1,5 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div>pipe-marker</div>
+  <el-tab-pane v-bind="$attrs">
+    <div>pipe-marker</div>
+  </el-tab-pane>
 </template>
