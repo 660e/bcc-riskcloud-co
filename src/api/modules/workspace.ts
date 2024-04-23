@@ -50,3 +50,8 @@ export function calcRiskGrade() {
 export function getRiskMarkers() {
   return http.get<WorkspaceRiskSource[]>('/mock/co/workspace/risk/markers');
 }
+
+// 获取应急队伍列表
+export function getEmergencyTeam() {
+  return http.get<any>('/mock/co/workspace/risk/resource/team');
+}

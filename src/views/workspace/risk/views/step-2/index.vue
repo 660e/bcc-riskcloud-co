@@ -2,9 +2,9 @@
 import { onMounted, ref } from 'vue';
 import { TabPaneName } from 'element-plus';
 
-import MapMarker from '../../components/map-marker.vue';
-import PipeMarker from '../../components/pipe-marker.vue';
-import PlanMarker from '../../components/plan-marker.vue';
+import MapMarker from './components/map-marker.vue';
+import PipeMarker from './components/pipe-marker.vue';
+import PlanMarker from './components/plan-marker.vue';
 
 const active = ref<TabPaneName>(0);
 const mapMarkerRef = ref();

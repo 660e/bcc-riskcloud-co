@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { getRiskMarkers } from '@/api/modules/workspace';
 import { WorkspaceRiskSource } from '@/api/interface';
-import { useWrapperFit } from '../views/step-2/hooks';
+import { useWrapperFit } from '../hooks';
 import PlanPreviewDialog from '../dialogs/plan-preview.vue';
 
 const init = async () => {
@@ -86,7 +86,7 @@ defineExpose({ init });
     </div>
     <div class="flex-1 bg-gray-300 flex justify-center items-center" ref="wrapperRef">
       <div :style="wrapperStyle" class="opacity-0 duration-300 relative">
-        <img :style="wrapperStyle" @load="fit" src="../views/step-2/bg.jpg" ref="imgRef" />
+        <img :style="wrapperStyle" @load="fit" src="../bg.jpg" ref="imgRef" />
         <div
           :ondragover="ondragover"
           :ondrop="ondrop"

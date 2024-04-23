@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useWrapperFit } from '../views/step-2/hooks';
+import { useWrapperFit } from '../hooks';
 import { WorkspaceRiskSource } from '@/api/interface';
 import html2canvas from 'html2canvas';
 
@@ -47,7 +47,7 @@ defineExpose({ open });
       <div class="flex-1 flex" ref="screenRef">
         <div class="flex-1 bg-gray-300 flex justify-center items-center" ref="wrapperRef">
           <div :style="wrapperStyle" class="opacity-0 duration-300 relative">
-            <img :style="wrapperStyle" @load="fit" src="../views/step-2/bg.jpg" ref="imgRef" />
+            <img :style="wrapperStyle" @load="fit" src="../bg.jpg" ref="imgRef" />
             <div class="w-full h-full absolute top-0 left-0 z-10">
               <div
                 v-for="(r, i) in riskSources"

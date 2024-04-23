@@ -37,7 +37,7 @@ export const initDynamicRouter = async () => {
         {
           path: '/workspace/risk/:id',
           name: 'risk-assess',
-          component: '/workspace/risk/views/assess',
+          component: '/workspace/risk/views/step-1/views/assess',
           meta: {
             activeMenu: '/workspace/risk',
             icon: 'Menu',

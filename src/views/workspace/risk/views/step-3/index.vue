@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 
-import EmergencyTeam from './views/emergency-team.vue';
-import EmergencyExpert from './views/emergency-expert.vue';
-import EmergencyEquipment from './views/emergency-equipment.vue';
-import EmergencySupply from './views/emergency-supply.vue';
+import EmergencyTeam from './components/team.vue';
+import EmergencyExpert from './components/expert.vue';
+import EmergencyEquipment from './components/equipment.vue';
+import EmergencySupply from './components/supply.vue';
 
 const active = ref(0);
 </script>

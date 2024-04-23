@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { getDictDataType } from '@/api/modules/system';
 import { deleteItem } from '@/api/modules/company';
-import { getRiskByIndustryId } from '@/api/modules/workspace';
+import { getEmergencyTeam } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 
@@ -55,7 +55,7 @@ const remove = (row: any) => {
 
 <template>
   <el-tab-pane v-bind="$attrs">
-    <pro-table :columns="columns" :request-api="getRiskByIndustryId" ref="tableRef" row-key="id">
+    <pro-table :columns="columns" :request-api="getEmergencyTeam" ref="tableRef" row-key="id">
       <template #tableHeader>
         <el-button @click="create" type="primary">新增</el-button>
         <el-button @click="importData">导入</el-button>
