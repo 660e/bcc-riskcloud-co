@@ -1,5 +1,16 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue';
+import { getAbilityEvaluationTable } from '@/api/modules/workspace';
+
+const table = ref();
+
+onMounted(async () => {
+  table.value = (await getAbilityEvaluationTable()).data;
+});
+</script>
 
 <template>
-  <div class="card h-full flex justify-center items-center">应急能力评估</div>
+  <div class="card flex-1">
+    <pre>{{ table }}</pre>
+  </div>
 </template>

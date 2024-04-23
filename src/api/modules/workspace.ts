@@ -70,3 +70,8 @@ export function getEmergencyEquipment() {
 export function getEmergencySupply() {
   return http.get<any>('/mock/co/workspace/risk/resource/supply');
 }
+
+// 获取应急能力评估表格
+export function getAbilityEvaluationTable() {
+  return http.get<any>('/mock/co/workspace/risk/evaluation');
+}
