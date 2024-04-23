@@ -55,3 +55,18 @@ export function getRiskMarkers() {
 export function getEmergencyTeam() {
   return http.get<any>('/mock/co/workspace/risk/resource/team');
 }
+
+// 获取应急专家列表
+export function getEmergencyExpert() {
+  return http.get<any>('/mock/co/workspace/risk/resource/expert');
+}
+
+// 获取应急装备列表
+export function getEmergencyEquipment() {
+  return http.get<any>('/mock/co/workspace/risk/resource/equipment');
+}
+
+// 获取应急物资列表
+export function getEmergencySupply() {
+  return http.get<any>('/mock/co/workspace/risk/resource/supply');
+}
