@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { getRiskMarkers } from '@/api/modules/workspace';
 import { WorkspaceRiskSource } from '@/api/interface';
 import { useWrapperFit } from '../views/step-2/hooks';
+import PlanPreviewDialog from '../dialogs/plan-preview.vue';
 
 const init = async () => {
   riskSources.value = (await getRiskMarkers()).data;
@@ -35,8 +36,8 @@ const markerStyle = (position: [number, number] | undefined) => {
 };
 
 // 预览
-const previewRef = ref();
-const preview = () => previewRef.value.open(riskSources.value);
+const planPreviewRef = ref();
+const preview = () => planPreviewRef.value.open(riskSources.value);
 
 // 保存
 const save = () => {
@@ -77,7 +78,7 @@ defineExpose({ init });
           <el-button @click="riskSources.forEach((r: WorkspaceRiskSource) => (r.position = undefined))" class="flex-1">
             重置
           </el-button>
-          <el-button @click="preview" class="flex-1">预览</el-button>
+          <el-button :disabled="!riskSources.filter(e => e.position).length" @click="preview" class="flex-1">预览</el-button>
           <el-button @click="save" class="flex-1" type="primary">保存</el-button>
         </div>
       </div>
@@ -107,6 +108,9 @@ defineExpose({ init });
         </div>
       </div>
     </div>
+
+    <!-- 预览 -->
+    <plan-preview-dialog ref="planPreviewRef" />
   </el-tab-pane>
 </template>
 
