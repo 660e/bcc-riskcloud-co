@@ -1,16 +1,91 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { getAbilityEvaluationTable } from '@/api/modules/workspace';
+import { getDictDataType } from '@/api/modules/system';
+import { System } from '@/api/interface';
 
+const thead = [
+  { label: '项目', width: 200 },
+  { label: '评估内容', width: 400 },
+  { label: '打分方法', width: 400 },
+  { label: '评分选择', width: 300 },
+  { label: '得分', width: 100 },
+  { label: '扣分情况' }
+];
 const table = ref();
-
+const options = reactive<{ [key: string]: System.Dict[] }>({
+  evaluateType: []
+});
 onMounted(async () => {
   table.value = (await getAbilityEvaluationTable()).data;
+  options.evaluateType = (await getDictDataType('evaluate_type')).data;
 });
+
+const sum = (data: any) => {
+  return data.children.map((e: any) => e.score).reduce((a: number, c: number) => a + c);
+};
 </script>
 
 <template>
-  <div class="card flex-1">
-    <pre>{{ table }}</pre>
+  <div class="card border-0 flex-1 flex flex-col">
+    <div class="flex items-center space-x-5 p-2.5">
+      <span>应得分：99</span>
+      <span>实得分：99</span>
+      <span>最终得分：99</span>
+      <span class="flex-1"></span>
+      <el-button>导出</el-button>
+    </div>
+    <el-divider class="m-0" />
+
+    <div class="flex-1 overflow-y-auto p-2.5">
+      <table class="_table">
+        <thead>
+          <tr>
+            <th v-for="th in thead" :key="th.label" :width="th.width" class="py-2 sticky top-0 z-10">{{ th.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="item in table" :key="item.id">
+            <tr v-for="(tr, index) in item.children" :key="tr.id">
+              <td v-if="!index" :rowspan="item.children.length" class="p-2">{{ item.label }}({{ sum(item) }}分)</td>
+              <td class="p-2">{{ tr.label }}({{ tr.score }}分)</td>
+              <td v-if="!index" :rowspan="item.children.length" class="p-2">{{ item.explain }}</td>
+              <td class="px-2">
+                <el-radio-group v-model="tr.type">
+                  <el-radio v-for="e in options.evaluateType" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+                </el-radio-group>
+              </td>
+              <td class="p-2">
+                <el-input-number v-model="tr.value" :min="0" :max="tr.score" size="small" class="w-full" />
+              </td>
+              <td v-if="!index" :rowspan="item.children.length" class="p-2 relative">
+                <el-input v-model="item.description" type="textarea" />
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+._table {
+  width: 100%;
+  th,
+  td {
+    border: 1px theme('colors.gray.200') solid;
+  }
+  th {
+    background-color: theme('colors.gray.100');
+  }
+  .el-textarea {
+    position: absolute;
+    inset: 8px;
+    width: auto;
+    :deep(.el-textarea__inner) {
+      height: 100%;
+    }
+  }
+}
+</style>
