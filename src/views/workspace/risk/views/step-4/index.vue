@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { getAbilityEvaluationTable } from '@/api/modules/workspace';
 import { getDictDataType } from '@/api/modules/system';
 import { System } from '@/api/interface';
@@ -12,8 +12,20 @@ const thead = [
   { label: '得分', width: 100 },
   { label: '扣分情况' }
 ];
-const par = ref(99);
-const score = ref(99);
+const par = computed(() => {
+  return table.value
+    ? table.value.reduce((acc: number, cur: any) => {
+        return acc + cur.children.reduce((a: number, c: any) => a + (c.type === '2' ? 0 : c.score), 0);
+      }, 0)
+    : 0;
+});
+const score = computed(() => {
+  return table.value
+    ? table.value.reduce((acc: number, cur: any) => {
+        return acc + cur.children.reduce((a: number, c: any) => a + (c.value || 0), 0);
+      }, 0)
+    : 0;
+});
 const table = ref();
 const options = reactive<{ [key: string]: System.Dict[] }>({
   evaluateType: []
@@ -48,7 +60,7 @@ const typeChange = (value: string, tr: any) => {
         实得分：<span class="text-xl">{{ score }}</span>
       </div>
       <div class="flex items-center">
-        最终得分：<span class="text-xl">{{ par ? (score / par) * 100 : '-' }}</span>
+        最终得分：<span class="text-xl">{{ par ? Math.floor((score / par) * 100) : '-' }}</span>
       </div>
       <div class="flex-1"></div>
       <el-button>导出</el-button>
