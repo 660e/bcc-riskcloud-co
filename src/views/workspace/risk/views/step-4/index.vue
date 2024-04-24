@@ -12,6 +12,8 @@ const thead = [
   { label: '得分', width: 100 },
   { label: '扣分情况' }
 ];
+const par = ref(99);
+const score = ref(99);
 const table = ref();
 const options = reactive<{ [key: string]: System.Dict[] }>({
   evaluateType: []
@@ -24,68 +26,69 @@ onMounted(async () => {
 const sum = (data: any) => {
   return data.children.map((e: any) => e.score).reduce((a: number, c: number) => a + c);
 };
+const typeChange = (value: string, tr: any) => {
+  switch (value) {
+    case '0':
+      tr.value = tr.score;
+      break;
+    case '2':
+      tr.value = 0;
+      break;
+  }
+};
 </script>
 
 <template>
-  <div class="card border-0 flex-1 flex flex-col">
+  <div class="card flex-1 flex flex-col">
     <div class="flex items-center space-x-5 p-2.5">
-      <span>应得分：99</span>
-      <span>实得分：99</span>
-      <span>最终得分：99</span>
-      <span class="flex-1"></span>
+      <div class="flex items-center">
+        应得分：<span class="text-xl">{{ par }}</span>
+      </div>
+      <div class="flex items-center">
+        实得分：<span class="text-xl">{{ score }}</span>
+      </div>
+      <div class="flex items-center">
+        最终得分：<span class="text-xl">{{ par ? (score / par) * 100 : '-' }}</span>
+      </div>
+      <div class="flex-1"></div>
       <el-button>导出</el-button>
     </div>
     <el-divider class="m-0" />
-
-    <div class="flex-1 overflow-y-auto p-2.5">
-      <table class="_table">
-        <thead>
-          <tr>
-            <th v-for="th in thead" :key="th.label" :width="th.width" class="py-2 sticky top-0 z-10">{{ th.label }}</th>
+    <div class="_table">
+      <table>
+        <tr>
+          <th v-for="th in thead" :key="th.label" :width="th.width" class="py-2 sticky top-0 z-10">{{ th.label }}</th>
+        </tr>
+        <template v-for="item in table" :key="item.id">
+          <tr v-for="(tr, index) in item.children" :key="tr.id">
+            <td v-if="!index" :rowspan="item.children.length" class="p-2">{{ item.label }}({{ sum(item) }}分)</td>
+            <td class="p-2">{{ tr.label }}({{ tr.score }}分)</td>
+            <td v-if="!index" :rowspan="item.children.length" class="p-2">{{ item.explain }}</td>
+            <td class="px-2 text-center">
+              <el-radio-group v-model="tr.type" @change="typeChange($event, tr)">
+                <el-radio v-for="e in options.evaluateType" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
+            </td>
+            <td class="p-2">
+              <el-input-number
+                v-model="tr.value"
+                :min="0"
+                :max="tr.score"
+                :disabled="tr.type !== '1'"
+                size="small"
+                class="w-full"
+              />
+            </td>
+            <td v-if="!index" :rowspan="item.children.length" class="p-2 relative">
+              <el-input v-model="item.description" type="textarea" />
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <template v-for="item in table" :key="item.id">
-            <tr v-for="(tr, index) in item.children" :key="tr.id">
-              <td v-if="!index" :rowspan="item.children.length" class="p-2">{{ item.label }}({{ sum(item) }}分)</td>
-              <td class="p-2">{{ tr.label }}({{ tr.score }}分)</td>
-              <td v-if="!index" :rowspan="item.children.length" class="p-2">{{ item.explain }}</td>
-              <td class="px-2">
-                <el-radio-group v-model="tr.type">
-                  <el-radio v-for="e in options.evaluateType" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
-                </el-radio-group>
-              </td>
-              <td class="p-2">
-                <el-input-number v-model="tr.value" :min="0" :max="tr.score" size="small" class="w-full" />
-              </td>
-              <td v-if="!index" :rowspan="item.children.length" class="p-2 relative">
-                <el-input v-model="item.description" type="textarea" />
-              </td>
-            </tr>
-          </template>
-        </tbody>
+        </template>
       </table>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-._table {
-  width: 100%;
-  th,
-  td {
-    border: 1px theme('colors.gray.200') solid;
-  }
-  th {
-    background-color: theme('colors.gray.100');
-  }
-  .el-textarea {
-    position: absolute;
-    inset: 8px;
-    width: auto;
-    :deep(.el-textarea__inner) {
-      height: 100%;
-    }
-  }
-}
+@import './index.scss';
 </style>
