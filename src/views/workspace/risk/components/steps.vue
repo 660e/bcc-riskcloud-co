@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { withDefaults } from 'vue';
+import { ref, withDefaults } from 'vue';
 
 withDefaults(defineProps<{ active: number }>(), { active: 1 });
 defineEmits(['next', 'prev']);
+
+const steps = ref(['风险源辨识评估', '风险源标注', '单位诊断分级', '应急资源调查', '应急能力评估', '生成评估信息', '签字确认']);
 </script>
 
 <template>
@@ -15,7 +17,7 @@ defineEmits(['next', 'prev']);
     </div>
     <div class="flex-1 flex justify-center items-center">
       <div
-        v-for="(e, i) in ['风险源辨识评估', '风险源标注', '应急资源调查', '应急能力评估', '生成评估信息', '签字确认']"
+        v-for="(e, i) in steps"
         :key="i"
         :style="{ backgroundColor: active > i ? 'var(--el-color-primary)' : '' }"
         class="flex-1 self-stretch flex justify-center items-center space-x-2 bg-gray-200"
@@ -30,7 +32,7 @@ defineEmits(['next', 'prev']);
     </div>
     <div class="w-40 flex justify-end">
       <el-button @click="$emit('next')" type="primary">
-        <div class="pr-1">{{ active === 6 ? '提交' : '下一步' }}</div>
+        <div class="pr-1">{{ active === steps.length ? '提交' : '下一步' }}</div>
         <el-icon><ArrowRightBold /></el-icon>
       </el-button>
     </div>

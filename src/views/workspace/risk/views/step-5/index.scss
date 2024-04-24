@@ -1,5 +1,6 @@
 ._table {
   flex: 1;
+  color: var(--el-text-color-regular);
   overflow-y: auto;
   table {
     width: 100%;
@@ -20,7 +21,7 @@
     }
     .el-textarea {
       position: absolute;
-      inset: 8px;
+      inset: 10px;
       width: auto;
       :deep(.el-textarea__inner) {
         height: 100%;
