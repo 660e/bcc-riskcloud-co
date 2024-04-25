@@ -4,7 +4,7 @@ import { getInformationReport } from '@/api/modules/information';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
-import ReportDialog from './dialogs/report.vue';
+import ReportDialog from '../dialogs/report.vue';
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
@@ -18,7 +18,7 @@ const view = (row: any) => reportDialogRef.value.open(row);
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
+  <el-tab-pane class="h-full pro-table--no-card">
     <pro-table :columns="columns" :request-api="getInformationReport" ref="tableRef" row-key="id">
       <template #operation="scope">
         <el-button @click="view(scope.row)" type="primary" link>查看</el-button>
@@ -27,5 +27,5 @@ const view = (row: any) => reportDialogRef.value.open(row);
 
     <!-- 应急物资 -->
     <report-dialog ref="reportDialogRef" />
-  </div>
+  </el-tab-pane>
 </template>

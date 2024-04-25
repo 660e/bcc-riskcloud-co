@@ -11,7 +11,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="card h-full flex">
-    <risk-statistics :data="data" class="flex-1" />
-  </div>
+  <el-tab-pane class="h-full">
+    <risk-statistics :data="data" class="h-full" />
+  </el-tab-pane>
 </template>

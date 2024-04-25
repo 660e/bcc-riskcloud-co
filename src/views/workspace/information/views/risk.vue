@@ -6,7 +6,7 @@ import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { RiskDetailsDialog } from '@bcc/ui';
 import ProTable from '@/components/pro-table/index.vue';
-import HistoryComponent from './components/history.vue';
+import HistoryComponent from '../components/history.vue';
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
@@ -36,7 +36,7 @@ const view = (row: any) => riskDetailsDialogRef.value.open(row);
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
+  <el-tab-pane class="h-full pro-table--no-card">
     <pro-table :columns="columns" :request-api="getInformationRisk" ref="tableRef" row-key="id">
       <template #tableHeader>
         <div class="flex items-center space-x-2.5">
@@ -52,5 +52,5 @@ const view = (row: any) => riskDetailsDialogRef.value.open(row);
 
     <!-- 风险源详情 -->
     <risk-details-dialog ref="riskDetailsDialogRef" />
-  </div>
+  </el-tab-pane>
 </template>

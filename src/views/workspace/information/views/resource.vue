@@ -4,10 +4,10 @@ import { getInformationResource } from '@/api/modules/information';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
-import TeamDialog from './dialogs/team.vue';
-import ExpertDialog from './dialogs/expert.vue';
-import EquipmentDialog from './dialogs/equipment.vue';
-import SupplyDialog from './dialogs/supply.vue';
+import TeamDialog from '../dialogs/team.vue';
+import ExpertDialog from '../dialogs/expert.vue';
+import EquipmentDialog from '../dialogs/equipment.vue';
+import SupplyDialog from '../dialogs/supply.vue';
 
 const columns: ColumnProps[] = [
   { prop: 'date', label: '时间' },
@@ -60,7 +60,7 @@ const supply = (row: any) => supplyDialogRef.value.open(row);
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
+  <el-tab-pane class="h-full pro-table--no-card">
     <pro-table :columns="columns" :request-api="getInformationResource" />
 
     <!-- 应急队伍 -->
@@ -71,5 +71,5 @@ const supply = (row: any) => supplyDialogRef.value.open(row);
     <equipment-dialog ref="equipmentDialogRef" />
     <!-- 应急物资 -->
     <supply-dialog ref="supplyDialogRef" />
-  </div>
+  </el-tab-pane>
 </template>

@@ -149,4 +149,12 @@
       display: none;
     }
   }
+  &.tab-content-flex {
+    display: flex;
+    flex-direction: column;
+    .el-tabs__content {
+      flex: 1;
+      padding: 0;
+    }
+  }
 }
