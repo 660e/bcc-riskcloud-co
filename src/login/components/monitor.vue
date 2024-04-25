@@ -1,4 +1,4 @@
-<script lang="ts" name="login-form" setup>
+<script lang="ts" name="login-monitor" setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { FormInstance, FormRules } from 'element-plus';
@@ -57,22 +57,19 @@ onMounted(() => refreshCode());
 </script>
 
 <template>
-  <div class="p-5 space-y-5">
-    <div class="text-xl text-center leading-none">BCC-Admin</div>
-    <el-form :model="forms" :rules="rules" @keyup.enter="login" ref="formsRef">
-      <el-form-item prop="username">
-        <el-input v-model="forms.username" :prefix-icon="User" placeholder="账号" size="large" />
+  <el-form :model="forms" :rules="rules" @keyup.enter="login" ref="formsRef" class="space-y-5">
+    <el-form-item prop="username">
+      <el-input v-model="forms.username" :prefix-icon="User" placeholder="账号" size="large" />
+    </el-form-item>
+    <el-form-item prop="password">
+      <el-input v-model="forms.password" :prefix-icon="Lock" placeholder="密码" size="large" type="password" show-password />
+    </el-form-item>
+    <div class="flex space-x-5">
+      <el-form-item prop="code" class="flex-1">
+        <el-input v-model="forms.code" :prefix-icon="FullScreen" placeholder="验证码" size="large" />
       </el-form-item>
-      <el-form-item prop="password">
-        <el-input v-model="forms.password" :prefix-icon="Lock" placeholder="密码" size="large" type="password" />
-      </el-form-item>
-      <div class="flex space-x-5">
-        <el-form-item prop="code" class="flex-1">
-          <el-input v-model="forms.code" :prefix-icon="FullScreen" placeholder="验证码" size="large" />
-        </el-form-item>
-        <el-image :src="codeImage" @click="refreshCode" class="cursor-pointer h-10" />
-      </div>
-      <el-button @click="login" type="primary" class="w-full" size="large">登录</el-button>
-    </el-form>
-  </div>
+      <el-image :src="codeImage" @click="refreshCode" class="cursor-pointer h-10" />
+    </div>
+    <el-button @click="login" type="primary" class="w-full" size="large">登录</el-button>
+  </el-form>
 </template>
