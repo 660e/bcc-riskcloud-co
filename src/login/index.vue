@@ -6,7 +6,7 @@ import LoginMonitor from './components/monitor.vue';
 import LoginPhone from './components/phone.vue';
 
 const title = import.meta.env.VITE_GLOB_APP_TITLE;
-const usePhone = ref(true);
+const usePhone = ref(false);
 </script>
 
 <template>
