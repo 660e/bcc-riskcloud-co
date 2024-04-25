@@ -3,9 +3,10 @@ import { ref } from 'vue';
 import { Monitor, Iphone } from '@element-plus/icons-vue';
 import loginImage from '@/assets/images/login.jpg';
 import LoginMonitor from './components/monitor.vue';
+import LoginPhone from './components/phone.vue';
 
 const title = import.meta.env.VITE_GLOB_APP_TITLE;
-const usePhone = ref(false);
+const usePhone = ref(true);
 </script>
 
 <template>
@@ -28,7 +29,8 @@ const usePhone = ref(false);
             </div>
           </el-tooltip>
 
-          <login-monitor v-if="!usePhone" />
+          <login-phone v-show="usePhone" />
+          <login-monitor v-show="!usePhone" />
         </div>
       </div>
     </div>

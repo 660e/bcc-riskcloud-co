@@ -65,7 +65,7 @@ onMounted(() => refreshCode());
       <el-input v-model="forms.password" :prefix-icon="Lock" placeholder="密码" size="large" type="password" show-password />
     </el-form-item>
     <div class="flex space-x-5">
-      <el-form-item prop="code" class="flex-1">
+      <el-form-item prop="code" class="flex-1" style="margin-bottom: 0">
         <el-input v-model="forms.code" :prefix-icon="FullScreen" placeholder="验证码" size="large" />
       </el-form-item>
       <el-image :src="codeImage" @click="refreshCode" class="cursor-pointer h-10" />
