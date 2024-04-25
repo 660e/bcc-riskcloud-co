@@ -1,4 +1,4 @@
-<script lang="ts" setup></script>
+<script lang="ts" name="company-duty" setup></script>
 
 <template>
   <div class="card h-full flex justify-center items-center">
