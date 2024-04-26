@@ -7,7 +7,9 @@ import { System } from '@/api/interface';
 import { LabelTooltip } from '@bcc/components';
 import IndustrySelectDialog from './dialogs/industry-select.vue';
 
+const options = reactive<{ [key: string]: System.Dict[] }>({});
 onMounted(async () => {
+  options.companyType = (await getDictDataType('company_type')).data;
   options.companyIsCity = (await getDictDataType('company_is_city')).data;
   options.companyRoleId = (await getDictDataType('company_role_id')).data;
   options.searchCompanyKeywordType = (await getDictDataType('search_company_keyword_type')).data;
@@ -21,13 +23,20 @@ onMounted(async () => {
 const formsRef = ref<FormInstance>();
 const forms = ref<any>({
   // 单位类型
+  type: '0',
   isCity: '0',
   roleId: '16',
+  registeredAddress: '',
   parentName: '',
   county: '',
+  constructionCompanyName: '',
+  constructionCompanyAddress: '',
+  constructionAddress: '',
   officeName: '',
   standardization: 0,
   secondClass: [],
+  license: '',
+  expires: '',
 
   // 单位基本信息
   placeName: '',
@@ -51,9 +60,13 @@ const forms = ref<any>({
 const rules: FormRules = {
   // 单位类型
   parentName: [{ required: true, message: '请填写', trigger: 'blur' }],
+  registeredAddress: [{ required: true, message: '请填写', trigger: 'blur' }],
   county: [{ required: true, message: '请填写', trigger: 'blur' }],
+  constructionCompanyName: [{ required: true, message: '请填写', trigger: 'blur' }],
   officeName: [{ required: true, message: '请填写', trigger: 'blur' }],
   standardization: [{ required: true, message: '请填写', trigger: 'blur' }],
+  license: [{ required: true, message: '请填写', trigger: 'blur' }],
+  expires: [{ required: true, message: '请填写', trigger: 'blur' }],
 
   // 单位基本信息
   placeName: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -75,17 +88,6 @@ const ui = reactive({
   keyword: '',
   codeType: '0',
   code: ''
-});
-
-const options = reactive<{ [key: string]: System.Dict[] }>({
-  isCity: [],
-  roleId: [],
-  keywordsType: [],
-  companyCodeType: [],
-  yesNo: [],
-  companyIdentity: [],
-
-  parentName: []
 });
 
 const remoteMethod = async (query: string) => {
@@ -115,6 +117,11 @@ const save = () => {
         <div class="c-subtitle-1">单位类型</div>
         <div>
           <div class="grid grid-cols-2">
+            <el-form-item label="单位类型" prop="type">
+              <el-radio-group v-model="forms.type">
+                <el-radio v-for="e in options.companyType" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
+            </el-form-item>
             <el-form-item label="直属关系" prop="isCity">
               <el-radio-group v-model="forms.isCity">
                 <el-radio v-for="e in options.companyIsCity" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
@@ -128,8 +135,20 @@ const save = () => {
             <el-form-item label="上级单位名称" prop="parentName">
               <el-input v-model="forms.parentName" />
             </el-form-item>
+            <el-form-item label="注册地址" prop="registeredAddress">
+              <el-input v-model="forms.registeredAddress" />
+            </el-form-item>
             <el-form-item label="实际地址" prop="county">
               <el-input v-model="forms.county" />
+            </el-form-item>
+            <el-form-item label="施工单位名称" prop="constructionCompanyName">
+              <el-input v-model="forms.constructionCompanyName" />
+            </el-form-item>
+            <el-form-item label="施工单位地址" prop="constructionCompanyAddress">
+              <el-input v-model="forms.constructionCompanyAddress" />
+            </el-form-item>
+            <el-form-item label="项目实际地址" prop="constructionAddress">
+              <el-input v-model="forms.constructionAddress" />
             </el-form-item>
             <el-form-item label="行业管理部门" prop="officeName">
               <el-input v-model="forms.officeName" />
@@ -140,8 +159,14 @@ const save = () => {
               </template>
               <el-input v-model="forms.standardization" />
             </el-form-item>
+            <el-form-item label="企业证照" prop="license">
+              <el-input v-model="forms.license" />
+            </el-form-item>
+            <el-form-item label="证照有限期" prop="expires">
+              <el-date-picker v-model="forms.expires" type="date" style="width: 100%" />
+            </el-form-item>
           </div>
-          <el-form-item class="hidden">
+          <el-form-item>
             <template #label>
               <label-tooltip
                 label="确认上下级关系"
