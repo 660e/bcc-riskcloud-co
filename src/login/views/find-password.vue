@@ -1,5 +1,6 @@
 <script lang="ts" name="find-password" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
+import { LOGIN_URL } from '@/config';
 
 const active = ref(0);
 const forms = reactive({
@@ -7,6 +8,16 @@ const forms = reactive({
   password: '',
   checkPassword: '',
   code: ''
+});
+const disabled = computed(() => {
+  switch (active.value) {
+    case 0:
+      return !forms.username.trim();
+    case 1:
+      return !(forms.password && forms.checkPassword && forms.code && forms.password === forms.checkPassword);
+    default:
+      return true;
+  }
 });
 const next = () => {
   active.value++;
@@ -22,7 +33,7 @@ const next = () => {
         <el-step title="重置成功" />
       </el-steps>
 
-      <div class="space-y-5">
+      <div v-if="active < 2" class="space-y-5">
         <el-input v-model="forms.username" :readonly="active === 1" size="large">
           <template #prepend>
             <div class="w-20">手机号/邮箱</div>
@@ -30,12 +41,12 @@ const next = () => {
         </el-input>
 
         <template v-if="active === 1">
-          <el-input v-model="forms.password" size="large">
+          <el-input v-model="forms.password" size="large" type="password" show-password>
             <template #prepend>
               <div class="w-20">新密码</div>
             </template>
           </el-input>
-          <el-input v-model="forms.checkPassword" size="large">
+          <el-input v-model="forms.checkPassword" size="large" type="password" show-password>
             <template #prepend>
               <div class="w-20">确认密码</div>
             </template>
@@ -47,7 +58,15 @@ const next = () => {
           </el-input>
         </template>
 
-        <el-button :disabled="!forms.username" @click="next" type="primary" class="w-full" size="large">下一步</el-button>
+        <el-button :disabled="disabled" @click="next" type="primary" class="w-full" size="large">下一步</el-button>
+      </div>
+
+      <div v-else>
+        <el-result icon="success" title="重置成功" sub-title="请跳转至登录页面重新登录">
+          <template #extra>
+            <el-button @click="$router.push({ path: LOGIN_URL })" type="primary">登录</el-button>
+          </template>
+        </el-result>
       </div>
     </div>
   </div>

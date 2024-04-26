@@ -58,6 +58,12 @@ onUnmounted(() => {
       <el-button v-else @click="getCode(60)" size="large">获取验证码</el-button>
     </div>
     <div class="h-10"></div>
-    <el-button @click="login" type="primary" class="w-full" size="large">登录</el-button>
+    <div class="space-y-2">
+      <div class="flex justify-between">
+        <div></div>
+        <el-button @click="$router.push({ name: 'find-password' })" type="primary" link>忘记密码</el-button>
+      </div>
+      <el-button @click="login" type="primary" class="w-full" size="large">登录</el-button>
+    </div>
   </el-form>
 </template>
