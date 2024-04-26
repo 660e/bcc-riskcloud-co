@@ -71,11 +71,14 @@ onMounted(() => refreshCode());
       <el-image :src="codeImage" @click="refreshCode" class="cursor-pointer h-10" />
     </div>
     <div class="space-y-2">
-      <div class="flex justify-between">
-        <div></div>
-        <el-button @click="$router.push({ name: 'find-password' })" type="primary" link>忘记密码</el-button>
-      </div>
       <el-button @click="login" type="primary" class="w-full" size="large">登录</el-button>
+      <div class="flex">
+        <span>忘记密码？</span>
+        <el-button @click="$router.push({ name: 'find-password' })" type="primary" link>立即找回</el-button>
+        <div class="flex-1"></div>
+        <span>没有账号？</span>
+        <el-button @click="$router.push({ name: 'register' })" type="primary" link>立即注册</el-button>
+      </div>
     </div>
   </el-form>
 </template>

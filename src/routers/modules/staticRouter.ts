@@ -20,7 +20,15 @@ export const staticRouter: RouteRecordRaw[] = [
     name: 'find-password',
     component: () => import('@/login/views/find-password.vue'),
     meta: {
-      title: '忘记密码'
+      title: '重置密码'
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/login/views/register.vue'),
+    meta: {
+      title: '注册'
     }
   },
   {

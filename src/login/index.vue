@@ -1,38 +1,62 @@
 <script lang="ts" name="login" setup>
 import { ref } from 'vue';
-import { Monitor, Iphone } from '@element-plus/icons-vue';
-import loginImage from '@/assets/images/login.jpg';
+import backgroundImage from '@/assets/images/login.jpg';
 import LoginMonitor from './components/monitor.vue';
 import LoginPhone from './components/phone.vue';
 
 const title = import.meta.env.VITE_GLOB_APP_TITLE;
-const usePhone = ref(false);
+const current = ref(1);
 </script>
 
 <template>
-  <div class="h-full flex justify-center items-center">
+  <div
+    class="h-screen overflow-hidden bg-cover flex justify-center items-center relative"
+    :style="{ backgroundImage: `url(${backgroundImage})` }"
+  >
     <div class="relative">
-      <div class="absolute bottom-full w-full text-center text-3xl pb-5">{{ title }}</div>
-      <div class="flex rounded overflow-hidden border border-gray-300 relative">
-        <el-image :src="loginImage" fit="cover" class="w-96" />
-
-        <div class="p-10 w-96 relative">
-          <el-tooltip :content="`使用${usePhone ? '账号密码' : '手机号'}登录`" placement="right">
-            <div
-              @click="usePhone = !usePhone"
-              class="w-10 h-10 absolute top-0 right-0 flex justify-center items-center cursor-pointer duration-300 hover:bg-gray-200"
-              style="clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0)"
-            >
-              <el-icon size="36px">
-                <component :is="usePhone ? Monitor : Iphone" />
-              </el-icon>
-            </div>
-          </el-tooltip>
-
-          <login-phone v-show="usePhone" />
-          <login-monitor v-show="!usePhone" />
+      <div class="w-screen absolute left-1/2 bottom-full -translate-x-1/2 flex justify-center text-4xl pb-10 text-white">
+        {{ title }}
+      </div>
+      <div class="bg-white rounded w-[420px] p-5">
+        <div class="_tabs">
+          <div :class="{ current: current === 0 }" @click="current = 0">验证码登录</div>
+          <div :class="{ current: current === 1 }" @click="current = 1">密码登录</div>
+        </div>
+        <div class="p-5">
+          <login-phone v-show="current === 0" />
+          <login-monitor v-show="current === 1" />
         </div>
       </div>
     </div>
+
+    <div class="w-full absolute left-0 bottom-5 flex justify-center space-x-5 text-white">
+      <span>建设单位：成都市应急管理局</span>
+      <span>技术支持：北京市计算中心有限公司</span>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+._tabs {
+  display: flex;
+  font-size: 16px;
+  & > div {
+    cursor: pointer;
+    margin-right: 20px;
+    &::after {
+      content: '';
+      display: block;
+      height: 3px;
+      width: 100%;
+      margin-top: 5px;
+      border-radius: 9999px;
+    }
+    &.current {
+      color: var(--el-color-primary);
+      &::after {
+        background-color: var(--el-color-primary);
+      }
+    }
+  }
+}
+</style>
