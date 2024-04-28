@@ -9,13 +9,13 @@ const $emit = defineEmits(['confirm']);
 const visible = ref(false);
 const formsRef = ref<FormInstance>();
 const forms = ref({
-  deptId: undefined,
-  deptName: '',
+  postId: undefined,
+  postName: '',
   status: '0',
   remark: ''
 });
 const rules: FormRules = {
-  deptName: [{ required: true, message: '请填写', trigger: 'blur' }]
+  postName: [{ required: true, message: '请填写', trigger: 'blur' }]
 };
 const statusOptions = ref();
 
@@ -26,18 +26,18 @@ const open = async (row: any) => {
   const response: any = await Promise.all([p0]);
   statusOptions.value = response[0].data;
 
-  if (row.deptId) {
+  if (row.postId) {
     forms.value = cloneDeep(row);
   }
 };
 const closed = () => {
   formsRef.value?.resetFields();
-  forms.value.deptId = undefined;
+  forms.value.postId = undefined;
 };
 const confirm = () => {
   formsRef.value?.validate(async valid => {
     if (valid) {
-      const { msg } = forms.value.deptId ? await editUser(forms.value) : await createUser(forms.value);
+      const { msg } = forms.value.postId ? await editUser(forms.value) : await createUser(forms.value);
       $emit('confirm');
       ElMessage.success(msg);
       visible.value = false;
@@ -49,10 +49,10 @@ defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :title="forms.deptId ? '编辑' : '新增'" @closed="closed" width="500">
+  <el-dialog v-model="visible" :title="forms.postId ? '编辑' : '新增'" @closed="closed" width="500">
     <el-form :model="forms" :rules="rules" label-width="100" ref="formsRef" class="px-5 pt-5">
-      <el-form-item label="名称" prop="deptName">
-        <el-input v-model="forms.deptName" maxlength="30" />
+      <el-form-item label="名称" prop="postName">
+        <el-input v-model="forms.postName" maxlength="30" />
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="forms.status">
