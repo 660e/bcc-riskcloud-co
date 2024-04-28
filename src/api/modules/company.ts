@@ -30,19 +30,24 @@ export function getDept() {
   return http.get<any>('/mock/co/company/dept');
 }
 
+// 创建项目
+export function addItem(params: any) {
+  return http.post('/mock/co/common/item', params);
+}
+
 // 删除项目
 export function deleteItem(ids: string[]) {
   return http.delete(`/mock/co/common/item?ids=${ids}`);
 }
 
-//
-//
-//
-
-// 获取部门、岗位、人员列表
-export function getList(params: any) {
-  return http.get('/mock/co/company/list', params);
+// 编辑项目
+export function updateItem(params: any) {
+  return http.put('/mock/co/common/item', params);
 }
+
+//
+//
+//
 
 // 获取公司所属行业领域列表
 export function getCompanyIndustry() {
