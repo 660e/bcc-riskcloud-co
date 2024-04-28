@@ -30,6 +30,16 @@ export function getDept() {
   return http.get<any>('/mock/co/company/dept');
 }
 
+// 岗位管理
+export function getPost() {
+  return http.get<any>('/mock/co/company/post');
+}
+
+// 人员管理
+export function getStaff() {
+  return http.get<any>('/mock/co/company/staff');
+}
+
 // 创建项目
 export function addItem(params: any) {
   return http.post('/mock/co/common/item', params);

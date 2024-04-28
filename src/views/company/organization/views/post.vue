@@ -1,35 +1,35 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { deleteItem } from '@/api/modules/company';
-import { getEmergencyEquipment } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
-
-import CreatePostDialog from '../dialogs/create-post.vue';
+import { deleteItem, getCompanyDeptTree, getPost } from '@/api/modules/company';
+import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
+import CreatePostDialog from '../dialogs/create-post.vue';
+
+const postId = ref('1');
+const postIdChange = (value: string) => {
+  postId.value = value;
+  tableRef.value.search(tableRef.value.pageable?.pageNum);
+  tableRef.value.clearSelection();
+};
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
-  { prop: 'type', label: '装备类型' },
-  { prop: 'name', label: '装备名称' },
-  { prop: 'specification', label: '规格型号' },
-  { prop: 'num', label: '数量' },
-  { prop: 'source', label: '来源' },
-  { prop: 'state', label: '完好情况' },
-  { prop: 'func', label: '主要功能' },
-  { prop: 'location', label: '存放场所' },
-  { prop: 'chief', label: '负责人' },
-  { prop: 'phone', label: '联系电话' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'postName', label: '岗位名称', search: { el: 'input' } },
+  { prop: 'dept', label: '所属部门' },
+  { prop: 'parentDept', label: '上级岗位' },
+  { prop: 'status', label: '岗位状态' },
+  { prop: 'operation', label: '操作', width: 120 }
 ];
 
 const createPostDialogRef = ref();
 const create = (row: any = {}) => createPostDialogRef.value.open(row);
 
 const remove = (row: any) => {
-  const name = row.id ? `“${row.name}”` : '';
-  const ids = row.id ? [row.id] : tableRef.value.selectedListIds;
+  const name = row.postId ? `“${row.postName}”` : '';
+  const ids = row.postId ? [row.postId] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await deleteItem(ids.join(','));
@@ -43,17 +43,23 @@ const remove = (row: any) => {
 
 <template>
   <el-tab-pane>
-    <pro-table :columns="columns" :request-api="getEmergencyEquipment" ref="tableRef" row-key="id">
-      <template #tableHeader>
-        <el-button @click="create" type="primary">新增</el-button>
-        <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
-      </template>
-      <template #operation="scope">
-        <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
-      </template>
-    </pro-table>
+    <div class="h-full flex">
+      <tree-filter :request-api="getCompanyDeptTree" @change="postIdChange" class="h-full" style="padding: 0 0 10px 10px" />
+      <div class="flex-1 flex flex-col">
+        <pro-table :columns="columns" :request-api="getPost" ref="tableRef" row-key="postId">
+          <template #tableHeader>
+            <el-button @click="create" type="primary">新增</el-button>
+            <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
+          </template>
+          <template #operation="scope">
+            <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
+            <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+          </template>
+        </pro-table>
+      </div>
 
-    <!-- 新增 -->
-    <create-post-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createPostDialogRef" />
+      <!-- 新增 -->
+      <create-post-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createPostDialogRef" />
+    </div>
   </el-tab-pane>
 </template>
