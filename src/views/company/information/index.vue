@@ -55,7 +55,10 @@ const forms = ref<any>({
   registeredcapital: 0,
   chengliriqi: '',
   sfssc: '0',
-  zRole: '1'
+  zRole: '1',
+  gas: '0',
+  dangerousChemicals: '0',
+  finiteSpace: '0'
 });
 const rules: FormRules = {
   // 单位类型
@@ -70,6 +73,8 @@ const rules: FormRules = {
 
   // 单位基本信息
   placeName: [{ required: true, message: '请填写', trigger: 'blur' }],
+  chengliriqi: [{ required: true, message: '请选择', trigger: 'change' }],
+  mainBusiness: [{ required: true, message: '请填写', trigger: 'blur' }],
   renzongshu: [{ required: true, message: '请填写', trigger: 'blur' }],
   dishang: [{ required: true, message: '请填写', trigger: 'blur' }],
   dxmj: [{ required: true, message: '请填写', trigger: 'blur' }],
@@ -80,8 +85,7 @@ const rules: FormRules = {
   legalmobile: [{ required: true, message: '请填写', trigger: 'blur' }],
   qyprincipalname: [{ required: true, message: '请填写', trigger: 'blur' }],
   qyprincipalmobile: [{ required: true, message: '请填写', trigger: 'blur' }],
-  registeredcapital: [{ required: true, message: '请填写', trigger: 'blur' }],
-  chengliriqi: [{ required: true, message: '请选择', trigger: 'change' }]
+  registeredcapital: [{ required: true, message: '请填写', trigger: 'blur' }]
 };
 const ui = reactive({
   keywordType: '1',
@@ -203,6 +207,9 @@ const save = () => {
             <el-form-item label="单位名称" prop="placeName">
               <el-input v-model="forms.placeName" />
             </el-form-item>
+            <el-form-item label="成立日期" prop="chengliriqi">
+              <el-date-picker v-model="forms.chengliriqi" type="date" style="width: 100%" />
+            </el-form-item>
             <el-form-item label="单位代码">
               <el-input v-model="ui.code">
                 <template #prepend>
@@ -216,6 +223,21 @@ const save = () => {
                   </el-select>
                 </template>
               </el-input>
+            </el-form-item>
+            <el-form-item label="主营业务" prop="mainBusiness">
+              <el-input v-model="forms.mainBusiness" />
+            </el-form-item>
+            <el-form-item label="法定代表人" prop="legalname">
+              <el-input v-model="forms.legalname" />
+            </el-form-item>
+            <el-form-item label="法定代表人电话" prop="legalmobile">
+              <el-input v-model="forms.legalmobile" />
+            </el-form-item>
+            <el-form-item label="单位负责人" prop="qyprincipalname">
+              <el-input v-model="forms.qyprincipalname" />
+            </el-form-item>
+            <el-form-item label="单位负责人电话" prop="qyprincipalmobile">
+              <el-input v-model="forms.qyprincipalmobile" />
             </el-form-item>
             <el-form-item label="从业人数" prop="renzongshu">
               <el-input v-model="forms.renzongshu">
@@ -247,34 +269,34 @@ const save = () => {
                 <template #append>万元</template>
               </el-input>
             </el-form-item>
-            <el-form-item label="法定代表人" prop="legalname">
-              <el-input v-model="forms.legalname" />
-            </el-form-item>
-            <el-form-item label="法定代表人电话" prop="legalmobile">
-              <el-input v-model="forms.legalmobile" />
-            </el-form-item>
-            <el-form-item label="单位负责人" prop="qyprincipalname">
-              <el-input v-model="forms.qyprincipalname" />
-            </el-form-item>
-            <el-form-item label="单位负责人电话" prop="qyprincipalmobile">
-              <el-input v-model="forms.qyprincipalmobile" />
-            </el-form-item>
             <el-form-item label="注册资本" prop="registeredcapital">
               <el-input v-model="forms.registeredcapital">
                 <template #append>万元</template>
               </el-input>
-            </el-form-item>
-            <el-form-item label="成立日期" prop="chengliriqi">
-              <el-date-picker v-model="forms.chengliriqi" type="date" style="width: 100%" />
             </el-form-item>
             <el-form-item label="是否位于综合楼宇" prop="sfssc">
               <el-radio-group v-model="forms.sfssc">
                 <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="身份" prop="zRole">
+            <el-form-item label="楼宇权属角色" prop="zRole">
               <el-radio-group v-model="forms.zRole">
                 <el-radio v-for="e in options.companyIdentity" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="是否涉及使用燃气" prop="gas">
+              <el-radio-group v-model="forms.gas">
+                <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="是否涉及化学危险品" prop="dangerousChemicals">
+              <el-radio-group v-model="forms.dangerousChemicals">
+                <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="是否涉及有限空间" prop="finiteSpace">
+              <el-radio-group v-model="forms.finiteSpace">
+                <el-radio v-for="e in options.yesNo" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
               </el-radio-group>
             </el-form-item>
           </div>
