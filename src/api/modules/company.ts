@@ -1,6 +1,6 @@
 import http from '@/api';
 
-// 获取基本信息
+// 单位基本信息
 export function getCompanyInfo() {
   return http.get<any>('/mock/co/company/info');
 }
@@ -9,6 +9,20 @@ export function getCompanyInfo() {
 export function getCompanyListById(q: string, t: string) {
   return http.get<any>('/mock/co/company/query', { q, t });
 }
+
+// 周边敏感目标
+export function getCompanySensitive() {
+  return http.get<any>('/mock/co/company/sensitive');
+}
+
+// 周边敏感目标单位信息
+export function getCompanySensitiveInfo() {
+  return http.get<any>('/mock/co/company/sensitive/info');
+}
+
+//
+//
+//
 
 // 删除部门、岗位、人员
 export function deleteItem(id: string) {

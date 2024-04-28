@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { MapClass, TDT } from '@bcc/utils';
 import { getDictDataType } from '@/api/modules/system';
+import { getCompanySensitive, getCompanySensitiveInfo } from '@/api/modules/company';
 import { System } from '@/api/interface';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import CreateDialog from './dialogs/create.vue';
@@ -44,21 +45,8 @@ const contextMenu: TDT.MenuItem[] = [
 ];
 
 onMounted(async () => {
-  companyInformation.value = {
-    lnglat: [116.22874, 40.07758],
-    radius: 200,
-    targets: [
-      { id: 1, label: 'Target-001', lnglat: [116.22685, 40.07829] },
-      { id: 2, label: 'Target-002', lnglat: [116.22733, 40.07677] }
-    ]
-  };
-  targets.value = [
-    { id: 1, label: 'Target-001', lnglat: [116.22685, 40.07829] },
-    { id: 2, label: 'Target-002', lnglat: [116.22733, 40.07677] },
-    { id: 3, label: 'Target-003', lnglat: [116.22988, 40.07792] },
-    { id: 4, label: 'Target-004', lnglat: [116.22924, 40.07646] }
-  ];
-
+  companyInformation.value = (await getCompanySensitiveInfo()).data;
+  targets.value = (await getCompanySensitive()).data;
   range.value = companyInformation.value.radius;
   rangeCache = range.value;
   rangeCircle = MapUtils.Circle(companyInformation.value.lnglat, rangeCache, { weight: 1 });
