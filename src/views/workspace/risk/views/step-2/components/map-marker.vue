@@ -94,7 +94,7 @@ defineExpose({ init });
 </script>
 
 <template>
-  <el-tab-pane v-bind="$attrs">
+  <el-tab-pane>
     <div class="w-72 flex">
       <div class="flex-1 flex flex-col">
         <div class="flex-1 overflow-y-auto">

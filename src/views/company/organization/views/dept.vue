@@ -49,7 +49,7 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <el-tab-pane v-bind="$attrs">
+  <el-tab-pane>
     <div class="flex">
       <tree-filter
         label="name"

@@ -58,7 +58,7 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <el-tab-pane v-bind="$attrs">
+  <el-tab-pane>
     <pro-table :columns="columns" :request-api="getEmergencyExpert" ref="tableRef" row-key="id">
       <template #tableHeader>
         <el-button @click="create" type="primary">新增</el-button>
