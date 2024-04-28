@@ -20,14 +20,24 @@ export function getCompanySensitiveInfo() {
   return http.get<any>('/mock/co/company/sensitive/info');
 }
 
-//
-//
-//
-
-// 删除部门、岗位、人员
-export function deleteItem(id: string) {
-  return http.delete(`/mock/co/company/list/${id}`);
+// 部门列表（树结构）
+export function getCompanyDeptTree() {
+  return http.get<any>('/mock/co/company/dept/tree');
 }
+
+// 部门管理
+export function getDept() {
+  return http.get<any>('/mock/co/company/dept');
+}
+
+// 删除项目
+export function deleteItem(ids: string[]) {
+  return http.delete(`/mock/co/common/item?ids=${ids}`);
+}
+
+//
+//
+//
 
 // 获取部门、岗位、人员列表
 export function getList(params: any) {
