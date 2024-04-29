@@ -25,7 +25,7 @@ const options = reactive<{ [key: string]: System.Dict[] }>({});
 const open = async (row: any) => {
   visible.value = true;
 
-  const p0 = getDictDataType('enable_disable');
+  const p0 = getDictDataType('yes_no');
   const response: any = await Promise.all([p0]);
   options.status = response[0].data;
 

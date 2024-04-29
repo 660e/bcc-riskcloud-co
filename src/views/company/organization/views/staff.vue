@@ -7,6 +7,7 @@ import { deleteItem, getCompanyDeptTree, getStaff } from '@/api/modules/company'
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 import CreateStaffDialog from '../dialogs/create-staff.vue';
+import DetailStaffDialog from '../dialogs/detail-staff.vue';
 
 const staffId = ref('1');
 const staffIdChange = (value: string) => {
@@ -28,11 +29,14 @@ const columns: ColumnProps[] = [
     enum: () => getDictDataType('yes_no'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' }
   },
-  { prop: 'operation', label: '操作', width: 120 }
+  { prop: 'operation', label: '操作', width: 180 }
 ];
 
 const createStaffDialogRef = ref();
 const create = (row: any = {}) => createStaffDialogRef.value.open(row);
+
+const detailStaffDialogRef = ref();
+const detail = (row: any) => detailStaffDialogRef.value.open(row);
 
 const remove = (row: any) => {
   const name = row.staffId ? `“${row.staffName}”` : '';
@@ -59,6 +63,7 @@ const remove = (row: any) => {
             <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
           </template>
           <template #operation="scope">
+            <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
             <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
             <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
           </template>
@@ -67,6 +72,8 @@ const remove = (row: any) => {
 
       <!-- 新增 -->
       <create-staff-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createStaffDialogRef" />
+      <!-- 详情 -->
+      <detail-staff-dialog ref="detailStaffDialogRef" />
     </div>
   </el-tab-pane>
 </template>
