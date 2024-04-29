@@ -23,13 +23,17 @@ const columns: ColumnProps[] = [
   { prop: 'allSource', label: '总得分' },
   { prop: 'operation', label: '操作', width: 100 }
 ];
+
 const tabs = [
   { label: '当前隐患', value: 0 },
   { label: '历史隐患', value: 1 }
 ];
-
 const tabChange = (value: number) => {
   console.log(value);
+};
+
+const create = () => {
+  console.log('create');
 };
 
 const detailDialogRef = ref();
@@ -39,6 +43,9 @@ const detail = (row: any) => detailDialogRef.value.open(row);
 <template>
   <div class="h-full flex flex-col">
     <pro-table :columns="columns" :request-api="getWorkspaceOnline" ref="tableRef" row-key="id">
+      <template #tableHeader>
+        <el-button @click="create" type="primary">新增</el-button>
+      </template>
       <template #tabs>
         <simple-tabs :tabs="tabs" @change="tabChange" />
       </template>
