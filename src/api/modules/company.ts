@@ -55,11 +55,12 @@ export function updateItem(params: any) {
   return http.put('/mock/co/common/item', params);
 }
 
-//
-//
-//
+// 复制项目
+export function copyItem(id: string) {
+  return http.get('/mock/co/common/item', { params: { id } });
+}
 
-// 获取公司所属行业领域列表
+// 公司所属行业领域
 export function getCompanyIndustry() {
   return http.get<any>('/mock/co/company/industry');
 }

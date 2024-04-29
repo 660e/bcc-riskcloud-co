@@ -3,12 +3,12 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { getDictDataType } from '@/api/modules/system';
-import { deleteItem, getCompanyIndustry } from '@/api/modules/company';
+import { deleteItem, copyItem, getCompanyIndustry } from '@/api/modules/company';
 import { getRiskByIndustryId } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog } from '@bcc/components';
-import RisksDialog from '../../dialogs/risks.vue';
+import RisksDialog from './dialogs/risks.vue';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
@@ -18,12 +18,11 @@ const tableRef = ref();
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
   { prop: 'sourceName', label: '风险源' },
-  { prop: 'deptId', label: '风险类型' },
+  { prop: 'riskType', label: '风险类型' },
   {
     prop: 'levelName',
     label: '风险等级',
     enum: () => getDictDataType('risk_level_name'),
-    search: { el: 'select' },
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
     width: 100
   },
@@ -31,7 +30,6 @@ const columns: ColumnProps[] = [
     prop: 'statusFlag',
     label: '状态',
     enum: () => getDictDataType('assess_status'),
-    search: { el: 'select' },
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
     width: 100
   },
@@ -72,7 +70,7 @@ const assess = (row: any) => $router.push({ name: 'risk-assess', params: { id: r
 const copy = (row: any) => {
   ElMessageBox.confirm(`是否复制${row.sourceName}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteItem(row.id);
+      const { msg } = await copyItem(row.id);
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
