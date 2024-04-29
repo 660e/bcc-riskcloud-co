@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { getWorkspaceOnline } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 
+import { SimpleTabs } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 import DetailDialog from './dialogs/detail.vue';
 
@@ -22,6 +23,14 @@ const columns: ColumnProps[] = [
   { prop: 'allSource', label: '总得分' },
   { prop: 'operation', label: '操作', width: 100 }
 ];
+const tabs = [
+  { label: '当前隐患', value: 0 },
+  { label: '历史隐患', value: 1 }
+];
+
+const tabChange = (value: number) => {
+  console.log(value);
+};
 
 const detailDialogRef = ref();
 const detail = (row: any) => detailDialogRef.value.open(row);
@@ -30,6 +39,9 @@ const detail = (row: any) => detailDialogRef.value.open(row);
 <template>
   <div class="h-full flex flex-col">
     <pro-table :columns="columns" :request-api="getWorkspaceOnline" ref="tableRef" row-key="id">
+      <template #tabs>
+        <simple-tabs :tabs="tabs" @change="tabChange" />
+      </template>
       <template #operation="scope">
         <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
       </template>
