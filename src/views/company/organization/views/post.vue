@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
+import { getDictDataType } from '@/api/modules/system';
 import { deleteItem, getCompanyDeptTree, getPost } from '@/api/modules/company';
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
@@ -20,7 +21,12 @@ const columns: ColumnProps[] = [
   { prop: 'postName', label: '岗位名称', search: { el: 'input' } },
   { prop: 'dept', label: '所属部门' },
   { prop: 'parentDept', label: '上级岗位' },
-  { prop: 'status', label: '岗位状态' },
+  {
+    prop: 'status',
+    label: '岗位状态',
+    enum: () => getDictDataType('enable_disable'),
+    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+  },
   { prop: 'operation', label: '操作', width: 120 }
 ];
 

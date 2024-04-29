@@ -5,7 +5,7 @@ import DeptComponent from './views/dept.vue';
 import PostComponent from './views/post.vue';
 import StaffComponent from './views/staff.vue';
 
-const active = ref(2);
+const active = ref(0);
 </script>
 
 <template>

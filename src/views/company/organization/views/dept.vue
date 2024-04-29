@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
+import { getDictDataType } from '@/api/modules/system';
 import { deleteItem, getCompanyDeptTree, getDept } from '@/api/modules/company';
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
@@ -19,7 +20,12 @@ const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
   { prop: 'deptName', label: '部门名称', search: { el: 'input' } },
   { prop: 'sort', label: '排序' },
-  { prop: 'status', label: '部门状态' },
+  {
+    prop: 'status',
+    label: '部门状态',
+    enum: () => getDictDataType('enable_disable'),
+    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+  },
   { prop: 'createTime', label: '创建时间' },
   { prop: 'disableTime', label: '停用时间' },
   { prop: 'operation', label: '操作', width: 120 }

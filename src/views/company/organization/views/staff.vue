@@ -2,14 +2,15 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
-import { deleteItem, getCompanyDeptTree, getDept } from '@/api/modules/company';
+import { getDictDataType } from '@/api/modules/system';
+import { deleteItem, getCompanyDeptTree, getStaff } from '@/api/modules/company';
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
-import CreateDeptDialog from '../dialogs/create-dept.vue';
+import CreateStaffDialog from '../dialogs/create-staff.vue';
 
-const deptId = ref('1');
-const deptIdChange = (value: string) => {
-  deptId.value = value;
+const staffId = ref('1');
+const staffIdChange = (value: string) => {
+  staffId.value = value;
   tableRef.value.search(tableRef.value.pageable?.pageNum);
   tableRef.value.clearSelection();
 };
@@ -17,20 +18,25 @@ const deptIdChange = (value: string) => {
 const tableRef = ref();
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
-  { prop: 'deptName', label: '部门名称', search: { el: 'input' } },
-  { prop: 'sort', label: '排序' },
-  { prop: 'status', label: '部门状态' },
-  { prop: 'createTime', label: '创建时间' },
-  { prop: 'disableTime', label: '停用时间' },
+  { prop: 'staffName', label: '人员姓名', search: { el: 'input' } },
+  { prop: 'phone', label: '联系电话' },
+  { prop: 'dept', label: '所属部门' },
+  { prop: 'post', label: '所属岗位' },
+  {
+    prop: 'manager',
+    label: '是否为企业负责人',
+    enum: () => getDictDataType('yes_no'),
+    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+  },
   { prop: 'operation', label: '操作', width: 120 }
 ];
 
-const createDeptDialogRef = ref();
-const create = (row: any = {}) => createDeptDialogRef.value.open(row);
+const createStaffDialogRef = ref();
+const create = (row: any = {}) => createStaffDialogRef.value.open(row);
 
 const remove = (row: any) => {
-  const name = row.deptId ? `“${row.deptName}”` : '';
-  const ids = row.deptId ? [row.deptId] : tableRef.value.selectedListIds;
+  const name = row.staffId ? `“${row.staffName}”` : '';
+  const ids = row.staffId ? [row.staffId] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
       const { msg } = await deleteItem(ids.join(','));
@@ -45,9 +51,9 @@ const remove = (row: any) => {
 <template>
   <el-tab-pane>
     <div class="h-full flex">
-      <tree-filter :request-api="getCompanyDeptTree" @change="deptIdChange" class="h-full" style="padding: 0 0 10px 10px" />
+      <tree-filter :request-api="getCompanyDeptTree" @change="staffIdChange" class="h-full" style="padding: 0 0 10px 10px" />
       <div class="flex-1 flex flex-col">
-        <pro-table :columns="columns" :request-api="getDept" ref="tableRef" row-key="deptId">
+        <pro-table :columns="columns" :request-api="getStaff" ref="tableRef" row-key="staffId">
           <template #tableHeader>
             <el-button @click="create" type="primary">新增</el-button>
             <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
@@ -60,7 +66,7 @@ const remove = (row: any) => {
       </div>
 
       <!-- 新增 -->
-      <create-dept-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createDeptDialogRef" />
+      <create-staff-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createStaffDialogRef" />
     </div>
   </el-tab-pane>
 </template>
