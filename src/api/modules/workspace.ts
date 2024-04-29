@@ -11,6 +11,26 @@ export function getRisks() {
   return http.get<any>('/mock/co/workspace/risks');
 }
 
+// 重大风险源判断条件
+export function getMajors() {
+  return http.get<any>('/mock/co/workspace/risk/majors');
+}
+
+// 可能性分析
+export function getPossibility() {
+  return http.get<any>('/mock/co/workspace/risk/possibility');
+}
+
+// 严重性分析
+export function getSeverity() {
+  return http.get<any>('/mock/co/workspace/risk/severity');
+}
+
+// 计算风险等级
+export function calcRiskGrade() {
+  return http.get<number[]>('/mock/co/workspace/calc-risk-grade');
+}
+
 //
 //
 //
@@ -28,26 +48,6 @@ export function getWorkspaceStatistics() {
 // 获取线上核查结果
 export function getWorkspaceOnline() {
   return http.get('/mock/co/workspace/online');
-}
-
-// 获取重大风险源列表
-export function getMajors() {
-  return http.get<any>('/mock/co/workspace/risk/majors');
-}
-
-// 获取可能性分析列表
-export function getPossibility() {
-  return http.get<any>('/mock/co/workspace/risk/possibility');
-}
-
-// 获取严重性分析列表
-export function getSeverity() {
-  return http.get<any>('/mock/co/workspace/risk/severity');
-}
-
-// 计算风险等级
-export function calcRiskGrade() {
-  return http.get<number[]>('/mock/co/workspace/calc-risk-grade');
 }
 
 // 获取标注用风险源列表
