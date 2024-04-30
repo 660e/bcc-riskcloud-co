@@ -107,7 +107,7 @@ const remove = (row: any) => {
         :name="industry.id"
       />
     </el-tabs>
-    <div class="pro-table--no-card">
+    <div class="no-card flex-1 pt-2.5">
       <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
         <template #tableHeader>
           <el-button @click="risks" type="primary">新增</el-button>

@@ -22,7 +22,7 @@ defineExpose({ open });
 
 <template>
   <el-dialog v-model="visible" title="历史风险列表" width="1200">
-    <div class="pro-table--no-card">
+    <div class="no-card pt-2.5">
       <pro-table :columns="columns" :request-api="getWorkspaceLog" :tool-button="false" />
     </div>
     <template #footer>

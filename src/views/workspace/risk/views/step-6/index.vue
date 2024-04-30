@@ -29,7 +29,7 @@ const download = (row: any) => {
 </script>
 
 <template>
-  <pro-table :columns="columns" :data="data" :pagination="false" class="flex-1">
+  <pro-table :columns="columns" :data="data" :pagination="false">
     <template #tableHeader>
       <el-button @click="generate" type="primary">生成汇总报告</el-button>
     </template>

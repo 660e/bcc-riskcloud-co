@@ -8,7 +8,7 @@ import ReportComponent from './views/report.vue';
 </script>
 
 <template>
-  <el-tabs type="border-card" class="h-full tab-content-flex">
+  <el-tabs type="border-card" class="h-full tabs-flex no-card">
     <company-component label="单位信息汇总" lazy />
     <risk-component label="风险源列表" lazy />
     <grading-component label="单位诊断分级列表" lazy />

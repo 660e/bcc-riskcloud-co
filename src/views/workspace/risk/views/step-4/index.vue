@@ -10,16 +10,10 @@ const active = ref(0);
 </script>
 
 <template>
-  <div class="card flex-1">
-    <el-tabs v-model="active" type="border-card" class="workspace__risk__step__tabs--full">
-      <emergency-team :name="0" label="应急队伍" class="pro-table--no-card h-full flex" />
-      <emergency-expert :name="1" label="应急专家" class="pro-table--no-card h-full flex" />
-      <emergency-equipment :name="2" label="应急装备" class="pro-table--no-card h-full flex" />
-      <emergency-supply :name="3" label="应急物资" class="pro-table--no-card h-full flex" />
-    </el-tabs>
-  </div>
+  <el-tabs v-model="active" type="border-card" class="flex-1 tabs-flex no-card">
+    <emergency-team :name="0" label="应急队伍" class="h-full" lazy />
+    <emergency-expert :name="1" label="应急专家" class="h-full" lazy />
+    <emergency-equipment :name="2" label="应急装备" class="h-full" lazy />
+    <emergency-supply :name="3" label="应急物资" class="h-full" lazy />
+  </el-tabs>
 </template>
-
-<style lang="scss" scoped>
-@import '../index.scss';
-</style>

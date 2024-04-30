@@ -10,8 +10,8 @@ const active = ref(0);
 
 <template>
   <el-tabs v-model="active" type="border-card" class="h-full tabs-flex no-card">
-    <dept-component :name="0" label="部门管理" class="h-full" lazy />
-    <post-component :name="1" label="岗位管理" class="h-full" lazy />
-    <staff-component :name="2" label="人员管理" class="h-full" lazy />
+    <dept-component :name="0" label="部门管理" lazy />
+    <post-component :name="1" label="岗位管理" lazy />
+    <staff-component :name="2" label="人员管理" lazy />
   </el-tabs>
 </template>

@@ -53,27 +53,25 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <el-tab-pane>
-    <div class="h-full flex">
-      <tree-filter :request-api="getCompanyDeptTree" @change="staffIdChange" class="h-full" />
-      <div class="flex-1 flex flex-col pt-2.5">
-        <pro-table :columns="columns" :request-api="getStaff" ref="tableRef" row-key="staffId">
-          <template #tableHeader>
-            <el-button @click="create" type="primary">新增</el-button>
-            <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
-          </template>
-          <template #operation="scope">
-            <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
-            <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
-            <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
-          </template>
-        </pro-table>
-      </div>
-
-      <!-- 新增 -->
-      <create-staff-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createStaffDialogRef" />
-      <!-- 详情 -->
-      <detail-staff-dialog ref="detailStaffDialogRef" />
+  <el-tab-pane class="h-full flex">
+    <tree-filter :request-api="getCompanyDeptTree" @change="staffIdChange" />
+    <div class="flex-1 flex flex-col pt-2.5">
+      <pro-table :columns="columns" :request-api="getStaff" ref="tableRef" row-key="staffId">
+        <template #tableHeader>
+          <el-button @click="create" type="primary">新增</el-button>
+          <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
+        </template>
+        <template #operation="scope">
+          <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
+          <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
+          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+        </template>
+      </pro-table>
     </div>
+
+    <!-- 新增 -->
+    <create-staff-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createStaffDialogRef" />
+    <!-- 详情 -->
+    <detail-staff-dialog ref="detailStaffDialogRef" />
   </el-tab-pane>
 </template>

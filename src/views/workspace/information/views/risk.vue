@@ -36,7 +36,7 @@ const view = (row: any) => riskDetailsDialogRef.value.open(row);
 </script>
 
 <template>
-  <el-tab-pane class="h-full pro-table--no-card">
+  <el-tab-pane class="h-full flex flex-col pt-2.5">
     <pro-table :columns="columns" :request-api="getInformationRisk" ref="tableRef" row-key="id">
       <template #tableHeader>
         <div class="flex items-center space-x-2.5">

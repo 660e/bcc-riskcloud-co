@@ -60,7 +60,7 @@ const supply = (row: any) => supplyDialogRef.value.open(row);
 </script>
 
 <template>
-  <el-tab-pane class="h-full pro-table--no-card">
+  <el-tab-pane class="h-full flex flex-col pt-2.5">
     <pro-table :columns="columns" :request-api="getInformationResource" />
 
     <!-- 应急队伍 -->
