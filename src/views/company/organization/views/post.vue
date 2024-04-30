@@ -50,8 +50,8 @@ const remove = (row: any) => {
 <template>
   <el-tab-pane>
     <div class="h-full flex">
-      <tree-filter :request-api="getCompanyDeptTree" @change="postIdChange" class="h-full" style="padding: 0 0 10px 10px" />
-      <div class="flex-1 flex flex-col">
+      <tree-filter :request-api="getCompanyDeptTree" @change="postIdChange" class="h-full" />
+      <div class="flex-1 flex flex-col pt-2.5">
         <pro-table :columns="columns" :request-api="getPost" ref="tableRef" row-key="postId">
           <template #tableHeader>
             <el-button @click="create" type="primary">新增</el-button>
