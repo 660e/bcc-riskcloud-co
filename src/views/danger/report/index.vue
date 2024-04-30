@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue';
 import { getDangerReport } from '@/api/modules/danger';
 import { getDictDataType } from '@/api/modules/system';
@@ -15,7 +15,17 @@ const columns: ColumnProps[] = [
     label: '隐患状态',
     search: { el: 'select' },
     enum: () => getDictDataType('danger_status'),
-    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    render: scope => {
+      switch (scope.row.status) {
+        case '0':
+          return <el-tag type='success'>整改中</el-tag>;
+        case '1':
+          return <el-tag type='danger'>超期未整改</el-tag>;
+        case '2':
+          return <el-tag type='primary'>已整改</el-tag>;
+      }
+    }
   },
   {
     prop: 'type',
