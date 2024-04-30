@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { getDictDataType } from '@/api/modules/system';
-import { getInformationRisk } from '@/api/modules/information';
+import { getInformationRisk } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { RiskDetailsDialog } from '@bcc/ui';

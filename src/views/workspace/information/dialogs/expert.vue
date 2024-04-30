@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { getInformationResourceById } from '@/api/modules/information';
+import { getInformationResourceById } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import ProTable from '@/components/pro-table/index.vue';
 
