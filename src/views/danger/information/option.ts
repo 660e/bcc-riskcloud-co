@@ -11,14 +11,44 @@ export function dangerLevelOption(data: any) {
         name: '隐患等级',
         type: 'pie',
         radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center'
-        },
-        labelLine: {
-          show: false
-        },
+        data
+      }
+    ]
+  };
+}
+
+export function dangerMendOption(data: any) {
+  return {
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      left: 'center'
+    },
+    series: [
+      {
+        name: '隐患整改情况',
+        type: 'pie',
+        radius: '50%',
+        data
+      }
+    ]
+  };
+}
+
+export function dangerSourceOption(data: any) {
+  return {
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      left: 'center'
+    },
+    series: [
+      {
+        name: '隐患整改情况',
+        type: 'pie',
+        radius: '50%',
         data
       }
     ]
