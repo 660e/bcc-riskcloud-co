@@ -4,3 +4,8 @@ import http from '@/api';
 export function getDangerReport() {
   return http.get('/mock/co/danger/report');
 }
+
+// 隐患等级
+export function getDangerLevel() {
+  return http.get('/mock//co/danger/information/level');
+}
