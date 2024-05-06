@@ -24,3 +24,8 @@ export function getPostTask() {
 export function getPostOperation() {
   return http.get('/mock/co/list/post/operation');
 }
+
+// 日常监管清单
+export function getListSupervise() {
+  return http.get('/mock/co/list/supervise');
+}
