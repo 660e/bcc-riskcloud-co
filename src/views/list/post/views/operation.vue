@@ -1,69 +1,62 @@
-<script lang="tsx" setup>
+<script lang="ts" setup>
 import { ref } from 'vue';
-import { getDangerReport } from '@/api/modules/danger';
-import { getDictDataType } from '@/api/modules/system';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
+import { deleteItem } from '@/api/modules/company';
+import { getListPostTree, getPostOperation } from '@/api/modules/list';
+import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
-import DetailDialog from '../dialogs/detail.vue';
+
+const deptId = ref('1');
+const deptIdChange = (value: string) => {
+  deptId.value = value;
+  tableRef.value.search(tableRef.value.pageable?.pageNum);
+  tableRef.value.clearSelection();
+};
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
-  { prop: 'name', label: '隐患名称', search: { el: 'input' } },
-  {
-    prop: 'status',
-    label: '隐患状态',
-    search: { el: 'select' },
-    enum: () => getDictDataType('danger_status'),
-    fieldNames: { label: 'dictLabel', value: 'dictValue' },
-    render: scope => {
-      switch (scope.row.status) {
-        case '0':
-          return <el-tag type='success'>整改中</el-tag>;
-        case '1':
-          return <el-tag type='danger'>超期未整改</el-tag>;
-        case '2':
-          return <el-tag type='primary'>已整改</el-tag>;
-      }
-    }
-  },
-  {
-    prop: 'type',
-    label: '隐患类型',
-    enum: () => getDictDataType('danger_type'),
-    fieldNames: { label: 'dictLabel', value: 'dictValue' }
-  },
-  {
-    prop: 'level',
-    label: '隐患等级',
-    enum: () => getDictDataType('danger_level'),
-    fieldNames: { label: 'dictLabel', value: 'dictValue' }
-  },
-  { prop: 'startTime', label: '整改开始时间' },
-  { prop: 'endTime', label: '整改期限' },
-  { prop: 'operation', label: '操作', width: 120 }
+  { type: 'selection', width: 0 },
+  { prop: 'id', label: '序号' },
+  { prop: 'name', label: '清单名称', search: { el: 'input' } },
+  { prop: 'operation', label: '操作', width: 180 }
 ];
 
-const create = () => {
-  console.log('create');
-};
+const createDeptDialogRef = ref();
+const create = (row: any = {}) => createDeptDialogRef.value.open(row);
 
-const detailDialogRef = ref();
-const detail = (row: any) => detailDialogRef.value.open(row);
+const detailDeptDialogRef = ref();
+const detail = (row: any) => detailDeptDialogRef.value.open(row);
+
+const remove = (row: any) => {
+  const name = row.deptId ? `“${row.deptName}”` : '';
+  const ids = row.deptId ? [row.deptId] : tableRef.value.selectedListIds;
+  ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
+    .then(async () => {
+      const { msg } = await deleteItem(ids.join(','));
+      tableRef.value.search(tableRef.value.pageable?.pageNum);
+      tableRef.value.clearSelection();
+      ElMessage.success(msg);
+    })
+    .catch(() => false);
+};
 </script>
 
 <template>
-  <el-tab-pane class="h-full flex flex-col pt-2.5">
-    <pro-table :columns="columns" :request-api="getDangerReport" ref="tableRef" row-key="id">
-      <template #tableHeader>
-        <el-button @click="create" type="primary">新增</el-button>
-      </template>
-      <template #operation="scope">
-        <el-button @click="detail(scope.row)" type="primary" link>整改</el-button>
-        <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
-      </template>
-    </pro-table>
-
-    <!-- 详情 -->
-    <detail-dialog ref="detailDialogRef" />
+  <el-tab-pane class="h-full flex">
+    <tree-filter :request-api="getListPostTree" @change="deptIdChange" />
+    <div class="flex-1 flex flex-col pt-2.5">
+      <pro-table :columns="columns" :request-api="getPostOperation" ref="tableRef" row-key="deptId">
+        <template #tableHeader>
+          <el-button @click="create" type="primary">新增</el-button>
+          <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
+        </template>
+        <template #operation="scope">
+          <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
+          <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
+          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+        </template>
+      </pro-table>
+    </div>
   </el-tab-pane>
 </template>
