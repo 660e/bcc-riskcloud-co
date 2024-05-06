@@ -29,3 +29,8 @@ export function getPostOperation() {
 export function getListSupervise() {
   return http.get('/mock/co/list/supervise');
 }
+
+// 清单执行记录
+export function getListExecute() {
+  return http.get('/mock/co/list/execute');
+}
