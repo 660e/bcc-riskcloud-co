@@ -1,21 +1,18 @@
 <script lang="ts" setup>
-import { getLibrary } from '@/api/modules/library';
-import { ColumnProps } from '@/components/pro-table/interface';
-import ProTable from '@/components/pro-table/index.vue';
+import { ref } from 'vue';
 
-const columns: ColumnProps[] = [
-  { prop: 'time', label: '时间' },
-  { prop: 'provinces', label: '省份', search: { el: 'input' } },
-  { prop: 'industryType', label: '一级行业分类', search: { el: 'input' } },
-  { prop: 'firstClass', label: '二级行业分类', search: { el: 'input' } },
-  { prop: 'secondClass', label: '三级行业分类', search: { el: 'input' } },
-  { prop: 'eventDescription', label: '事故描述', search: { el: 'input' } },
-  { prop: 'type', label: '类型', search: { el: 'input' } }
-];
+import CurrentComponent from './views/current.vue';
+import HistoryComponent from './views/history.vue';
+
+const active = ref(0);
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
-    <pro-table :columns="columns" :request-api="getLibrary" />
-  </div>
+  <el-tabs v-model="active" type="border-card" class="h-full tabs-flex no-card">
+    <current-component :name="0" label="标准规划" lazy />
+    <history-component :name="1" label="安全制度" lazy />
+    <history-component :name="2" label="操作规程" lazy />
+    <history-component :name="3" label="法律法规" lazy />
+    <history-component :name="4" label="事故库" lazy />
+  </el-tabs>
 </template>
