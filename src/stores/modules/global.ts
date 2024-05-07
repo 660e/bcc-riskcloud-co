@@ -36,7 +36,7 @@ export const useGlobalStore = defineStore({
     // 面包屑导航图标
     breadcrumbIcon: false,
     // 标签页
-    tabs: false,
+    tabs: true,
     // 标签页图标
     tabsIcon: false,
     // 页脚
