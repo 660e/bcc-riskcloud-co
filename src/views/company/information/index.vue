@@ -29,6 +29,7 @@ const forms = ref<any>({
   registeredAddress: '',
   parentName: '',
   county: '',
+  countyLnglat: [],
   constructionCompanyName: '',
   constructionCompanyAddress: '',
   constructionAddress: '',
@@ -143,7 +144,7 @@ const save = () => {
               <el-input v-model="forms.registeredAddress" />
             </el-form-item>
             <el-form-item label="实际地址" prop="county">
-              <location-picker v-model="forms.county" />
+              <location-picker v-model="forms.county" v-model:lnglat="forms.countyLnglat" />
             </el-form-item>
             <el-form-item label="施工单位名称" prop="constructionCompanyName">
               <el-input v-model="forms.constructionCompanyName" />
