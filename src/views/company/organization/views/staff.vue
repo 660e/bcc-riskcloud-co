@@ -29,7 +29,7 @@ const columns: ColumnProps[] = [
     enum: () => getDictDataType('yes_no'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' }
   },
-  { prop: 'operation', label: '操作', width: 180 }
+  { prop: 'operation', label: '操作', width: 44 * 3 + 24 }
 ];
 
 const createStaffDialogRef = ref();

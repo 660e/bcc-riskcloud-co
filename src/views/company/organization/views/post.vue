@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
@@ -25,9 +25,18 @@ const columns: ColumnProps[] = [
     prop: 'status',
     label: '岗位状态',
     enum: () => getDictDataType('enable_disable'),
-    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    render: scope => {
+      switch (scope.row.status) {
+        case '0':
+          return <el-tag type='success'>启用</el-tag>;
+        case '1':
+          return <el-tag type='danger'>禁用</el-tag>;
+      }
+    },
+    width: 100
   },
-  { prop: 'operation', label: '操作', width: 120 }
+  { prop: 'operation', label: '操作', width: 44 * 2 + 24 }
 ];
 
 const createPostDialogRef = ref();
