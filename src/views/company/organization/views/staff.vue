@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { getDictDataType } from '@/api/modules/system';
-import { deleteItem, getCompanyDeptTree, getStaff } from '@/api/modules/company';
+import { deleteItem, getCompanyPostTree, getStaff } from '@/api/modules/company';
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 import CreateStaffDialog from '../dialogs/create-staff.vue';
@@ -54,7 +54,7 @@ const remove = (row: any) => {
 
 <template>
   <el-tab-pane class="h-full flex">
-    <tree-filter :request-api="getCompanyDeptTree" @change="staffIdChange" />
+    <tree-filter :request-api="getCompanyPostTree" @change="staffIdChange" />
     <div class="flex-1 flex flex-col pt-2.5">
       <pro-table :columns="columns" :request-api="getStaff" ref="tableRef" row-key="staffId">
         <template #tableHeader>

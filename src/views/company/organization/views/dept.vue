@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
@@ -20,16 +20,25 @@ const tableRef = ref();
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
   { prop: 'deptName', label: '部门名称', search: { el: 'input' } },
-  { prop: 'sort', label: '排序' },
+  { prop: 'sort', label: '排序', width: 100 },
   {
     prop: 'status',
     label: '部门状态',
     enum: () => getDictDataType('enable_disable'),
-    fieldNames: { label: 'dictLabel', value: 'dictValue' }
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    render: scope => {
+      switch (scope.row.status) {
+        case '0':
+          return <el-tag type='success'>启用</el-tag>;
+        case '1':
+          return <el-tag type='danger'>禁用</el-tag>;
+      }
+    },
+    width: 100
   },
-  { prop: 'createTime', label: '创建时间' },
-  { prop: 'disableTime', label: '停用时间' },
-  { prop: 'operation', label: '操作', width: 180 }
+  { prop: 'createTime', label: '创建时间', width: 200 },
+  { prop: 'disableTime', label: '停用时间', width: 200 },
+  { prop: 'operation', label: '操作', width: 44 * 3 + 24 }
 ];
 
 const createDeptDialogRef = ref();

@@ -35,6 +35,11 @@ export function getPost() {
   return http.get<any>('/mock/co/company/post');
 }
 
+// 岗位列表（树结构）
+export function getCompanyPostTree() {
+  return http.get<any>('/mock/co/company/post/tree');
+}
+
 // 人员管理
 export function getStaff() {
   return http.get<any>('/mock/co/company/staff');

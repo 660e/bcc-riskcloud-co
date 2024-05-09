@@ -23,7 +23,7 @@
                 <component :is="collapsed ? ArrowDown : ArrowUp"></component>
               </el-icon>
             </el-button>
-            <el-button type="primary" @click="search">搜索</el-button>
+            <el-button @click="search">搜索</el-button>
             <el-button @click="reset">重置</el-button>
           </div>
         </grid-item>
