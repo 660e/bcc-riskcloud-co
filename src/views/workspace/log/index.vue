@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { getWorkspaceLog } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
-
+import { getDictDataType } from '@/api/modules/system';
 import ProTable from '@/components/pro-table/index.vue';
 import DetailDialog from './dialogs/detail.vue';
 import StatisticDialog from './dialogs/statistic.vue';
@@ -24,10 +24,30 @@ const columns: ColumnProps[] = [
   { prop: 'teams', label: '应急队伍' },
   { prop: 'equipment', label: '应急装备' },
   { prop: 'goods', label: '应急物资' },
-  { prop: 'abilityLevelName', label: '应急能力' },
-  { prop: 'date', label: '上报时间' },
+  {
+    prop: 'abilityLevelName',
+    label: '应急能力',
+    enum: () => getDictDataType('eme_ability'),
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    render: scope => {
+      switch (scope.row.status) {
+        case '1':
+          return <el-tag type='success'>优</el-tag>;
+        case '2':
+          return <el-tag type='primary'>良</el-tag>;
+        case '3':
+          return <el-tag type='info'>一般</el-tag>;
+        case '4':
+          return <el-tag type='warning'>较差</el-tag>;
+        case '5':
+          return <el-tag type='danger'>差</el-tag>;
+      }
+    },
+    width: 100
+  },
+  { prop: 'date', label: '上报时间', width: 200 },
   { prop: 'status', label: '审核状态' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 
 const detailDialogRef = ref();
