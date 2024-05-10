@@ -6,7 +6,6 @@ import { deleteItem } from '@/api/modules/company';
 import { getEmergencyExpert } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
-
 import { ImportTemplateDialog } from '@bcc/components';
 import createTeamDialog from '../dialogs/create-expert.vue';
 import ProTable from '@/components/pro-table/index.vue';
@@ -14,16 +13,22 @@ import ProTable from '@/components/pro-table/index.vue';
 const tableRef = ref();
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
-  { prop: 'name', label: '姓名' },
-  { prop: 'gender', label: '性别' },
-  { prop: 'age', label: '年龄' },
+  { prop: 'name', label: '姓名', width: 100 },
+  {
+    prop: 'gender',
+    label: '性别',
+    enum: () => getDictDataType('user_sex'),
+    fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    width: 100
+  },
+  { prop: 'age', label: '年龄', width: 100 },
   { prop: 'profession', label: '专业' },
   { prop: 'type', label: '专家类别' },
   { prop: 'unit', label: '工作单位' },
   { prop: 'address', label: '住址' },
-  { prop: 'mobile', label: '办公电话' },
-  { prop: 'phone', label: '手机' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'mobile', label: '办公电话', width: 150 },
+  { prop: 'phone', label: '手机', width: 150 },
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 
 const createTeamDialogRef = ref();

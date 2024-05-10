@@ -6,6 +6,9 @@
 }
 
 /* el-button */
+.el-button:focus {
+  outline: 0;
+}
 .el-button + .el-button {
   margin-left: 10px;
 }

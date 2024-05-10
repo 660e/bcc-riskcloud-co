@@ -6,7 +6,6 @@ import { deleteItem } from '@/api/modules/company';
 import { getEmergencyTeam } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
-
 import { ImportTemplateDialog } from '@bcc/components';
 import createTeamDialog from '../dialogs/create-team.vue';
 import ProTable from '@/components/pro-table/index.vue';
@@ -15,13 +14,13 @@ const tableRef = ref();
 const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
   { prop: 'name', label: '队伍名称' },
-  { prop: 'type', label: '队伍类型' },
-  { prop: 'establishTime', label: '成立时间' },
+  { prop: 'type', label: '队伍类型', width: 200 },
+  { prop: 'establishTime', label: '成立时间', width: 200 },
   { prop: 'address', label: '地址' },
-  { prop: 'stuffNum', label: '总人数' },
-  { prop: 'chief', label: '负责人' },
-  { prop: 'phone', label: '值班电话' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'stuffNum', label: '总人数', width: 100 },
+  { prop: 'chief', label: '负责人', width: 100 },
+  { prop: 'phone', label: '值班电话', width: 150 },
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 
 const createTeamDialogRef = ref();

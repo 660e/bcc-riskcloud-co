@@ -6,9 +6,9 @@ import ProTable from '@/components/pro-table/index.vue';
 const columns: ColumnProps[] = [
   { prop: 'type', label: '报告类型' },
   { prop: 'name', label: '报告名称' },
-  { prop: 'date', label: '更新时间' },
-  { prop: 'status', label: '状态' },
-  { prop: 'operation', label: '操作', width: 150 }
+  { prop: 'date', label: '更新时间', width: 200 },
+  { prop: 'status', label: '状态', width: 200 },
+  { prop: 'operation', label: '操作', width: 44 * 2 + 24 }
 ];
 const data = ref([
   { type: '风险源辨识评估', name: '风险源辨识评估.docx', date: '2024-04-24 16:00', status: '上级单位待审' },

@@ -7,10 +7,10 @@ import { System } from '@/api/interface';
 const thead = [
   { label: '项目', width: 200 },
   { label: '评估内容', width: 400 },
-  { label: '打分方法', width: 400 },
+  { label: '打分方法' },
   { label: '评分选择', width: 300 },
   { label: '得分', width: 100 },
-  { label: '扣分情况' }
+  { label: '扣分情况', width: 200 }
 ];
 const par = computed(() => {
   return table.value

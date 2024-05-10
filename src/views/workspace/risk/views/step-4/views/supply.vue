@@ -6,7 +6,6 @@ import { deleteItem } from '@/api/modules/company';
 import { getEmergencySupply } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
-
 import { ImportTemplateDialog } from '@bcc/components';
 import createSupplyDialog from '../dialogs/create-supply.vue';
 import ProTable from '@/components/pro-table/index.vue';
@@ -17,14 +16,14 @@ const columns: ColumnProps[] = [
   { prop: 'type', label: '物资类型' },
   { prop: 'name', label: '物资名称' },
   { prop: 'specification', label: '规格型号' },
-  { prop: 'num', label: '数量' },
+  { prop: 'num', label: '数量', width: 100 },
   { prop: 'source', label: '来源' },
   { prop: 'state', label: '完好情况' },
   { prop: 'func', label: '主要功能' },
   { prop: 'location', label: '存放场所' },
-  { prop: 'chief', label: '负责人' },
-  { prop: 'phone', label: '联系电话' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'chief', label: '负责人', width: 100 },
+  { prop: 'phone', label: '联系电话', width: 150 },
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 
 const createSupplyDialogRef = ref();

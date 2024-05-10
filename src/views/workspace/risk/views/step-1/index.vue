@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -7,12 +7,24 @@ import { deleteItem, copyItem, getCompanyIndustry } from '@/api/modules/company'
 import { getRiskByIndustryId } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
-import { ImportTemplateDialog } from '@bcc/components';
+import { ImportTemplateDialog, SimpleTabs } from '@bcc/components';
 import RisksDialog from './dialogs/risks.vue';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
 const industries = ref();
+
+const tabs = [
+  { label: '全部', value: 6 },
+  { label: '已完成', value: 2 },
+  { label: '评估中', value: 1 },
+  { label: '待评估', value: 0 },
+  { label: '已驳回', value: 4 },
+  { label: '已删除', value: 3 }
+];
+const tabChange = (value: number) => {
+  console.log(value);
+};
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
@@ -31,9 +43,23 @@ const columns: ColumnProps[] = [
     label: '状态',
     enum: () => getDictDataType('assess_status'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
+    render: scope => {
+      switch (scope.row.statusFlag) {
+        case '0':
+          return <el-tag type='warning'>待评估</el-tag>;
+        case '1':
+          return <el-tag type='primary'>评估中</el-tag>;
+        case '2':
+          return <el-tag type='success'>已完成</el-tag>;
+        case '3':
+          return <el-tag type='info'>已删除</el-tag>;
+        case '4':
+          return <el-tag type='danger'>已驳回</el-tag>;
+      }
+    },
     width: 100
   },
-  { prop: 'operation', label: '操作', width: 180 }
+  { prop: 'operation', label: '操作', width: 44 * 3 + 24 }
 ];
 const requestApi = (params: any) => {
   params.industryId = industryId.value;
@@ -114,6 +140,9 @@ const remove = (row: any) => {
           <el-button @click="importData">导入</el-button>
           <el-button @click="exportData">导出</el-button>
           <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
+        </template>
+        <template #tabs>
+          <simple-tabs :tabs="tabs" @change="tabChange" />
         </template>
         <template #operation="scope">
           <el-button @click="assess(scope.row)" type="primary" link>评估</el-button>
