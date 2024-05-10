@@ -3,7 +3,7 @@
   <el-container class="min-w-[600px]">
     <div class="aside-split">
       <div class="logo flex justify-center items-center">
-        <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" />
+        <img class="logo-img" src="@/assets/images/logo.png" alt="logo" />
       </div>
       <el-scrollbar>
         <div class="split-list">

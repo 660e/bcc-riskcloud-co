@@ -3,7 +3,7 @@
   <el-container class="min-w-[600px]">
     <el-header>
       <div class="logo flex justify-center items-center">
-        <img class="logo-img" src="@/assets/images/logo.svg" alt="logo" />
+        <img class="logo-img" src="@/assets/images/logo.png" alt="logo" />
         <span class="logo-text">{{ title }}</span>
       </div>
       <el-menu mode="horizontal" :router="false" :default-active="activeMenu">
