@@ -3,6 +3,14 @@ import qs from 'qs';
 import { ResPage, System } from '@/api/interface/index';
 import { fd } from '@bcc/utils';
 
+export function dict(dictType: string) {
+  return http.get<System.Dict[]>(`/system/dict/data/type/${dictType}`);
+}
+
+//
+//
+//
+
 /**
  * 角色管理
  */

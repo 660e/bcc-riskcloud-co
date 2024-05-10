@@ -1,5 +1,18 @@
 import http from '@/api';
 
+/**
+ * 获取公司二维码
+ * @param companyId 公司id
+ * @returns
+ */
+export function qrcode(companyId: string) {
+  return http.get<string>(`/mock/co/company/${companyId}/qrcode`);
+}
+
+//
+//
+//
+
 // 单位基本信息
 export function getCompanyInfo() {
   return http.get<any>('/mock/co/company/info');

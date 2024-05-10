@@ -1,5 +1,17 @@
 import http from '@/api';
 
+/**
+ * 获取隐患信息汇总
+ * @returns
+ */
+export function summary() {
+  return http.get<any>('/mock/co/danger-summary');
+}
+
+//
+//
+//
+
 // 隐患排查上报
 export function getDangerReport() {
   return http.get('/mock/co/danger/report');

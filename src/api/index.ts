@@ -115,4 +115,8 @@ class RequestHttp {
   }
 }
 
+export * as companyApi from './modules/company';
+export * as dangerApi from './modules/danger';
+export * as systemApi from './modules/system';
+
 export default new RequestHttp(config);
