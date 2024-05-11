@@ -3,8 +3,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { companyApi, systemApi } from '@/api';
 import { System } from '@/api/interface';
 import { FormInstance, FormRules } from 'element-plus';
-import { LabelTooltip, LocationPicker } from '@bcc/components';
-import IndustrySelectDialog from './dialogs/industry-select.vue';
+import { LabelTooltip, LocationPicker, CascaderDialog } from '@bcc/components';
 
 const options = reactive<{ [key: string]: System.Dict[] }>({});
 onMounted(async () => {
@@ -310,6 +309,6 @@ const save = () => {
     </div>
 
     <!-- 选择行业领域 -->
-    <industry-select-dialog ref="industrySelectDialogRef" />
+    <cascader-dialog :http-request="companyApi.industries" title="选择行业领域" ref="industrySelectDialogRef" />
   </div>
 </template>

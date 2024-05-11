@@ -28,12 +28,18 @@ export function query(q: string, t: string) {
   return http.get<any>('/mock/co/company/query', { q, t });
 }
 
-//
-//
-//
-//
+/**
+ * 获取行业领域列表（树结构）
+ * @returns
+ */
+export function industries() {
+  return http.get<any>('/mock/co/company/industries/tree');
+}
 
-// 通过企业代码或企业名称模糊查找公司列表
+//
+//
+//
+//
 
 // 周边敏感目标
 export function getCompanySensitive() {
