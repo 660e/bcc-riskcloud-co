@@ -1,5 +1,17 @@
 import http from '@/api';
 
+/**
+ * 获取清单执行记录列表
+ * @returns
+ */
+export function tasks() {
+  return http.get<any>('/mock/co/list/tasks');
+}
+
+//
+//
+//
+
 // 主体责任清单
 export function getDuty() {
   return http.get('/mock/co/list/duty');

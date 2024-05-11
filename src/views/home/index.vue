@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { companyApi, dangerApi, riskApi, systemApi } from '@/api';
+import { nextTick, onMounted, ref } from 'vue';
+import { useElementSize } from '@vueuse/core';
+import { companyApi, dangerApi, listApi, riskApi, systemApi } from '@/api';
 import { CircleCheck, Clock, DocumentDelete, Histogram } from '@element-plus/icons-vue';
 import QRCode from 'qrcode';
 
@@ -11,6 +12,9 @@ const icons = {
 
 const dangerSummary = ref();
 const riskSummary = ref();
+const tasksData = ref([]);
+const tableWrapperRef = ref();
+const tableWrapperHeight = ref(0);
 
 onMounted(async () => {
   QRCode.toCanvas(document.getElementById('qrcode'), (await companyApi.qrcode('1')).data, { margin: 0 });
@@ -31,6 +35,11 @@ onMounted(async () => {
     value: riskSummary.value.reduce((a: number, c: any) => a + c.value, 0),
     increase: riskSummary.value.reduce((a: number, c: any) => a + c.increase, 0)
   });
+
+  await nextTick();
+  const { height } = useElementSize(tableWrapperRef);
+  tableWrapperHeight.value = height.value;
+  tasksData.value = (await listApi.tasks()).data.list;
 });
 </script>
 
@@ -79,10 +88,34 @@ onMounted(async () => {
     </div>
 
     <div class="flex-1 flex space-x-2.5">
-      <div class="card p-5 w-2/3">
-        <div class="c-subtitle-1">待办任务</div>
+      <div class="card p-5 space-y-2.5 w-2/3 flex flex-col">
+        <div class="c-subtitle-1">
+          <span>待办任务</span>
+          <div class="flex-1"></div>
+          <el-button type="primary" link>更多>></el-button>
+        </div>
+        <div class="flex-1" ref="tableWrapperRef">
+          <el-table :data="tasksData" :style="{ height: `${tableWrapperHeight}px` }" :show-header="false">
+            <el-table-column label="任务名称" prop="name" />
+            <el-table-column label="完成度" width="150">
+              <template #default="scope">
+                <el-progress
+                  :percentage="(scope.row.count / scope.row.total) * 100"
+                  :status="scope.row.count === scope.row.total ? 'success' : ''"
+                  :show-text="false"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column align="right" width="150">
+              <el-button type="primary" size="small">执行</el-button>
+              <el-button type="warning" size="small">详情</el-button>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
-      <div class="card p-5 w-1/3"></div>
+      <div class="card p-5 w-1/3">
+        <div class="c-subtitle-1">系统帮助</div>
+      </div>
     </div>
   </div>
 </template>
