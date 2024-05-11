@@ -1,27 +1,39 @@
 import http from '@/api';
 
 /**
- * 获取公司二维码
- * @param companyId 公司id
+ * 获取单位二维码
+ * @param companyId 单位id
  * @returns
  */
 export function qrcode(companyId: string) {
   return http.get<string>(`/mock/co/company/${companyId}/qrcode`);
 }
 
-//
-//
-//
-
-// 单位基本信息
-export function getCompanyInfo() {
-  return http.get<any>('/mock/co/company/info');
+/**
+ * 获取单位基本信息
+ * @param companyId 单位id
+ * @returns
+ */
+export function details(companyId: string) {
+  return http.get<any>(`/mock/co/company/${companyId}`);
 }
 
-// 通过企业代码或企业名称模糊查找公司列表
-export function getCompanyListById(q: string, t: string) {
+/**
+ * 通过关键字获取单位列表
+ * @param q 关键字
+ * @param t 搜索类型（企业代码、企业名称）
+ * @returns
+ */
+export function query(q: string, t: string) {
   return http.get<any>('/mock/co/company/query', { q, t });
 }
+
+//
+//
+//
+//
+
+// 通过企业代码或企业名称模糊查找公司列表
 
 // 周边敏感目标
 export function getCompanySensitive() {

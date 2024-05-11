@@ -1,23 +1,22 @@
 <script lang="ts" name="company-info" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { FormInstance, FormRules } from 'element-plus';
-import { getDictDataType } from '@/api/modules/system';
-import { getCompanyInfo, getCompanyListById } from '@/api/modules/company';
+import { companyApi, systemApi } from '@/api';
 import { System } from '@/api/interface';
+import { FormInstance, FormRules } from 'element-plus';
 import { LabelTooltip, LocationPicker } from '@bcc/components';
 import IndustrySelectDialog from './dialogs/industry-select.vue';
 
 const options = reactive<{ [key: string]: System.Dict[] }>({});
 onMounted(async () => {
-  options.companyType = (await getDictDataType('company_type')).data;
-  options.companyIsCity = (await getDictDataType('company_is_city')).data;
-  options.companyRoleId = (await getDictDataType('company_role_id')).data;
-  options.searchCompanyKeywordType = (await getDictDataType('search_company_keyword_type')).data;
-  options.companyCodeType = (await getDictDataType('company_code_type')).data;
-  options.yesNo = (await getDictDataType('yes_no')).data;
-  options.companyIdentity = (await getDictDataType('company_identity')).data;
+  options.companyType = (await systemApi.dict('company_type')).data;
+  options.companyIsCity = (await systemApi.dict('company_is_city')).data;
+  options.companyRoleId = (await systemApi.dict('company_role_id')).data;
+  options.searchCompanyKeywordType = (await systemApi.dict('search_company_keyword_type')).data;
+  options.companyCodeType = (await systemApi.dict('company_code_type')).data;
+  options.yesNo = (await systemApi.dict('yes_no')).data;
+  options.companyIdentity = (await systemApi.dict('company_identity')).data;
 
-  forms.value = (await getCompanyInfo()).data;
+  forms.value = (await companyApi.details('1')).data;
 });
 
 const formsRef = ref<FormInstance>();
@@ -96,7 +95,7 @@ const ui = reactive({
 });
 
 const remoteMethod = async (query: string) => {
-  options.parentName = query ? (await getCompanyListById(query, ui.keywordType)).data : [];
+  options.parentName = query ? (await companyApi.query(query, ui.keywordType)).data : [];
 };
 const connect = () => {
   console.log(ui.keyword);
