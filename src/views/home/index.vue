@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue';
 import { useElementSize } from '@vueuse/core';
-import { companyApi, dangerApi, listApi, riskApi, systemApi } from '@/api';
+import { companyApi, dangerApi, libraryApi, listApi, riskApi, systemApi } from '@/api';
 import { CircleCheck, Clock, DocumentDelete, Histogram } from '@element-plus/icons-vue';
 import QRCode from 'qrcode';
 
@@ -12,7 +12,8 @@ const icons = {
 
 const dangerSummary = ref();
 const riskSummary = ref();
-const tasksData = ref([]);
+const tasksData = ref();
+const helpData = ref();
 const tableWrapperRef = ref();
 const tableWrapperHeight = ref(0);
 
@@ -39,7 +40,9 @@ onMounted(async () => {
   await nextTick();
   const { height } = useElementSize(tableWrapperRef);
   tableWrapperHeight.value = height.value;
+
   tasksData.value = (await listApi.tasks()).data.list;
+  helpData.value = (await libraryApi.help()).data.list;
 });
 </script>
 
@@ -113,8 +116,20 @@ onMounted(async () => {
           </el-table>
         </div>
       </div>
-      <div class="card p-5 w-1/3">
-        <div class="c-subtitle-1">系统帮助</div>
+      <div class="card p-5 space-y-2.5 w-1/3 flex flex-col">
+        <div class="c-subtitle-1">
+          <span>系统帮助</span>
+          <div class="flex-1"></div>
+          <el-button type="primary" link>更多>></el-button>
+        </div>
+        <div class="flex-1">
+          <el-table :data="helpData" :style="{ height: `${tableWrapperHeight}px` }" :show-header="false">
+            <el-table-column label="文档名称" prop="name" />
+            <el-table-column align="right" width="100">
+              <el-button type="primary" size="small">下载</el-button>
+            </el-table-column>
+          </el-table>
+        </div>
       </div>
     </div>
   </div>

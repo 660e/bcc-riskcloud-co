@@ -117,6 +117,7 @@ class RequestHttp {
 
 export * as companyApi from './modules/company';
 export * as dangerApi from './modules/danger';
+export * as libraryApi from './modules/library';
 export * as listApi from './modules/list';
 export * as riskApi from './modules/risk';
 export * as systemApi from './modules/system';
