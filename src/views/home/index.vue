@@ -16,6 +16,10 @@ const tasksData = ref();
 const helpData = ref();
 const tableWrapperRef = ref();
 const tableWrapperHeight = ref(0);
+const backgroundImage = (index: number) => {
+  const url = new URL(`../../assets/images/home-${index + 1}.png`, import.meta.url).href;
+  return { backgroundImage: `url(${url})` };
+};
 
 onMounted(async () => {
   QRCode.toCanvas(document.getElementById('qrcode'), (await companyApi.qrcode('1')).data, { margin: 0 });
@@ -38,9 +42,9 @@ onMounted(async () => {
   });
 
   await nextTick();
+
   const { height } = useElementSize(tableWrapperRef);
   tableWrapperHeight.value = height.value;
-
   tasksData.value = (await listApi.tasks()).data.list;
   helpData.value = (await libraryApi.help()).data.list;
 });
@@ -59,7 +63,8 @@ onMounted(async () => {
           <div
             v-for="(item, index) in dangerSummary"
             :key="index"
-            class="h-[100px] flex-1 text-white bg-gray-400 rounded flex items-center px-5 space-x-5"
+            :style="backgroundImage(index)"
+            class="h-[100px] flex-1 text-white rounded flex items-center px-5 space-x-5 bg-cover"
           >
             <el-icon class="text-5xl"><component :is="icons.dangerSummary[index]" /></el-icon>
             <div class="space-y-2.5">
