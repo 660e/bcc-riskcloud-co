@@ -2,6 +2,7 @@
 import { nextTick, onMounted, ref } from 'vue';
 import { useElementSize } from '@vueuse/core';
 import { companyApi, dangerApi, libraryApi, listApi, riskApi, systemApi } from '@/api';
+import { COLORS } from '@/utils';
 import { CircleCheck, Clock, DocumentDelete, Histogram } from '@element-plus/icons-vue';
 import QRCode from 'qrcode';
 
@@ -83,11 +84,13 @@ onMounted(async () => {
       <div class="c-subtitle-1">风险信息</div>
       <div class="flex">
         <div v-for="(item, index) in riskSummary" :key="index" class="flex-1 flex items-center space-x-5">
-          <el-icon class="text-5xl bg-gray-400 rounded p-2 text-white"><component :is="icons.riskSummary[index]" /></el-icon>
+          <el-icon :style="{ backgroundColor: COLORS.risk_level[index] }" class="text-5xl rounded p-2 text-white">
+            <component :is="icons.riskSummary[index]" />
+          </el-icon>
           <div class="space-y-1">
             <div>{{ item.label }}</div>
             <div class="space-x-5">
-              <b>{{ item.value }}</b>
+              <b :style="{ color: COLORS.risk_level[index] }">{{ item.value }}</b>
               <span>较上月{{ item.increase < 0 ? item.increase : `+${item.increase}` }}</span>
             </div>
           </div>
