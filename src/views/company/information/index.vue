@@ -192,9 +192,9 @@ const save = () => {
             </div>
           </el-form-item>
           <el-form-item label="行业领域">
-            <div class="flex flex-wrap">
-              <el-tag v-for="e in forms.secondClass" :key="e.value" class="my-1 mr-2" closable>{{ e.label }}</el-tag>
-              <el-button @click="setIndustry" class="my-1" size="small">选择行业领域</el-button>
+            <div class="flex flex-wrap my-[-1px]">
+              <el-tag v-for="e in forms.secondClass" :key="e.id" class="my-[5px] mr-[10px]">{{ e.label }}</el-tag>
+              <el-button @click="setIndustry" class="my-[5px]" size="small">选择行业领域</el-button>
             </div>
           </el-form-item>
         </div>
@@ -309,6 +309,11 @@ const save = () => {
     </div>
 
     <!-- 选择行业领域 -->
-    <cascader-dialog :http-request="companyApi.industries" title="选择行业领域" ref="industrySelectDialogRef" />
+    <cascader-dialog
+      :http-request="companyApi.industries"
+      @selection="(selection: any) => (forms.secondClass = selection)"
+      title="选择行业领域"
+      ref="industrySelectDialogRef"
+    />
   </div>
 </template>
