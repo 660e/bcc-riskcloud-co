@@ -1,24 +1,19 @@
 <script lang="ts" name="login" setup>
 import { ref } from 'vue';
-import backgroundImage from '@/assets/images/login.jpg';
 import LoginMonitor from './components/monitor.vue';
 import LoginPhone from './components/phone.vue';
 
-const title = import.meta.env.VITE_GLOB_APP_TITLE;
 const current = ref(1);
 </script>
 
 <template>
-  <div
-    class="h-screen overflow-hidden bg-cover flex justify-center items-center relative"
-    :style="{ backgroundImage: `url(${backgroundImage})` }"
-  >
+  <div class="h-screen overflow-hidden bg-cover flex justify-center items-center relative _login">
     <div class="relative">
-      <div class="w-screen absolute left-1/2 bottom-full -translate-x-1/2 flex justify-center text-4xl pb-10 text-white">
-        {{ title }}
+      <div class="w-screen absolute left-1/2 bottom-full -translate-x-1/2 flex justify-center pb-5">
+        <img src="@/assets/images/login-title.png" class="h-32" />
       </div>
       <div class="bg-white rounded w-[420px] p-5">
-        <div class="_tabs">
+        <div class="flex text-base _tabs">
           <div :class="{ current: current === 0 }" @click="current = 0">验证码登录</div>
           <div :class="{ current: current === 1 }" @click="current = 1">密码登录</div>
         </div>
@@ -37,10 +32,9 @@ const current = ref(1);
 </template>
 
 <style lang="scss" scoped>
-._tabs {
-  display: flex;
-  font-size: 16px;
-  & > div {
+._login {
+  background-image: url('@/assets/images/login.png');
+  ._tabs > div {
     cursor: pointer;
     margin-right: 20px;
     &::after {
