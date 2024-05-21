@@ -23,6 +23,10 @@ const MapUtils: MapClass = new MapClass();
 const range = ref(0);
 // 敏感目标范围选项
 const rangeOptions = ref<System.Dict[]>();
+// 敏感目标类型
+const type = ref('');
+// 敏感目标类型选项
+const typeOptions = ref<System.Dict[]>();
 // 公司基本信息
 const companyInformation = ref();
 // 敏感目标列表
@@ -60,6 +64,7 @@ onMounted(async () => {
   checkedTargetsChange(checkedTargets.value);
 
   rangeOptions.value = (await systemApi.dict('sensitive_target_range')).data;
+  typeOptions.value = (await systemApi.dict('check_range')).data;
 });
 
 // 添加自定义敏感目标
@@ -152,6 +157,12 @@ const save = () => {
   <div class="card h-full flex">
     <div class="w-72 flex">
       <div class="flex-1 flex flex-col">
+        <div class="p-2.5">
+          <el-select v-model="type" placeholder="敏感目标类型" clearable>
+            <el-option v-for="e in typeOptions" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+          </el-select>
+        </div>
+        <el-divider class="m-0" />
         <div class="flex-1 overflow-y-auto">
           <el-checkbox-group v-model="checkedTargets" @change="checkedTargetsChange" class="pt-2.5">
             <el-checkbox v-for="e in targets" :key="e.id" :value="e" class="px-2.5 m-0 font-normal flex _targets">
@@ -170,9 +181,16 @@ const save = () => {
       <el-divider direction="vertical" class="m-0 h-full" />
     </div>
     <div class="flex-1" id="map">
-      <el-radio-group v-model="range" @change="rangeChange" class="absolute top-2.5 left-2.5 z-[1000]">
-        <el-radio-button v-for="e in rangeOptions" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
-      </el-radio-group>
+      <div class="absolute top-2.5 left-2.5 z-[1000] flex space-x-2.5">
+        <el-radio-group v-model="range" @change="rangeChange">
+          <el-radio-button v-for="e in rangeOptions" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
+        </el-radio-group>
+        <el-input placeholder="自定义范围" class="w-40">
+          <template #append>
+            <el-button>确定</el-button>
+          </template>
+        </el-input>
+      </div>
     </div>
 
     <!-- “添加敏感目标”弹窗 -->
