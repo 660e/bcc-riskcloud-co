@@ -6,9 +6,9 @@ import { COLORS } from '@/utils';
 import { CircleCheck, Clock, DocumentDelete, Histogram } from '@element-plus/icons-vue';
 import QRCode from 'qrcode';
 
-const icons = {
+const icons: any = {
   dangerSummary: [CircleCheck, Clock, DocumentDelete],
-  riskSummary: [Histogram, Histogram, Histogram, Histogram, Histogram]
+  riskSummary: [Histogram, ...new Array(4).fill(new URL('../../assets/icons/home/warning-1.png', import.meta.url).href)]
 };
 
 const dangerSummary = ref();
@@ -23,7 +23,7 @@ const backgroundImage = (index: number) => {
 };
 
 onMounted(async () => {
-  QRCode.toCanvas(document.getElementById('qrcode'), (await companyApi.qrcode('1')).data, { margin: 0 });
+  QRCode.toCanvas(document.getElementById('qrcode'), (await companyApi.qrcode('1')).data, { margin: 0, width: 120 });
 
   const reformStatusDict = (await systemApi.dict('reform_status')).data;
   dangerSummary.value = (await dangerApi.summary()).data.map((item: any) => {
@@ -54,18 +54,18 @@ onMounted(async () => {
 <template>
   <div class="h-full flex flex-col space-y-2.5">
     <div class="card p-5 flex">
-      <div class="space-y-5 w-1/4">
+      <div class="space-y-5 flex-1">
         <div class="c-subtitle-1">企业总码</div>
         <canvas id="qrcode"></canvas>
       </div>
-      <div class="space-y-5 w-3/4">
+      <div class="space-y-5">
         <div class="c-subtitle-1">隐患信息</div>
-        <div class="flex space-x-5">
+        <div class="flex space-x-20">
           <div
             v-for="(item, index) in dangerSummary"
             :key="index"
             :style="backgroundImage(index)"
-            class="h-[100px] flex-1 text-white rounded flex items-center px-5 space-x-5 bg-cover"
+            class="h-[120px] w-[340px] flex-1 text-white rounded flex items-center px-5 space-x-5 bg-cover"
           >
             <el-icon class="text-5xl"><component :is="icons.dangerSummary[index]" /></el-icon>
             <div class="space-y-2.5">
@@ -85,7 +85,8 @@ onMounted(async () => {
       <div class="flex">
         <div v-for="(item, index) in riskSummary" :key="index" class="flex-1 flex items-center space-x-5">
           <el-icon :style="{ backgroundColor: COLORS.risk_level[index] }" class="text-5xl rounded p-2 text-white">
-            <component :is="icons.riskSummary[index]" />
+            <component v-if="index === 0" :is="icons.riskSummary[index]" />
+            <img v-else :src="icons.riskSummary[index]" />
           </el-icon>
           <div class="space-y-1">
             <div>{{ item.label }}</div>
@@ -108,13 +109,14 @@ onMounted(async () => {
         <div class="flex-1" ref="tableWrapperRef">
           <el-table :data="tasksData" :style="{ height: `${tableWrapperHeight}px` }" :show-header="false">
             <el-table-column label="任务名称" prop="name" />
-            <el-table-column label="完成度" width="150">
+            <el-table-column label="完成度" width="200">
               <template #default="scope">
                 <el-progress
                   :percentage="(scope.row.count / scope.row.total) * 100"
                   :status="scope.row.count === scope.row.total ? 'success' : ''"
-                  :show-text="false"
-                />
+                >
+                  {{ scope.row.count }}/{{ scope.row.total }}
+                </el-progress>
               </template>
             </el-table-column>
             <el-table-column align="right" width="150">

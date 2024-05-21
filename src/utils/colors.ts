@@ -1,3 +1,3 @@
 export const COLORS = {
-  risk_level: ['#909399', '#f56c6c', '#e6a23c', '#409eff', '#67c23a']
+  risk_level: ['#5756D7', '#FF3A30', '#FF9502', '#FFD700', '#007AFF']
 };
