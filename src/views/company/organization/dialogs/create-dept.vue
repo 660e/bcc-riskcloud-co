@@ -2,8 +2,7 @@
 import { reactive, ref } from 'vue';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { System } from '@/api/interface';
-import { getDictDataType } from '@/api/modules/system';
-import { addItem, updateItem } from '@/api/modules/company';
+import { companyApi, systemApi } from '@/api';
 import { cloneDeep } from 'lodash';
 
 const $emit = defineEmits(['confirm']);
@@ -25,7 +24,7 @@ const options = reactive<{ [key: string]: System.Dict[] }>({});
 const open = async (row: any) => {
   visible.value = true;
 
-  const p0 = getDictDataType('enable_disable');
+  const p0 = systemApi.dict('enable_disable');
   const response: any = await Promise.all([p0]);
   options.status = response[0].data;
 
@@ -40,7 +39,7 @@ const closed = () => {
 const confirm = () => {
   formsRef.value?.validate(async valid => {
     if (valid) {
-      const { msg } = forms.value.deptId ? await updateItem(forms.value) : await addItem(forms.value);
+      const { msg } = forms.value.deptId ? await companyApi.updateItem(forms.value) : await companyApi.addItem(forms.value);
       $emit('confirm');
       ElMessage.success(msg);
       visible.value = false;

@@ -2,8 +2,7 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
-import { getDictDataType } from '@/api/modules/system';
-import { deleteItem, getCompanyPostTree, getStaff } from '@/api/modules/company';
+import { companyApi, systemApi } from '@/api';
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 import CreateStaffDialog from '../dialogs/create-staff.vue';
@@ -26,7 +25,7 @@ const columns: ColumnProps[] = [
   {
     prop: 'manager',
     label: '是否为企业负责人',
-    enum: () => getDictDataType('yes_no'),
+    enum: () => systemApi.dict('yes_no'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' }
   },
   { prop: 'operation', label: '操作', width: 44 * 3 + 24 }
@@ -43,7 +42,7 @@ const remove = (row: any) => {
   const ids = row.staffId ? [row.staffId] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteItem(ids.join(','));
+      const { msg } = await companyApi.deleteItem(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
@@ -54,9 +53,9 @@ const remove = (row: any) => {
 
 <template>
   <el-tab-pane class="h-full flex">
-    <tree-filter :request-api="getCompanyPostTree" @change="staffIdChange" />
+    <tree-filter :request-api="companyApi.postTree" @change="staffIdChange" />
     <div class="flex-1 flex flex-col pt-2.5">
-      <pro-table :columns="columns" :request-api="getStaff" ref="tableRef" row-key="staffId">
+      <pro-table :columns="columns" :request-api="companyApi.staff" ref="tableRef" row-key="staffId">
         <template #tableHeader>
           <el-button @click="create" type="primary">新增</el-button>
           <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>

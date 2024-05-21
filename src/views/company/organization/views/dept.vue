@@ -2,8 +2,7 @@
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { ColumnProps } from '@/components/pro-table/interface';
-import { getDictDataType } from '@/api/modules/system';
-import { deleteItem, getCompanyDeptTree, getDept } from '@/api/modules/company';
+import { companyApi, systemApi } from '@/api';
 import { TreeFilter } from '@bcc/components';
 import ProTable from '@/components/pro-table/index.vue';
 import CreateDeptDialog from '../dialogs/create-dept.vue';
@@ -24,7 +23,7 @@ const columns: ColumnProps[] = [
   {
     prop: 'status',
     label: '部门状态',
-    enum: () => getDictDataType('enable_disable'),
+    enum: () => systemApi.dict('enable_disable'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
     render: scope => {
       switch (scope.row.status) {
@@ -52,7 +51,7 @@ const remove = (row: any) => {
   const ids = row.deptId ? [row.deptId] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteItem(ids.join(','));
+      const { msg } = await companyApi.deleteItem(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
@@ -63,9 +62,9 @@ const remove = (row: any) => {
 
 <template>
   <el-tab-pane class="h-full flex">
-    <tree-filter :request-api="getCompanyDeptTree" @change="deptIdChange" />
+    <tree-filter :request-api="companyApi.deptTree" @change="deptIdChange" />
     <div class="flex-1 flex flex-col pt-2.5">
-      <pro-table :columns="columns" :request-api="getDept" ref="tableRef" row-key="deptId">
+      <pro-table :columns="columns" :request-api="companyApi.dept" ref="tableRef" row-key="deptId">
         <template #tableHeader>
           <el-button @click="create" type="primary">新增</el-button>
           <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>

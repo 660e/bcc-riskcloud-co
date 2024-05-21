@@ -53,6 +53,46 @@ export function sensitivity() {
   return http.get<any>('/mock/co/company/sensitivity');
 }
 
+/**
+ * 部门列表（树结构）
+ * @returns
+ */
+export function deptTree() {
+  return http.get<any>('/mock/co/company/dept/tree');
+}
+
+/**
+ * 部门列表
+ * @returns
+ */
+export function dept() {
+  return http.get<any>('/mock/co/company/dept');
+}
+
+/**
+ * 岗位列表（树结构）
+ * @returns
+ */
+export function postTree() {
+  return http.get<any>('/mock/co/company/post/tree');
+}
+
+/**
+ * 岗位列表
+ * @returns
+ */
+export function post() {
+  return http.get<any>('/mock/co/company/post');
+}
+
+/**
+ * 人员列表
+ * @returns
+ */
+export function staff() {
+  return http.get<any>('/mock/co/company/staff');
+}
+
 //
 //
 //
@@ -63,51 +103,56 @@ export function sensitivity() {
 // 周边敏感目标单位信息
 
 // 部门列表（树结构）
-export function getCompanyDeptTree() {
-  return http.get<any>('/mock/co/company/dept/tree');
-}
 
 // 部门管理
-export function getDept() {
-  return http.get<any>('/mock/co/company/dept');
-}
 
 // 岗位管理
-export function getPost() {
-  return http.get<any>('/mock/co/company/post');
-}
 
 // 岗位列表（树结构）
-export function getCompanyPostTree() {
-  return http.get<any>('/mock/co/company/post/tree');
-}
 
 // 人员管理
-export function getStaff() {
-  return http.get<any>('/mock/co/company/staff');
-}
-
-// 创建项目
-export function addItem(params: any) {
-  return http.post('/mock/co/common/item', params);
-}
-
-// 删除项目
-export function deleteItem(ids: string[]) {
-  return http.delete(`/mock/co/common/item?ids=${ids}`);
-}
-
-// 编辑项目
-export function updateItem(params: any) {
-  return http.put('/mock/co/common/item', params);
-}
-
-// 复制项目
-export function copyItem(id: string) {
-  return http.get('/mock/co/common/item', { params: { id } });
-}
 
 // 公司所属行业领域
 export function getCompanyIndustry() {
   return http.get<any>('/mock/co/company/industry');
+}
+
+//
+//
+//
+
+/**
+ * 创建项目
+ * @param params 参数
+ * @returns
+ */
+export function addItem(params: any) {
+  return http.post('/mock/co/common/item', params);
+}
+
+/**
+ * 删除项目
+ * @param ids 项目ids
+ * @returns
+ */
+export function deleteItem(ids: string[]) {
+  return http.delete(`/mock/co/common/item?ids=${ids}`);
+}
+
+/**
+ * 编辑项目
+ * @param params 参数
+ * @returns
+ */
+export function updateItem(params: any) {
+  return http.put('/mock/co/common/item', params);
+}
+
+/**
+ * 复制项目
+ * @param id 项目id
+ * @returns
+ */
+export function copyItem(id: string) {
+  return http.get('/mock/co/common/item', { params: { id } });
 }
