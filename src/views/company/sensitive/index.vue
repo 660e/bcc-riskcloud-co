@@ -1,8 +1,7 @@
 <script lang="ts" name="company-sensitive" setup>
 import { onMounted, ref } from 'vue';
 import { MapClass, TDT } from '@bcc/utils';
-import { getDictDataType } from '@/api/modules/system';
-import { getCompanySensitive, getCompanySensitiveInfo } from '@/api/modules/company';
+import { companyApi, systemApi } from '@/api';
 import { System } from '@/api/interface';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import CreateDialog from './dialogs/create.vue';
@@ -45,8 +44,8 @@ const contextMenu: TDT.MenuItem[] = [
 ];
 
 onMounted(async () => {
-  companyInformation.value = (await getCompanySensitiveInfo()).data;
-  targets.value = (await getCompanySensitive()).data;
+  companyInformation.value = (await companyApi.detailsSensitivity('1')).data;
+  targets.value = (await companyApi.sensitivity()).data;
   range.value = companyInformation.value.radius;
   rangeCache = range.value;
   rangeCircle = MapUtils.Circle(companyInformation.value.lnglat, rangeCache, { weight: 1 });
@@ -60,7 +59,7 @@ onMounted(async () => {
   setRangeRadius(rangeCache);
   checkedTargetsChange(checkedTargets.value);
 
-  rangeOptions.value = (await getDictDataType('sensitive_target_range')).data;
+  rangeOptions.value = (await systemApi.dict('sensitive_target_range')).data;
 });
 
 // 添加自定义敏感目标

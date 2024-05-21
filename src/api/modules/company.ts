@@ -19,6 +19,15 @@ export function details(companyId: string) {
 }
 
 /**
+ * 获取单位基本信息（敏感目标）
+ * @param companyId 单位id
+ * @returns
+ */
+export function detailsSensitivity(companyId: string) {
+  return http.get<any>(`/mock/co/company/${companyId}/sensitivity`);
+}
+
+/**
  * 通过关键字获取单位列表
  * @param q 关键字
  * @param t 搜索类型（企业代码、企业名称）
@@ -36,20 +45,22 @@ export function industries() {
   return http.get<any>('/mock/co/company/industries/tree');
 }
 
+/**
+ * 获取周边敏感目标列表
+ * @returns
+ */
+export function sensitivity() {
+  return http.get<any>('/mock/co/company/sensitivity');
+}
+
 //
 //
 //
 //
 
 // 周边敏感目标
-export function getCompanySensitive() {
-  return http.get<any>('/mock/co/company/sensitive');
-}
 
 // 周边敏感目标单位信息
-export function getCompanySensitiveInfo() {
-  return http.get<any>('/mock/co/company/sensitive/info');
-}
 
 // 部门列表（树结构）
 export function getCompanyDeptTree() {

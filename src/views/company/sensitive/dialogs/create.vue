@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
 import { FormInstance, FormRules } from 'element-plus';
-import { getDictDataType } from '@/api/modules/system';
+import { systemApi } from '@/api';
 import { System } from '@/api/interface';
 import { cloneDeep } from 'lodash';
 
@@ -21,13 +21,13 @@ const rules = reactive<FormRules>({
 });
 
 const typeChange = async (value: string) => {
-  options.subtype = (await getDictDataType(value)).data;
+  options.subtype = (await systemApi.dict(value)).data;
 };
 
 const open = async (lnglat: any) => {
   visible.value = true;
   forms.value.lnglat = [lnglat.lng, lnglat.lat];
-  options.type = (await getDictDataType('sensitive_target_type')).data;
+  options.type = (await systemApi.dict('sensitive_target_type')).data;
 };
 
 const closed = () => formsRef.value?.resetFields();
