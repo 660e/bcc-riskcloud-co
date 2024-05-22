@@ -7,11 +7,12 @@ import { flattenTree } from '@bcc/utils';
 const visible = ref(false);
 const keyword = ref('');
 const risks = ref();
-const checkList = ref<any[]>([]);
+const checkList = ref<string[]>();
 
-const open = async () => {
+const open = async (risksList: string[]) => {
   visible.value = true;
   risks.value = (await workspaceApi.risksTree()).data;
+  checkList.value = risksList;
 };
 const close = () => {
   console.log('close');
@@ -77,6 +78,7 @@ defineExpose({ open });
                   <el-checkbox
                     v-for="risk in place.children"
                     v-show="risk.name.includes(keyword)"
+                    v-bind="(risk.checked = checkList.includes(risk.id))"
                     :key="risk.id"
                     :label="risk.name"
                     :value="risk.id"

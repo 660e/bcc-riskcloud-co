@@ -61,6 +61,7 @@ const columns: ColumnProps[] = [
   { prop: 'operation', label: '操作', width: 44 * 3 + 24 }
 ];
 
+const risksList = ['100001', '100002', '200001'];
 const requestApi = async () => {
   return new Promise(async resolve => {
     resolve({ data: (await workspaceApi.risks(industryId.value)).data.list });
@@ -75,7 +76,7 @@ onMounted(async () => {
 });
 
 const addDialogRef = ref();
-const add = () => addDialogRef.value.open();
+const add = () => addDialogRef.value.open(risksList);
 
 const importTemplateDialogRef = ref();
 const importData = () => {
