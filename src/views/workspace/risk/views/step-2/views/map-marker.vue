@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { getRiskMarkers } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import { WorkspaceRiskSource } from '@/api/interface';
 import { MapClass } from '@bcc/utils';
 
@@ -10,7 +10,7 @@ let M: any;
 const MapUtils: MapClass = new MapClass();
 onMounted(async () => {
   const center: [number, number] = [116.22874, 40.07758];
-  riskSources.value = (await getRiskMarkers()).data;
+  riskSources.value = (await workspaceApi.markers()).data;
 
   M = MapUtils.Init('map', center, 18);
   M.addOverLay(MapUtils.Marker(center));

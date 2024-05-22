@@ -1,5 +1,4 @@
 import http from '@/api';
-import { WorkspaceRiskSource } from '../interface';
 
 /**
  * 根据行业领域获取风险源列表
@@ -50,6 +49,14 @@ export function severity() {
   return http.get<any>('/mock/co/workspace/risk/severity');
 }
 
+/**
+ * 标注用风险源列表
+ * @returns
+ */
+export function markers() {
+  return http.get<any>('/mock/co/workspace/risk/markers');
+}
+
 //
 //
 //
@@ -78,9 +85,6 @@ export function getWorkspaceOnline() {
 }
 
 // 获取标注用风险源列表
-export function getRiskMarkers() {
-  return http.get<WorkspaceRiskSource[]>('/mock/co/workspace/risk/markers');
-}
 
 // 获取应急队伍列表
 export function getEmergencyTeam() {

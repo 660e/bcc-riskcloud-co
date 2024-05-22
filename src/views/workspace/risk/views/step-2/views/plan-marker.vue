@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { getRiskMarkers } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import { WorkspaceRiskSource } from '@/api/interface';
 import { useWrapperFit } from '../hooks';
 import PlanPreviewDialog from '../dialogs/plan-preview.vue';
 
 onMounted(async () => {
-  riskSources.value = (await getRiskMarkers()).data;
+  riskSources.value = (await workspaceApi.markers()).data;
 });
 
 // 当前正在拖拽的风险源
