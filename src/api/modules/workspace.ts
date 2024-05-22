@@ -18,6 +18,38 @@ export function risksTree() {
   return http.get<any>('/mock/co/workspace/risks/tree');
 }
 
+/**
+ * 计算风险等级
+ * @returns
+ */
+export function calcRiskGrade() {
+  return http.get<number[]>('/mock/co/workspace/calc-risk-grade');
+}
+
+/**
+ * 重大风险源判断条件
+ * @returns
+ */
+export function majors() {
+  return http.get<any>('/mock/co/workspace/risk/majors');
+}
+
+/**
+ * 可能性分析
+ * @returns
+ */
+export function possibility() {
+  return http.get<any>('/mock/co/workspace/risk/possibility');
+}
+
+/**
+ * 严重性分析
+ * @returns
+ */
+export function severity() {
+  return http.get<any>('/mock/co/workspace/risk/severity');
+}
+
 //
 //
 //
@@ -25,24 +57,10 @@ export function risksTree() {
 // 根据行业领域获取风险源列表
 
 // 重大风险源判断条件
-export function getMajors() {
-  return http.get<any>('/mock/co/workspace/risk/majors');
-}
 
 // 可能性分析
-export function getPossibility() {
-  return http.get<any>('/mock/co/workspace/risk/possibility');
-}
 
-// 严重性分析
-export function getSeverity() {
-  return http.get<any>('/mock/co/workspace/risk/severity');
-}
-
-// 计算风险等级
-export function calcRiskGrade() {
-  return http.get<number[]>('/mock/co/workspace/calc-risk-grade');
-}
+//
 
 // 风险更新记录
 export function getWorkspaceLog() {

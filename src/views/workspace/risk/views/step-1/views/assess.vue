@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from 'element-plus';
 import { RiskGradeMatrix } from '@bcc/components';
-import { calcRiskGrade } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import AssessForms from '../components/assess-forms.vue';
 import AssessAnalysis from '../components/assess-analysis.vue';
 
@@ -25,7 +25,7 @@ const analyse = (result: any) => {
 
 const canCalc = ref(false);
 const calc = async () => {
-  grade.value = (await calcRiskGrade()).data;
+  grade.value = (await workspaceApi.calcRiskGrade()).data;
 };
 
 const formsComponentRef = ref();

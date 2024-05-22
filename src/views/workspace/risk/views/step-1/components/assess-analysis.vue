@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue';
-import { getMajors, getPossibility, getSeverity } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 
 defineEmits(['analyse']);
 const majors = ref();
@@ -17,9 +17,9 @@ const analyses = reactive<{
 });
 
 onMounted(async () => {
-  majors.value = (await getMajors()).data;
-  analyses.possibilities = (await getPossibility()).data;
-  analyses.severities = (await getSeverity()).data;
+  majors.value = (await workspaceApi.majors()).data;
+  analyses.possibilities = (await workspaceApi.possibility()).data;
+  analyses.severities = (await workspaceApi.severity()).data;
 });
 </script>
 

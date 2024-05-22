@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { FormInstance, FormRules, FormValidateCallback } from 'element-plus';
 import { System } from '@/api/interface';
-import { getDictDataType } from '@/api/modules/system';
+import { systemApi } from '@/api';
 import { LabelTooltip } from '@bcc/components';
 
 const formsRef = ref<FormInstance>();
@@ -37,8 +37,8 @@ const rules: FormRules = {
 
 const options = reactive<{ [key: string]: System.Dict[] }>({});
 onMounted(async () => {
-  options.riskType = (await getDictDataType('risk_damage')).data;
-  options.yesNo = (await getDictDataType('yes_no')).data;
+  options.riskType = (await systemApi.dict('risk_damage')).data;
+  options.yesNo = (await systemApi.dict('yes_no')).data;
 });
 
 const validate = (callback: FormValidateCallback) => {
