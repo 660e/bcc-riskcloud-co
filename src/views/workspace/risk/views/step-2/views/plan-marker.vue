@@ -12,6 +12,8 @@ onMounted(async () => {
 // 当前正在拖拽的风险源
 let draggingSource: WorkspaceRiskSource | undefined;
 let draggingSourceOffset = [0, 0];
+// 当前选中的风险源
+const currentSource = ref();
 // 风险源列表
 const riskSources = ref<WorkspaceRiskSource[]>([]);
 // 标注风险源
@@ -81,7 +83,15 @@ const { fit, wrapperStyle } = useWrapperFit(wrapperRef, imgRef);
     </div>
     <el-divider direction="vertical" class="m-0 h-full" />
   </div>
-  <div class="flex-1 bg-gray-300 flex justify-center items-center" ref="wrapperRef">
+  <div class="flex-1 bg-gray-300 flex justify-center items-center relative" ref="wrapperRef">
+    <transition name="fade">
+      <el-alert
+        v-if="currentSource"
+        :title="currentSource.label"
+        :closable="false"
+        class="px-4 h-8 w-auto flex items-center -translate-x-1/2 absolute top-2.5 left-1/2 z-[500]"
+      />
+    </transition>
     <div :style="wrapperStyle" class="opacity-0 duration-300 relative">
       <img :style="wrapperStyle" @load="fit" src="../bg.jpg" ref="imgRef" />
       <div
@@ -98,6 +108,8 @@ const { fit, wrapperStyle } = useWrapperFit(wrapperRef, imgRef);
           :style="markerStyle(r.position)"
           :ondragstart="ondragstart"
           :class="[`plan-marker__marker--${r.type}`]"
+          @mouseenter="currentSource = r"
+          @mouseleave="currentSource = null"
           data-type="marker"
           draggable="true"
           class="plan-marker__marker"
@@ -111,6 +123,7 @@ const { fit, wrapperStyle } = useWrapperFit(wrapperRef, imgRef);
 </template>
 
 <style lang="scss" scoped>
+@import '@bcc/utils/styles/transition.scss';
 .plan-marker__marker {
   cursor: pointer;
   height: 41px;
