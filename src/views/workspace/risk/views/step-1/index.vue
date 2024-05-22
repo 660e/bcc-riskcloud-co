@@ -14,12 +14,12 @@ const industryId = ref('');
 const industries = ref();
 
 const tabs = [
-  { label: '全部', value: 6 },
-  { label: '已完成', value: 2 },
-  { label: '评估中', value: 1 },
-  { label: '待评估', value: 0 },
-  { label: '已驳回', value: 4 },
-  { label: '已删除', value: 3 }
+  { label: '全部', value: 6, count: 3 },
+  { label: '已完成', value: 2, count: 2 },
+  { label: '评估中', value: 1, count: 0 },
+  { label: '待评估', value: 0, count: 1 },
+  { label: '已驳回', value: 4, count: 0 },
+  { label: '已删除', value: 3, count: 0 }
 ];
 const tabChange = (value: number) => {
   console.log(value);
@@ -129,14 +129,14 @@ const remove = (row: any) => {
     </el-tabs>
     <div class="no-card flex-1 pt-2.5">
       <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
+        <template #tabs>
+          <simple-tabs :tabs="tabs" @change="tabChange" />
+        </template>
         <template #tableHeader>
           <el-button @click="risks" type="primary">新增</el-button>
           <el-button @click="importData">导入</el-button>
           <el-button @click="exportData">导出</el-button>
           <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
-        </template>
-        <template #tabs>
-          <simple-tabs :tabs="tabs" @change="tabChange" />
         </template>
         <template #operation="scope">
           <el-button @click="assess(scope.row)" type="primary" link>评估</el-button>
