@@ -2,12 +2,11 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getRiskByIndustryId } from '@/api/modules/workspace';
-import { companyApi, systemApi } from '@/api';
+import { companyApi, systemApi, workspaceApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog, SimpleTabs } from '@bcc/components';
-import RisksDialog from './dialogs/risks.vue';
+import AddDialog from './dialogs/add.vue';
 import ProTable from '@/components/pro-table/index.vue';
 
 const industryId = ref('');
@@ -30,10 +29,11 @@ const columns: ColumnProps[] = [
   { type: 'selection', width: 0 },
   { prop: 'sourceName', label: '风险源' },
   { prop: 'riskType', label: '风险类型' },
+  { prop: 'count', label: '数量', width: 100 },
   {
     prop: 'levelName',
     label: '风险等级',
-    enum: () => systemApi.dict('risk_level_name'),
+    enum: () => systemApi.dict('risk_level'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
     width: 100
   },
@@ -60,9 +60,11 @@ const columns: ColumnProps[] = [
   },
   { prop: 'operation', label: '操作', width: 44 * 3 + 24 }
 ];
-const requestApi = (params: any) => {
-  params.industryId = industryId.value;
-  return getRiskByIndustryId(params);
+
+const requestApi = async () => {
+  return new Promise(async resolve => {
+    resolve({ data: (await workspaceApi.risks(industryId.value)).data.list });
+  });
 };
 onMounted(async () => {
   industries.value = (await companyApi.industry('1')).data;
@@ -72,8 +74,8 @@ onMounted(async () => {
   }
 });
 
-const risksDialogRef = ref();
-const risks = () => risksDialogRef.value.open();
+const addDialogRef = ref();
+const add = () => addDialogRef.value.open();
 
 const importTemplateDialogRef = ref();
 const importData = () => {
@@ -128,12 +130,19 @@ const remove = (row: any) => {
       <el-tab-pane v-for="industry in industries" :key="industry.id" :label="industry.label" :name="industry.id" />
     </el-tabs>
     <div class="no-card flex-1 pt-2.5">
-      <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">
+      <pro-table
+        :columns="columns"
+        :request-api="requestApi"
+        :request-auto="false"
+        :pagination="false"
+        ref="tableRef"
+        row-key="id"
+      >
         <template #tabs>
           <simple-tabs :tabs="tabs" @change="tabChange" />
         </template>
         <template #tableHeader>
-          <el-button @click="risks" type="primary">新增</el-button>
+          <el-button @click="add" type="primary">添加风险源</el-button>
           <el-button @click="importData">导入</el-button>
           <el-button @click="exportData">导出</el-button>
           <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
@@ -147,7 +156,7 @@ const remove = (row: any) => {
     </div>
 
     <!-- 新增 -->
-    <risks-dialog ref="risksDialogRef" />
+    <add-dialog ref="addDialogRef" />
     <!-- 导入 -->
     <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
   </div>

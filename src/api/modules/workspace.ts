@@ -1,6 +1,19 @@
 import http from '@/api';
 import { WorkspaceRiskSource } from '../interface';
 
+/**
+ * 根据行业领域获取风险源列表
+ * @param industryId 行业领域id
+ * @returns
+ */
+export function risks(industryId: string) {
+  return http.get<any>(`/mock/co/workspace/${industryId}/risks`);
+}
+
+//
+//
+//
+
 // 根据行业领域获取风险源列表（分页）
 export function getRiskByIndustryId(params: any) {
   return http.get<any>('/mock/co/workspace/risks/list', params);

@@ -121,5 +121,6 @@ export * as libraryApi from './modules/library';
 export * as listApi from './modules/list';
 export * as riskApi from './modules/risk';
 export * as systemApi from './modules/system';
+export * as workspaceApi from './modules/workspace';
 
 export default new RequestHttp(config);
