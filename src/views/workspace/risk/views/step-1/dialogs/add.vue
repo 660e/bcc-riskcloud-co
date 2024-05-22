@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { Search } from '@element-plus/icons-vue';
-import { getRisks } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import { flattenTree } from '@bcc/utils';
 
 const visible = ref(false);
@@ -11,7 +11,7 @@ const checkList = ref<any[]>([]);
 
 const open = async () => {
   visible.value = true;
-  risks.value = (await getRisks()).data;
+  risks.value = (await workspaceApi.risksTree()).data;
 };
 const close = () => {
   console.log('close');

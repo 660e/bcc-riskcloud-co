@@ -10,19 +10,19 @@ export function risks(industryId: string) {
   return http.get<any>(`/mock/co/workspace/${industryId}/risks`);
 }
 
-//
-//
-//
-
-// 根据行业领域获取风险源列表（分页）
-export function getRiskByIndustryId(params: any) {
-  return http.get<any>('/mock/co/workspace/risks/list', params);
+/**
+ * 风险源列表（树结构）
+ * @returns
+ */
+export function risksTree() {
+  return http.get<any>('/mock/co/workspace/risks/tree');
 }
+
+//
+//
+//
 
 // 根据行业领域获取风险源列表
-export function getRisks() {
-  return http.get<any>('/mock/co/workspace/risks');
-}
 
 // 重大风险源判断条件
 export function getMajors() {
