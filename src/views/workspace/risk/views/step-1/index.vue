@@ -2,9 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getDictDataType } from '@/api/modules/system';
-import { deleteItem, copyItem, getCompanyIndustry } from '@/api/modules/company';
 import { getRiskByIndustryId } from '@/api/modules/workspace';
+import { companyApi, systemApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog, SimpleTabs } from '@bcc/components';
@@ -34,14 +33,14 @@ const columns: ColumnProps[] = [
   {
     prop: 'levelName',
     label: '风险等级',
-    enum: () => getDictDataType('risk_level_name'),
+    enum: () => systemApi.dict('risk_level_name'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
     width: 100
   },
   {
     prop: 'statusFlag',
     label: '状态',
-    enum: () => getDictDataType('assess_status'),
+    enum: () => systemApi.dict('assess_status'),
     fieldNames: { label: 'dictLabel', value: 'dictValue' },
     render: scope => {
       switch (scope.row.statusFlag) {
@@ -66,7 +65,7 @@ const requestApi = (params: any) => {
   return getRiskByIndustryId(params);
 };
 onMounted(async () => {
-  industries.value = (await getCompanyIndustry()).data;
+  industries.value = (await companyApi.industry('1')).data;
   if (industries.value.length) {
     industryId.value = industries.value[0].id;
     tableRef.value.search(tableRef.value.pageable?.pageNum);
@@ -79,14 +78,14 @@ const risks = () => risksDialogRef.value.open();
 const importTemplateDialogRef = ref();
 const importData = () => {
   importTemplateDialogRef.value.open({
-    templateApi: getDictDataType,
+    templateApi: systemApi.dict,
     templateName: '模板.xlsx',
-    importApi: getDictDataType
+    importApi: systemApi.dict
   });
 };
 
 const exportData = async () => {
-  const blob: any = await getDictDataType({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
+  const blob: any = await systemApi.dict({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
   saveAs(blob, `${new Date().getTime()}.xlsx`);
 };
 
@@ -96,7 +95,7 @@ const assess = (row: any) => $router.push({ name: 'risk-assess', params: { id: r
 const copy = (row: any) => {
   ElMessageBox.confirm(`是否复制${row.sourceName}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await copyItem(row.id);
+      const { msg } = await companyApi.copyItem(row.id);
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
@@ -109,7 +108,7 @@ const remove = (row: any) => {
   const ids = row.id ? [row.id] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteItem(ids.join(','));
+      const { msg } = await companyApi.deleteItem(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
@@ -126,12 +125,7 @@ const remove = (row: any) => {
       type="border-card"
       class="no-tab-pane"
     >
-      <el-tab-pane
-        v-for="industry in industries"
-        :key="industry.id"
-        :label="`${industry.label}(${industry.done}/${industry.total})`"
-        :name="industry.id"
-      />
+      <el-tab-pane v-for="industry in industries" :key="industry.id" :label="industry.label" :name="industry.id" />
     </el-tabs>
     <div class="no-card flex-1 pt-2.5">
       <pro-table :columns="columns" :request-api="requestApi" :request-auto="false" ref="tableRef" row-key="id">

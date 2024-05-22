@@ -28,6 +28,15 @@ export function detailsSensitivity(companyId: string) {
 }
 
 /**
+ * 单位基本信息（行业领域）
+ * @param companyId 单位id
+ * @returns
+ */
+export function industry(companyId: string) {
+  return http.get<any>(`/mock/co/company/${companyId}/industry`);
+}
+
+/**
  * 通过关键字获取单位列表
  * @param q 关键字
  * @param t 搜索类型（企业代码、企业名称）
@@ -92,34 +101,6 @@ export function post() {
 export function staff() {
   return http.get<any>('/mock/co/company/staff');
 }
-
-//
-//
-//
-//
-
-// 周边敏感目标
-
-// 周边敏感目标单位信息
-
-// 部门列表（树结构）
-
-// 部门管理
-
-// 岗位管理
-
-// 岗位列表（树结构）
-
-// 人员管理
-
-// 公司所属行业领域
-export function getCompanyIndustry() {
-  return http.get<any>('/mock/co/company/industry');
-}
-
-//
-//
-//
 
 /**
  * 创建项目
