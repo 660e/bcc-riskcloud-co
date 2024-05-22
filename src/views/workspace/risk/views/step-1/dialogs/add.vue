@@ -53,6 +53,7 @@ defineExpose({ open });
               v-for="group in level.children"
               v-show="group.children.some((place: any) => place.children.some((risk: any) => risk.name.includes(keyword)))"
               :key="group.id"
+              :class="{ unfolded: group.name === '' }"
               class="px-2.5"
             >
               <template #title>
@@ -111,6 +112,15 @@ defineExpose({ open });
     padding: 0;
     height: 100%;
     overflow-y: auto;
+  }
+  :deep(.el-collapse) .unfolded {
+    & > button.el-collapse-item__header {
+      display: none;
+    }
+    & > div.el-collapse-item__wrap {
+      display: block !important;
+      padding-top: 8px;
+    }
   }
 }
 </style>
