@@ -137,6 +137,7 @@ const remove = (row: any) => {
         :pagination="false"
         ref="tableRef"
         row-key="id"
+        default-expand-all
       >
         <template #tabs>
           <simple-tabs :tabs="tabs" @change="tabChange" />
@@ -148,9 +149,11 @@ const remove = (row: any) => {
           <el-button @click="remove" :disabled="!tableRef?.selectedListIds.length" type="danger" plain>删除</el-button>
         </template>
         <template #operation="scope">
-          <el-button @click="assess(scope.row)" type="primary" link>评估</el-button>
-          <el-button @click="copy(scope.row)" type="primary" link>复制</el-button>
-          <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+          <template v-if="scope.row.statusFlag">
+            <el-button @click="assess(scope.row)" type="primary" link>评估</el-button>
+            <el-button @click="copy(scope.row)" type="primary" link>复制</el-button>
+            <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+          </template>
         </template>
       </pro-table>
     </div>
