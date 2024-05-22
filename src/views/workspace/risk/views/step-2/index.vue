@@ -1,33 +1,23 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import { TabPaneName } from 'element-plus';
+import { ref } from 'vue';
 
-import MapMarker from './components/map-marker.vue';
-import PipeMarker from './components/pipe-marker.vue';
-import PlanMarker from './components/plan-marker.vue';
+import PlanMarker from './views/plan-marker.vue';
+import MapMarker from './views/map-marker.vue';
+import PipeMarker from './views/pipe-marker.vue';
 
-const active = ref<TabPaneName>(0);
-const mapMarkerRef = ref();
-const planMarkerRef = ref();
-const tabChange = (name: TabPaneName) => {
-  switch (name) {
-    case 0:
-      mapMarkerRef.value.init();
-      break;
-    case 1:
-      break;
-    case 2:
-      planMarkerRef.value.init();
-      break;
-  }
-};
-onMounted(() => tabChange(active.value));
+const active = ref('plan');
 </script>
 
 <template>
-  <el-tabs v-model="active" @tab-change="tabChange" type="border-card" class="flex-1 tabs-flex">
-    <map-marker :name="0" label="地图标注" class="h-full flex" ref="mapMarkerRef" lazy />
-    <pipe-marker :name="1" label="管线标注" class="h-full" lazy />
-    <plan-marker :name="2" label="平面图标注" class="h-full flex" ref="planMarkerRef" lazy />
+  <el-tabs v-model="active" type="border-card" class="flex-1 tabs-flex">
+    <el-tab-pane label="平面图标注" name="plan" class="h-full flex">
+      <plan-marker v-if="active === 'plan'" />
+    </el-tab-pane>
+    <el-tab-pane label="地图标注" name="map" class="h-full flex">
+      <map-marker v-if="active === 'map'" />
+    </el-tab-pane>
+    <el-tab-pane label="管线标注" name="pipe" class="h-full flex">
+      <pipe-marker v-if="active === 'pipe'" />
+    </el-tab-pane>
   </el-tabs>
 </template>

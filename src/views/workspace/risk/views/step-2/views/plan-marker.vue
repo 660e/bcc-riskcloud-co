@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { getRiskMarkers } from '@/api/modules/workspace';
 import { WorkspaceRiskSource } from '@/api/interface';
 import { useWrapperFit } from '../hooks';
 import PlanPreviewDialog from '../dialogs/plan-preview.vue';
 
-const init = async () => {
+onMounted(async () => {
   riskSources.value = (await getRiskMarkers()).data;
-};
+});
 
 // 当前正在拖拽的风险源
 let draggingSource: WorkspaceRiskSource | undefined;
@@ -48,70 +48,66 @@ const save = () => {
 const wrapperRef = ref();
 const imgRef = ref();
 const { fit, wrapperStyle } = useWrapperFit(wrapperRef, imgRef);
-
-defineExpose({ init });
 </script>
 
 <template>
-  <el-tab-pane>
-    <div class="w-72 flex">
-      <div class="flex-1 flex flex-col">
-        <div class="flex-1 overflow-y-auto">
-          <div class="pt-2.5">
-            <div
-              v-for="r in riskSources"
-              :key="r.id"
-              :data-id="r.id"
-              :ondragstart="ondragstart"
-              draggable="true"
-              class="h-8 px-2.5 cursor-grab select-none flex items-center justify-between"
-              style="color: var(--el-text-color-regular)"
-            >
-              <span>{{ r.label }}</span>
-              <el-icon v-if="r.position" @click="r.position = undefined" class="text-lg text-red-500 cursor-pointer">
-                <CircleClose />
-              </el-icon>
-            </div>
-          </div>
-        </div>
-        <div class="p-2.5 flex">
-          <el-button @click="riskSources.forEach((r: WorkspaceRiskSource) => (r.position = undefined))" class="flex-1">
-            重置
-          </el-button>
-          <el-button :disabled="!riskSources.filter(e => e.position).length" @click="preview" class="flex-1">预览</el-button>
-          <el-button @click="save" class="flex-1" type="primary">保存</el-button>
-        </div>
-      </div>
-      <el-divider direction="vertical" class="m-0 h-full" />
-    </div>
-    <div class="flex-1 bg-gray-300 flex justify-center items-center" ref="wrapperRef">
-      <div :style="wrapperStyle" class="opacity-0 duration-300 relative">
-        <img :style="wrapperStyle" @load="fit" src="../bg.jpg" ref="imgRef" />
-        <div
-          :ondragover="ondragover"
-          :ondrop="ondrop"
-          id="container"
-          ref="containerRef"
-          class="w-full h-full absolute top-0 left-0 z-10"
-        >
+  <div class="w-72 flex">
+    <div class="flex-1 flex flex-col">
+      <div class="flex-1 overflow-y-auto">
+        <div class="pt-2.5">
           <div
             v-for="r in riskSources"
             :key="r.id"
             :data-id="r.id"
-            :style="markerStyle(r.position)"
             :ondragstart="ondragstart"
-            :class="[`plan-marker__marker--${r.type}`]"
-            data-type="marker"
             draggable="true"
-            class="plan-marker__marker"
-          ></div>
+            class="h-8 px-2.5 cursor-grab select-none flex items-center justify-between"
+            style="color: var(--el-text-color-regular)"
+          >
+            <span>{{ r.label }}</span>
+            <el-icon v-if="r.position" @click="r.position = undefined" class="text-lg text-red-500 cursor-pointer">
+              <CircleClose />
+            </el-icon>
+          </div>
         </div>
       </div>
+      <div class="p-2.5 flex">
+        <el-button @click="riskSources.forEach((r: WorkspaceRiskSource) => (r.position = undefined))" class="flex-1">
+          重置
+        </el-button>
+        <el-button :disabled="!riskSources.filter(e => e.position).length" @click="preview" class="flex-1">预览</el-button>
+        <el-button @click="save" class="flex-1" type="primary">保存</el-button>
+      </div>
     </div>
+    <el-divider direction="vertical" class="m-0 h-full" />
+  </div>
+  <div class="flex-1 bg-gray-300 flex justify-center items-center" ref="wrapperRef">
+    <div :style="wrapperStyle" class="opacity-0 duration-300 relative">
+      <img :style="wrapperStyle" @load="fit" src="../bg.jpg" ref="imgRef" />
+      <div
+        :ondragover="ondragover"
+        :ondrop="ondrop"
+        id="container"
+        ref="containerRef"
+        class="w-full h-full absolute top-0 left-0 z-10"
+      >
+        <div
+          v-for="r in riskSources"
+          :key="r.id"
+          :data-id="r.id"
+          :style="markerStyle(r.position)"
+          :ondragstart="ondragstart"
+          :class="[`plan-marker__marker--${r.type}`]"
+          data-type="marker"
+          draggable="true"
+          class="plan-marker__marker"
+        ></div>
+      </div>
+    </div>
+  </div>
 
-    <!-- 预览 -->
-    <plan-preview-dialog ref="planPreviewRef" />
-  </el-tab-pane>
+  <!-- 预览 -->
+  <plan-preview-dialog ref="planPreviewRef" />
 </template>
 
 <style lang="scss" scoped>
