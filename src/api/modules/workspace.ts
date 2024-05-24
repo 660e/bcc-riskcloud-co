@@ -65,6 +65,22 @@ export function markers() {
   return http.get<any>('/mock/co/workspace/risk/markers');
 }
 
+/**
+ * 单位诊断分级表格
+ * @returns
+ */
+export function diagnosis() {
+  return http.get('/mock/co/workspace/risk/diagnosis');
+}
+
+/**
+ * 应急能力评估表格
+ * @returns
+ */
+export function evaluation() {
+  return http.get('/mock/co/workspace/risk/evaluation');
+}
+
 //
 //
 //
@@ -112,11 +128,6 @@ export function getEmergencyEquipment() {
 // 获取应急物资列表
 export function getEmergencySupply() {
   return http.get<any>('/mock/co/workspace/risk/resource/supply');
-}
-
-// 获取应急能力评估表格
-export function getAbilityEvaluationTable() {
-  return http.get<any>('/mock/co/workspace/risk/evaluation');
 }
 
 // 获取风险源列表

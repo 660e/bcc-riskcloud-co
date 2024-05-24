@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue';
-import { getAbilityEvaluationTable } from '@/api/modules/workspace';
-import { getDictDataType } from '@/api/modules/system';
 import { System } from '@/api/interface';
+import { systemApi, workspaceApi } from '@/api';
 
 const thead = [
   { label: '项目', width: 200 },
@@ -31,8 +30,8 @@ const options = reactive<{ [key: string]: System.Dict[] }>({
   evaluateType: []
 });
 onMounted(async () => {
-  table.value = (await getAbilityEvaluationTable()).data;
-  options.evaluateType = (await getDictDataType('evaluate_type')).data;
+  table.value = (await workspaceApi.evaluation()).data;
+  options.evaluateType = (await systemApi.dict('evaluate_type')).data;
 });
 
 const sum = (data: any) => {
