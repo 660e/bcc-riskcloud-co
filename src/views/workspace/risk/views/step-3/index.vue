@@ -53,7 +53,7 @@ const typeChange = (value: string, tr: any) => {
   <div class="card flex-1 flex flex-col">
     <div class="flex items-center space-x-5 p-2.5">
       <div>
-        <el-button type="primary">暂存</el-button>
+        <el-button type="primary">保存</el-button>
         <el-button>导出</el-button>
       </div>
       <div class="flex items-center">
