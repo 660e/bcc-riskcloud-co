@@ -54,7 +54,7 @@ export function severity() {
  * @returns
  */
 export function plan() {
-  return http.get('/mock/co/workspace/risk/plan');
+  return http.get<any>('/mock/co/workspace/risk/plan');
 }
 
 /**
@@ -70,7 +70,39 @@ export function markers() {
  * @returns
  */
 export function diagnosis() {
-  return http.get('/mock/co/workspace/risk/diagnosis');
+  return http.get<any>('/mock/co/workspace/risk/diagnosis');
+}
+
+/**
+ * 应急队伍列表
+ * @returns
+ */
+export function team() {
+  return http.get<any>('/mock/co/workspace/risk/resource/team');
+}
+
+/**
+ * 应急专家列表
+ * @returns
+ */
+export function expert() {
+  return http.get<any>('/mock/co/workspace/risk/resource/expert');
+}
+
+/**
+ * 应急装备列表
+ * @returns
+ */
+export function equipment() {
+  return http.get<any>('/mock/co/workspace/risk/resource/equipment');
+}
+
+/**
+ * 应急物资列表
+ * @returns
+ */
+export function supply() {
+  return http.get<any>('/mock/co/workspace/risk/resource/supply');
 }
 
 /**
@@ -83,14 +115,6 @@ export function evaluation() {
 
 //
 //
-//
-
-// 根据行业领域获取风险源列表
-
-// 重大风险源判断条件
-
-// 可能性分析
-
 //
 
 // 风险更新记录
@@ -106,28 +130,6 @@ export function getWorkspaceStatistics() {
 // 获取线上核查结果
 export function getWorkspaceOnline() {
   return http.get('/mock/co/workspace/online');
-}
-
-// 获取标注用风险源列表
-
-// 获取应急队伍列表
-export function getEmergencyTeam() {
-  return http.get<any>('/mock/co/workspace/risk/resource/team');
-}
-
-// 获取应急专家列表
-export function getEmergencyExpert() {
-  return http.get<any>('/mock/co/workspace/risk/resource/expert');
-}
-
-// 获取应急装备列表
-export function getEmergencyEquipment() {
-  return http.get<any>('/mock/co/workspace/risk/resource/equipment');
-}
-
-// 获取应急物资列表
-export function getEmergencySupply() {
-  return http.get<any>('/mock/co/workspace/risk/resource/supply');
 }
 
 // 获取风险源列表

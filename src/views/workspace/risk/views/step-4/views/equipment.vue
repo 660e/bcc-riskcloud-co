@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { getDictDataType } from '@/api/modules/system';
-import { deleteItem } from '@/api/modules/company';
-import { getEmergencyEquipment } from '@/api/modules/workspace';
+import { companyApi, systemApi, workspaceApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { ImportTemplateDialog } from '@bcc/components';
@@ -23,7 +21,7 @@ const columns: ColumnProps[] = [
   { prop: 'location', label: '存放场所' },
   { prop: 'chief', label: '负责人', width: 100 },
   { prop: 'phone', label: '联系电话', width: 150 },
-  { prop: 'operation', label: '操作', width: 44 + 24 }
+  { prop: 'operation', label: '操作', width: 44 * 2 + 24 }
 ];
 
 const createEquipmentDialogRef = ref();
@@ -32,14 +30,14 @@ const create = (row: any = {}) => createEquipmentDialogRef.value.open(row);
 const importTemplateDialogRef = ref();
 const importData = () => {
   importTemplateDialogRef.value.open({
-    templateApi: deleteItem,
+    templateApi: companyApi.deleteItem,
     templateName: '模板.xlsx',
-    importApi: deleteItem
+    importApi: companyApi.deleteItem
   });
 };
 
 const exportData = async () => {
-  const blob: any = await getDictDataType({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
+  const blob: any = await systemApi.dict({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
   saveAs(blob, `${new Date().getTime()}.xlsx`);
 };
 
@@ -48,7 +46,7 @@ const remove = (row: any) => {
   const ids = row.id ? [row.id] : tableRef.value.selectedListIds;
   ElMessageBox.confirm(`是否删除${name}？`, '系统提示', { type: 'warning' })
     .then(async () => {
-      const { msg } = await deleteItem(ids.join(','));
+      const { msg } = await companyApi.deleteItem(ids.join(','));
       tableRef.value.search(tableRef.value.pageable?.pageNum);
       tableRef.value.clearSelection();
       ElMessage.success(msg);
@@ -58,22 +56,21 @@ const remove = (row: any) => {
 </script>
 
 <template>
-  <el-tab-pane class="pt-2.5">
-    <pro-table :columns="columns" :request-api="getEmergencyEquipment" ref="tableRef" row-key="id">
-      <template #tableHeader>
-        <el-button @click="create" type="primary">新增</el-button>
-        <el-button @click="importData">导入</el-button>
-        <el-button @click="exportData">导出</el-button>
-        <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
-      </template>
-      <template #operation="scope">
-        <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
-      </template>
-    </pro-table>
+  <pro-table :columns="columns" :request-api="workspaceApi.equipment" ref="tableRef" row-key="id">
+    <template #tableHeader>
+      <el-button @click="create" type="primary">新增</el-button>
+      <el-button @click="importData">导入</el-button>
+      <el-button @click="exportData">导出</el-button>
+      <el-button :disabled="!tableRef?.selectedListIds.length" @click="remove" type="danger" plain>删除</el-button>
+    </template>
+    <template #operation="scope">
+      <el-button @click="create(scope.row)" type="primary" link>编辑</el-button>
+      <el-button @click="remove(scope.row)" type="danger" link>删除</el-button>
+    </template>
+  </pro-table>
 
-    <!-- 新增 -->
-    <create-equipment-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createEquipmentDialogRef" />
-    <!-- 导入 -->
-    <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
-  </el-tab-pane>
+  <!-- 新增 -->
+  <create-equipment-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="createEquipmentDialogRef" />
+  <!-- 导入 -->
+  <import-template-dialog @confirm="tableRef.search() && tableRef.clearSelection()" ref="importTemplateDialogRef" />
 </template>
