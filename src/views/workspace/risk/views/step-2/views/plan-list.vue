@@ -32,15 +32,15 @@ const remove = (id: string) => {
 
 <template>
   <div v-if="isList" class="flex-auto overflow-y-auto">
-    <div class="p-2.5 flex flex-wrap">
-      <div v-for="plan in planList" :key="plan.id" class="m-2.5 relative">
+    <div class="pt-2.5 pl-2.5 flex flex-wrap">
+      <div v-for="plan in planList" :key="plan.id" class="mr-2.5 mb-2.5 relative">
         <el-image :src="image" fit="cover" class="block w-80 h-40" />
         <div class="absolute z-10 inset-0 bg-black/50 flex justify-center items-center opacity-0 duration-300 hover:opacity-100">
           <el-button @click="mark(plan.id)" type="primary" plain>标注</el-button>
           <el-button @click="remove(plan.id)" type="danger" plain>删除</el-button>
         </div>
       </div>
-      <el-upload :show-file-list="false" action="#" class="m-2.5 bg-gray-200 opacity-50 duration-300 hover:opacity-100">
+      <el-upload :show-file-list="false" action="#" class="mr-2.5 mb-2.5 bg-gray-200 opacity-50 duration-300 hover:opacity-100">
         <el-icon class="w-80 h-40 text-gray-500 text-3xl"><Plus /></el-icon>
       </el-upload>
     </div>
