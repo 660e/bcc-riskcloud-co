@@ -116,7 +116,7 @@ export function addItem(params: any) {
  * @param ids 项目ids
  * @returns
  */
-export function deleteItem(ids: string[]) {
+export function deleteItem(ids: string) {
   return http.delete(`/mock/co/common/item?ids=${ids}`);
 }
 

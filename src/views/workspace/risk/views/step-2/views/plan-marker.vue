@@ -5,7 +5,11 @@ import { WorkspaceRiskSource } from '@/api/interface';
 import { useWrapperFit } from '../hooks';
 import PlanPreviewDialog from '../dialogs/plan-preview.vue';
 
+defineEmits(['back']);
+
+const { planId } = defineProps<{ planId: string }>();
 onMounted(async () => {
+  console.log(planId);
   riskSources.value = (await workspaceApi.markers()).data;
 });
 
@@ -73,12 +77,11 @@ const { fit, wrapperStyle } = useWrapperFit(wrapperRef, imgRef);
           </div>
         </div>
       </div>
-      <div class="p-2.5 flex">
-        <el-button @click="riskSources.forEach((r: WorkspaceRiskSource) => (r.position = undefined))" class="flex-1">
-          重置
-        </el-button>
-        <el-button :disabled="!riskSources.filter(e => e.position).length" @click="preview" class="flex-1">预览</el-button>
-        <el-button @click="save" class="flex-1" type="primary">保存</el-button>
+      <div class="p-2.5 grid grid-cols-2 grid-rows-2 gap-2.5">
+        <el-button @click="$emit('back')">返回</el-button>
+        <el-button :disabled="!riskSources.filter(e => e.position).length" @click="preview">预览</el-button>
+        <el-button @click="riskSources.forEach((r: WorkspaceRiskSource) => (r.position = undefined))">重置</el-button>
+        <el-button @click="save" type="primary">保存</el-button>
       </div>
     </div>
     <el-divider direction="vertical" class="m-0 h-full" />
@@ -143,5 +146,8 @@ const { fit, wrapperStyle } = useWrapperFit(wrapperRef, imgRef);
   &--warning {
     background: url(@bcc/utils/src/assets/tianditu/marker-warning.svg);
   }
+}
+.grid .el-button {
+  margin: 0;
 }
 </style>
