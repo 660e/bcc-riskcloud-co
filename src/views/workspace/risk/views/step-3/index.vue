@@ -4,9 +4,9 @@ import { System } from '@/api/interface';
 import { systemApi, workspaceApi } from '@/api';
 
 const thead = [
-  { label: '项目', width: 200 },
+  { label: '规则', width: 200 },
+  { label: '项目' },
   { label: '评估内容', width: 400 },
-  { label: '打分方法' },
   { label: '评分选择', width: 300 },
   { label: '得分', width: 100 },
   { label: '扣分情况', width: 200 }
@@ -73,8 +73,8 @@ const typeChange = (value: string, tr: any) => {
         <template v-for="item in table" :key="item.id">
           <tr v-for="(tr, index) in item.children" :key="tr.id">
             <td v-if="!index" :rowspan="item.children.length" class="p-2.5 text-center">{{ item.label }}({{ sum(item) }}分)</td>
-            <td class="p-2.5">{{ tr.label }}({{ tr.score }}分)</td>
             <td v-if="!index" :rowspan="item.children.length" class="p-2.5">{{ item.explain }}</td>
+            <td class="p-2.5">{{ tr.label }}({{ tr.score }}分)</td>
             <td class="text-center">
               <el-radio-group v-model="tr.type" @change="typeChange($event, tr)">
                 <el-radio v-for="e in options.evaluateType" :key="e.dictValue" :label="e.dictLabel" :value="e.dictValue" />
