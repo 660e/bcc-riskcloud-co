@@ -130,7 +130,7 @@ const remove = (row: any) => {
     >
       <el-tab-pane v-for="industry in industries" :key="industry.id" :label="industry.label" :name="industry.id" />
     </el-tabs>
-    <div class="no-card flex-1 pt-2.5">
+    <div class="no-card flex-1 pt-2.5 h-0">
       <pro-table
         :columns="columns"
         :request-api="requestApi"

@@ -50,6 +50,14 @@ export function severity() {
 }
 
 /**
+ * 平面图标注列表
+ * @returns
+ */
+export function plan() {
+  return http.get('/mock/co/workspace/risk/plan');
+}
+
+/**
  * 标注用风险源列表
  * @returns
  */
