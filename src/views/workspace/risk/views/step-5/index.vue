@@ -52,7 +52,10 @@ const typeChange = (value: string, tr: any) => {
 <template>
   <div class="card flex-1 flex flex-col">
     <div class="flex items-center space-x-5 p-2.5">
-      <el-button>导出</el-button>
+      <div>
+        <el-button type="primary">暂存</el-button>
+        <el-button>导出</el-button>
+      </div>
       <div class="flex items-center">
         应得分：<span class="text-xl">{{ par }}</span>
       </div>
