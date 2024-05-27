@@ -2,7 +2,7 @@
 import { nextTick, onMounted, ref } from 'vue';
 import { useElementSize } from '@vueuse/core';
 import { companyApi, dangerApi, libraryApi, listApi, riskApi, systemApi } from '@/api';
-import { COLORS } from '@/utils';
+import { COLORS } from '@bcc/utils';
 import { CircleCheck, Clock, DocumentDelete, Histogram } from '@element-plus/icons-vue';
 import QRCode from 'qrcode';
 

@@ -4,7 +4,6 @@ import { FieldNamesProps } from '@/components/pro-table/interface';
 
 const mode = import.meta.env.VITE_ROUTER_MODE;
 
-export * from './colors';
 export const mittBus = mitt();
 
 /**
