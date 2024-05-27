@@ -113,6 +113,14 @@ export function evaluation() {
   return http.get('/mock/co/workspace/risk/evaluation');
 }
 
+/**
+ * 风险统计信息
+ * @returns
+ */
+export function statistics() {
+  return http.get('/mock/co/workspace/statistics');
+}
+
 //
 //
 //
