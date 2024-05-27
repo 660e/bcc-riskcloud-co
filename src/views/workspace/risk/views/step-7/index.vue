@@ -1,12 +1,16 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { workspaceApi } from '@/api';
+import { System } from '@/api/interface';
+import { systemApi, workspaceApi } from '@/api';
 import { RiskStatistics } from '@bcc/ui';
 import SignatureDialog from '@/views/workspace/risk/dialogs/signature.vue';
 
 const data = ref();
 onMounted(async () => {
+  const dict = (await systemApi.dict('eme_ability')).data;
   data.value = (await workspaceApi.statistics()).data;
+  data.value.ability.value = dict.find((d: System.Dict) => d.dictValue === data.value.ability.value)?.dictLabel || '-';
+  data.value.diagnosis.value = dict.find((d: System.Dict) => d.dictValue === data.value.diagnosis.value)?.dictLabel || '-';
 });
 
 const signatureDialogRef = ref();
