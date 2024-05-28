@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { getInformationRiskById } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 import ProTable from '@/components/pro-table/index.vue';
 
@@ -18,7 +18,7 @@ const columns: ColumnProps[] = [
   { prop: 'level2', label: '一般', width: 100 },
   { prop: 'level1', label: '低', width: 100 },
   { prop: 'date', label: '上报时间', width: 300 },
-  { prop: 'operation', label: '操作', width: 120 }
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 const view = (row: any) => {
   $emit('confirm', row);
@@ -35,7 +35,7 @@ const view = (row: any) => {
     <template #dropdown>
       <pro-table
         :columns="columns"
-        :request-api="getInformationRiskById"
+        :request-api="workspaceApi.informationRisksHistory"
         :request-auto="false"
         :tool-button="false"
         ref="tableRef"

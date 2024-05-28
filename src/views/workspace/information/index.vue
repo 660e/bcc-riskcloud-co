@@ -16,7 +16,7 @@ const active = ref('company');
     <el-tab-pane name="company" label="单位信息汇总" class="h-full overflow-y-auto flex">
       <company-component v-if="active === 'company'" />
     </el-tab-pane>
-    <el-tab-pane name="risk" label="风险源列表" class="h-full flex">
+    <el-tab-pane name="risk" label="风险源列表" class="h-full flex flex-col pt-2.5">
       <risk-component v-if="active === 'risk'" />
     </el-tab-pane>
     <el-tab-pane name="grading" label="单位诊断分级列表" class="h-full flex">

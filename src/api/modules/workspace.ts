@@ -129,6 +129,22 @@ export function log() {
   return http.get('/mock/co/workspace/log');
 }
 
+/**
+ * 风险源列表
+ * @returns
+ */
+export function informationRisks() {
+  return http.get('/mock/co/workspace/information/risks');
+}
+
+/**
+ * 风险源上报历史列表
+ * @returns
+ */
+export function informationRisksHistory() {
+  return http.get('/mock/co/workspace/information/risks/history');
+}
+
 //
 //
 //

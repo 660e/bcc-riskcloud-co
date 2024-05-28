@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { getDictDataType } from '@/api/modules/system';
-import { getInformationRisk } from '@/api/modules/workspace';
+import { systemApi, workspaceApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 import { saveAs } from 'file-saver';
 import { RiskDetailsDialog } from '@bcc/ui';
@@ -17,11 +16,11 @@ const columns: ColumnProps[] = [
   { prop: 'levelName', label: '风险等级', search: { el: 'input' } },
   { prop: 'count', label: '数量' },
   { prop: 'statusFlag', label: '状态' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 
 const exportData = async () => {
-  const blob: any = await getDictDataType({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
+  const blob: any = await systemApi.dict({ ...tableRef.value.searchParam, ids: tableRef.value.selectedListIds });
   saveAs(blob, `${new Date().getTime()}.xlsx`);
 };
 
@@ -36,21 +35,19 @@ const view = (row: any) => riskDetailsDialogRef.value.open(row);
 </script>
 
 <template>
-  <el-tab-pane class="h-full flex flex-col pt-2.5">
-    <pro-table :columns="columns" :request-api="getInformationRisk" ref="tableRef" row-key="id">
-      <template #tableHeader>
-        <div class="flex items-center space-x-2.5">
-          <el-button @click="exportData">导出</el-button>
-          <history-component @confirm="confirm" />
-          <span v-if="current">{{ current.date }}</span>
-        </div>
-      </template>
-      <template #operation="scope">
-        <el-button @click="view(scope.row)" type="primary" link>查看</el-button>
-      </template>
-    </pro-table>
+  <pro-table :columns="columns" :request-api="workspaceApi.informationRisks" ref="tableRef" row-key="id">
+    <template #tableHeader>
+      <div class="flex items-center space-x-2.5">
+        <el-button @click="exportData">导出</el-button>
+        <history-component @confirm="confirm" />
+        <span v-if="current">{{ current.date }}</span>
+      </div>
+    </template>
+    <template #operation="scope">
+      <el-button @click="view(scope.row)" type="primary" link>查看</el-button>
+    </template>
+  </pro-table>
 
-    <!-- 风险源详情 -->
-    <risk-details-dialog ref="riskDetailsDialogRef" />
-  </el-tab-pane>
+  <!-- 风险源详情 -->
+  <risk-details-dialog ref="riskDetailsDialogRef" />
 </template>
