@@ -158,8 +158,8 @@ export function informationResource() {
  * @param id 资源id
  * @returns
  */
-export function informationResourceById(id: any) {
-  return http.get(`/mock/co/workspace/information/resource/${id}`);
+export function informationResourceById() {
+  return http.get('/mock/co/workspace/information/resource/id');
 }
 
 /**

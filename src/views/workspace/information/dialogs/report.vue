@@ -25,7 +25,7 @@ defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" title="报告列表" width="1200" align-center>
+  <el-dialog v-model="visible" title="报告列表" width="1200">
     <div class="pt-2.5">
       <pro-table :columns="columns" :request-api="workspaceApi.informationResourceById">
         <template #operation="scope">
