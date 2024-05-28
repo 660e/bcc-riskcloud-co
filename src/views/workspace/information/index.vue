@@ -28,7 +28,7 @@ const active = ref('company');
     <el-tab-pane name="ability" label="应急能力列表" class="h-full flex">
       <ability-component v-if="active === 'ability'" />
     </el-tab-pane>
-    <el-tab-pane name="report" label="评估报告列表" class="h-full flex">
+    <el-tab-pane name="report" label="评估报告列表" class="h-full flex flex-col pt-2.5">
       <report-component v-if="active === 'report'" />
     </el-tab-pane>
   </el-tabs>

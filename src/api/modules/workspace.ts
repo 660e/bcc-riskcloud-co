@@ -162,6 +162,14 @@ export function informationResourceById(id: any) {
   return http.get(`/mock/co/workspace/information/resource/${id}`);
 }
 
+/**
+ * 评估报告列表
+ * @returns
+ */
+export function informationReport() {
+  return http.get('/mock/co/workspace/information/report');
+}
+
 //
 //
 //
@@ -187,9 +195,6 @@ export function getInformationRiskById(params: any) {
 // 根据id获取应急资源列表
 
 // 获取评估报告上报历史列表
-export function getInformationReport() {
-  return http.get('/mock/co/information/report');
-}
 
 // 根据id获取评估报告列表
 export function getInformationReportById(params: any) {

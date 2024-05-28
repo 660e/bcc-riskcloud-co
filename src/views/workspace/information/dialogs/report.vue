@@ -9,7 +9,7 @@ const visible = ref(false);
 const columns: ColumnProps[] = [
   { prop: 'name', label: '评估报告' },
   { prop: 'date', label: '上传时间' },
-  { prop: 'operation', label: '操作', width: 100 }
+  { prop: 'operation', label: '操作', width: 44 + 24 }
 ];
 
 const open = (row: any) => {
@@ -26,7 +26,7 @@ defineExpose({ open });
 
 <template>
   <el-dialog v-model="visible" title="报告列表" width="1200" align-center>
-    <div class="pro-table--no-card">
+    <div class="pt-2.5">
       <pro-table :columns="columns" :request-api="workspaceApi.informationResourceById">
         <template #operation="scope">
           <el-button @click="download(scope.row)" type="primary" link>下载</el-button>

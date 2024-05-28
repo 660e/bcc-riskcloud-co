@@ -1,5 +1,5 @@
 <script lang="ts" setup></script>
 
 <template>
-  <el-tab-pane>ability</el-tab-pane>
+  <div class="p-2.5">应急能力列表</div>
 </template>
