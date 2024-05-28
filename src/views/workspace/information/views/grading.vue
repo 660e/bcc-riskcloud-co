@@ -1,5 +1,5 @@
 <script lang="ts" setup></script>
 
 <template>
-  <el-tab-pane>grading</el-tab-pane>
+  <div class="p-2.5">单位诊断分级列表</div>
 </template>

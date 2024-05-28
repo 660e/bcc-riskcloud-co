@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { getInformationResourceById } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 import ProTable from '@/components/pro-table/index.vue';
 
@@ -25,9 +25,9 @@ defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" title="应急队伍" width="1200" align-center>
-    <div class="pro-table--no-card">
-      <pro-table :columns="columns" :request-api="getInformationResourceById" />
+  <el-dialog v-model="visible" title="应急队伍" width="1200">
+    <div class="pt-2.5">
+      <pro-table :columns="columns" :request-api="workspaceApi.informationResourceById" />
     </div>
 
     <template #footer>

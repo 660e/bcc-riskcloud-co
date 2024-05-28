@@ -145,6 +145,23 @@ export function informationRisksHistory() {
   return http.get('/mock/co/workspace/information/risks/history');
 }
 
+/**
+ * 应急资源上报历史列表
+ * @returns
+ */
+export function informationResource() {
+  return http.get('/mock/co/workspace/information/resource');
+}
+
+/**
+ * 根据id获取应急资源列表
+ * @param id 资源id
+ * @returns
+ */
+export function informationResourceById(id: any) {
+  return http.get(`/mock/co/workspace/information/resource/${id}`);
+}
+
 //
 //
 //
@@ -166,14 +183,8 @@ export function getInformationRiskById(params: any) {
 }
 
 // 获取应急资源上报历史列表
-export function getInformationResource(params: any) {
-  return http.get('/mock/co/information/resource', params);
-}
 
 // 根据id获取应急资源列表
-export function getInformationResourceById(params: any) {
-  return http.get(`/mock/co/information/resource/${params.id}`, params);
-}
 
 // 获取评估报告上报历史列表
 export function getInformationReport() {

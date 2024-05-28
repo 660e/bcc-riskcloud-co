@@ -22,7 +22,7 @@ const active = ref('company');
     <el-tab-pane name="grading" label="单位诊断分级列表" class="h-full flex">
       <grading-component v-if="active === 'grading'" />
     </el-tab-pane>
-    <el-tab-pane name="resource" label="应急资源列表" class="h-full flex">
+    <el-tab-pane name="resource" label="应急资源列表" class="h-full flex flex-col pt-2.5">
       <resource-component v-if="active === 'resource'" />
     </el-tab-pane>
     <el-tab-pane name="ability" label="应急能力列表" class="h-full flex">

@@ -1,6 +1,6 @@
 <script lang="tsx" setup>
 import { ref } from 'vue';
-import { getInformationResource } from '@/api/modules/workspace';
+import { workspaceApi } from '@/api';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
@@ -60,16 +60,14 @@ const supply = (row: any) => supplyDialogRef.value.open(row);
 </script>
 
 <template>
-  <el-tab-pane class="h-full flex flex-col pt-2.5">
-    <pro-table :columns="columns" :request-api="getInformationResource" />
+  <pro-table :columns="columns" :request-api="workspaceApi.informationResource" />
 
-    <!-- 应急队伍 -->
-    <team-dialog ref="teamDialogRef" />
-    <!-- 应急专家 -->
-    <expert-dialog ref="expertDialogRef" />
-    <!-- 应急装备 -->
-    <equipment-dialog ref="equipmentDialogRef" />
-    <!-- 应急物资 -->
-    <supply-dialog ref="supplyDialogRef" />
-  </el-tab-pane>
+  <!-- 应急队伍 -->
+  <team-dialog ref="teamDialogRef" />
+  <!-- 应急专家 -->
+  <expert-dialog ref="expertDialogRef" />
+  <!-- 应急装备 -->
+  <equipment-dialog ref="equipmentDialogRef" />
+  <!-- 应急物资 -->
+  <supply-dialog ref="supplyDialogRef" />
 </template>
