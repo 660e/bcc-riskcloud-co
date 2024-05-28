@@ -78,7 +78,7 @@ defineExpose({ open });
                   <el-checkbox
                     v-for="risk in place.children"
                     v-show="risk.name.includes(keyword)"
-                    v-bind="(risk.checked = checkList.includes(risk.id))"
+                    v-bind="(risk.checked = checkList?.includes(risk.id) as Boolean)"
                     :key="risk.id"
                     :label="risk.name"
                     :value="risk.id"

@@ -23,7 +23,7 @@ defineExpose({ open });
 </script>
 
 <template>
-  <el-dialog v-model="visible" :close-on-click-modal="false" title="签字" width="600px">
+  <el-dialog v-model="visible" title="签字" width="600px">
     <signature-pad ref="signaturePadRef" class="h-80" />
     <template #footer>
       <div class="flex">

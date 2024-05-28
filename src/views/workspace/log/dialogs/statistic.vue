@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { workspaceApi } from '@/api';
+import { System } from '@/api/interface';
+import { systemApi, workspaceApi } from '@/api';
 import { RiskStatistics } from '@bcc/ui';
 
 const visible = ref(false);
 const data = ref();
 const open = async () => {
   visible.value = true;
+
+  const dict = (await systemApi.dict('eme_ability')).data;
   data.value = (await workspaceApi.statistics()).data;
+  data.value.ability.value = dict.find((d: System.Dict) => d.dictValue === data.value.ability.value)?.dictLabel || '-';
+  data.value.diagnosis.value = dict.find((d: System.Dict) => d.dictValue === data.value.diagnosis.value)?.dictLabel || '-';
 };
 
 defineExpose({ open });

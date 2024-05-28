@@ -19,7 +19,7 @@ const confirm = (dataURL: string) => console.log(dataURL);
 </script>
 
 <template>
-  <div class="card flex-auto p-2.5 flex flex-col space-y-2.5">
+  <div class="card flex-auto h-0 p-2.5 flex flex-col space-y-2.5">
     <div>
       <el-button @click="signature" type="primary">签字确认</el-button>
     </div>
