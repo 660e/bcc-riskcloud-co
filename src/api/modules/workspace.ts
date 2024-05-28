@@ -121,20 +121,19 @@ export function statistics() {
   return http.get('/mock/co/workspace/statistics');
 }
 
+/**
+ * 风险更新记录
+ * @returns
+ */
+export function log() {
+  return http.get('/mock/co/workspace/log');
+}
+
 //
 //
 //
 
 // 风险更新记录
-export function getWorkspaceLog() {
-  return http.get('/mock/co/workspace/log');
-}
-
-// 风险统计信息
-export function getWorkspaceStatistics() {
-  return http.get('/mock/co/workspace/statistics');
-}
-
 // 获取线上核查结果
 export function getWorkspaceOnline() {
   return http.get('/mock/co/workspace/online');
