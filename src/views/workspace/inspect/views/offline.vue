@@ -4,7 +4,7 @@ import { getWorkspaceOnline } from '@/api/modules/workspace';
 import { ColumnProps } from '@/components/pro-table/interface';
 
 import ProTable from '@/components/pro-table/index.vue';
-import DetailDialog from './dialogs/detail.vue';
+import DetailDialog from '../dialogs/detail.vue';
 
 const tableRef = ref();
 const columns: ColumnProps[] = [
@@ -28,14 +28,12 @@ const detail = (row: any) => detailDialogRef.value.open(row);
 </script>
 
 <template>
-  <div class="h-full card no-card flex flex-col pt-2.5">
-    <pro-table :columns="columns" :request-api="getWorkspaceOnline" ref="tableRef" row-key="id">
-      <template #operation="scope">
-        <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
-      </template>
-    </pro-table>
+  <pro-table :columns="columns" :request-api="getWorkspaceOnline" ref="tableRef" row-key="id">
+    <template #operation="scope">
+      <el-button @click="detail(scope.row)" type="primary" link>查看</el-button>
+    </template>
+  </pro-table>
 
-    <!-- 详情 -->
-    <detail-dialog ref="detailDialogRef" />
-  </div>
+  <!-- 详情 -->
+  <detail-dialog ref="detailDialogRef" />
 </template>
