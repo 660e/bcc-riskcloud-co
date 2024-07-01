@@ -122,6 +122,14 @@ export function statistics() {
 }
 
 /**
+ * 重大风险管控列表
+ * @returns
+ */
+export function major() {
+  return http.get('/mock/co/workspace/major');
+}
+
+/**
  * 风险更新记录
  * @returns
  */
