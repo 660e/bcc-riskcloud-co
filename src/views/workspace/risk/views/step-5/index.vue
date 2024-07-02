@@ -70,7 +70,7 @@ const typeChange = (value: string, tr: any) => {
     <div class="_table">
       <table>
         <tr>
-          <th v-for="th in thead" :key="th.label" :width="th.width" class="py-2 sticky top-0 z-10">{{ th.label }}</th>
+          <th v-for="th in thead" :key="th.label" :width="th.width" class="py-2.5 sticky top-0 z-10">{{ th.label }}</th>
         </tr>
         <template v-for="item in table" :key="item.id">
           <tr v-for="(tr, index) in item.children" :key="tr.id">

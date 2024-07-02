@@ -1,7 +1,7 @@
 import http from '@/api';
 
 /**
- * 获取单位二维码
+ * 单位二维码
  * @param companyId 单位id
  * @returns
  */
@@ -10,7 +10,7 @@ export function qrcode(companyId: string) {
 }
 
 /**
- * 获取单位基本信息
+ * 单位基本信息
  * @param companyId 单位id
  * @returns
  */
@@ -19,7 +19,7 @@ export function details(companyId: string) {
 }
 
 /**
- * 获取单位基本信息（敏感目标）
+ * 单位基本信息（敏感目标）
  * @param companyId 单位id
  * @returns
  */
@@ -37,6 +37,14 @@ export function industry(companyId: string) {
 }
 
 /**
+ * 获取行业领域列表（树结构）
+ * @returns
+ */
+export function industries() {
+  return http.get<any>('/mock/co/company/industries/tree');
+}
+
+/**
  * 通过关键字获取单位列表
  * @param q 关键字
  * @param t 搜索类型（企业代码、企业名称）
@@ -47,15 +55,15 @@ export function query(q: string, t: string) {
 }
 
 /**
- * 获取行业领域列表（树结构）
+ * 企业规模判定标准
  * @returns
  */
-export function industries() {
-  return http.get<any>('/mock/co/company/industries/tree');
+export function enterpriseScale() {
+  return http.get<any>('/mock/co/enterprise-scale');
 }
 
 /**
- * 获取周边敏感目标列表
+ * 获取周边敏感目标
  * @returns
  */
 export function sensitivity() {

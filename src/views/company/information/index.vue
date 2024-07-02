@@ -3,7 +3,9 @@ import { onMounted, reactive, ref } from 'vue';
 import { companyApi, systemApi } from '@/api';
 import { System } from '@/api/interface';
 import { FormInstance, FormRules } from 'element-plus';
+import { QuestionFilled } from '@element-plus/icons-vue';
 import { LabelTooltip, LocationPicker, CascaderDialog } from '@bcc/components';
+import EnterpriseScaleDialog from './dialogs/enterprise-scale.vue';
 
 const options = reactive<{ [key: string]: System.Dict[] }>({});
 onMounted(async () => {
@@ -103,6 +105,9 @@ const connect = () => {
 const industrySelectDialogRef = ref();
 const setIndustry = () => industrySelectDialogRef.value.open(forms.value.secondClass);
 
+const enterpriseScaleDialogRef = ref();
+const viewEnterpriseScale = () => enterpriseScaleDialogRef.value.open();
+
 const save = () => {
   formsRef.value?.validate(valid => {
     if (valid) {
@@ -200,7 +205,10 @@ const save = () => {
         </div>
 
         <!-- 单位基本信息 -->
-        <div class="c-subtitle-1">单位基本信息</div>
+        <div class="c-subtitle-1">
+          <span class="pr-5">单位基本信息</span>
+          <el-button :icon="QuestionFilled" @click="viewEnterpriseScale" type="primary" link>查看企业规模判定标准</el-button>
+        </div>
         <div>
           <div class="grid grid-cols-2">
             <el-form-item label="单位名称" prop="placeName">
@@ -315,5 +323,8 @@ const save = () => {
       title="选择行业领域"
       ref="industrySelectDialogRef"
     />
+
+    <!--  -->
+    <enterprise-scale-dialog ref="enterpriseScaleDialogRef" />
   </div>
 </template>
